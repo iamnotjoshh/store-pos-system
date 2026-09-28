@@ -17,6 +17,100 @@ body {
     color: #111827;
 }
 
+/* =========================
+   LOGIN
+========================= */
+
+#loginScreen {
+    position: fixed;
+    inset: 0;
+    background: #1f2937;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    padding: 20px;
+    z-index: 10000;
+}
+
+.login-box {
+    width: 100%;
+    max-width: 400px;
+    background: white;
+    border-radius: 16px;
+    padding: 30px;
+    box-shadow: 0 10px 40px rgba(0,0,0,0.25);
+}
+
+.login-logo {
+    text-align: center;
+    margin-bottom: 25px;
+}
+
+.login-logo h1 {
+    margin: 0;
+    font-size: 30px;
+}
+
+.login-logo p {
+    margin: 6px 0 0;
+    color: #6b7280;
+}
+
+.login-field {
+    margin-bottom: 16px;
+}
+
+.login-field label {
+    display: block;
+    margin-bottom: 7px;
+    font-weight: 600;
+}
+
+.login-field input {
+    width: 100%;
+    padding: 13px;
+    border: 1px solid #d1d5db;
+    border-radius: 8px;
+    font-size: 16px;
+}
+
+.login-field input:focus {
+    outline: none;
+    border-color: #2563eb;
+}
+
+.login-btn {
+    width: 100%;
+    padding: 14px;
+    border: none;
+    border-radius: 8px;
+    background: #2563eb;
+    color: white;
+    font-size: 16px;
+    font-weight: 700;
+    cursor: pointer;
+}
+
+.login-btn:hover {
+    background: #1d4ed8;
+}
+
+.login-error {
+    min-height: 20px;
+    margin: 10px 0;
+    text-align: center;
+    color: #dc2626;
+    font-size: 14px;
+}
+
+/* =========================
+   APP
+========================= */
+
+#appContainer {
+    display: none;
+}
+
 .topbar {
     background: #1f2937;
     color: white;
@@ -36,6 +130,31 @@ body {
     margin: 4px 0 0;
     color: #d1d5db;
     font-size: 13px;
+}
+
+.topbar-right {
+    display: flex;
+    align-items: center;
+    gap: 12px;
+}
+
+.logged-user {
+    font-size: 13px;
+    color: #d1d5db;
+}
+
+.logout-btn {
+    border: none;
+    background: #dc2626;
+    color: white;
+    padding: 9px 13px;
+    border-radius: 7px;
+    cursor: pointer;
+    font-weight: 600;
+}
+
+.logout-btn:hover {
+    background: #b91c1c;
 }
 
 .nav {
@@ -489,7 +608,11 @@ th {
     color: #6b7280;
 }
 
-@media (max-width: 850px) {
+@media (max-width: 950px) {
+
+    .topbar {
+        flex-wrap: wrap;
+    }
 
     .dashboard-grid {
         grid-template-columns: 1fr 1fr;
@@ -497,11 +620,6 @@ th {
 
     .pos-layout {
         grid-template-columns: 1fr;
-    }
-
-    .topbar {
-        flex-direction: column;
-        align-items: flex-start;
     }
 
 }
@@ -525,40 +643,182 @@ th {
         align-items: flex-start;
     }
 
+    .topbar-right {
+        width: 100%;
+        justify-content: space-between;
+    }
+
+    .nav {
+        width: 100%;
+    }
+
+    .nav-btn {
+        flex: 1;
+    }
+
 }
 </style>
 </head>
 
 <body>
 
+
+<!-- =========================
+     LOGIN SCREEN
+========================= -->
+
+<div id="loginScreen">
+
+    <div class="login-box">
+
+        <div class="login-logo">
+
+            <h1>Locale Store</h1>
+
+            <p>
+                Point of Sale System
+            </p>
+
+        </div>
+
+
+        <form id="loginForm">
+
+            <div class="login-field">
+
+                <label for="usernameInput">
+                    Username
+                </label>
+
+                <input
+                    type="text"
+                    id="usernameInput"
+                    autocomplete="username"
+                    placeholder="Enter username"
+                    required
+                >
+
+            </div>
+
+
+            <div class="login-field">
+
+                <label for="passwordInput">
+                    Password
+                </label>
+
+                <input
+                    type="password"
+                    id="passwordInput"
+                    autocomplete="current-password"
+                    placeholder="Enter password"
+                    required
+                >
+
+            </div>
+
+
+            <div
+                id="loginError"
+                class="login-error"
+            ></div>
+
+
+            <button
+                type="submit"
+                class="login-btn"
+            >
+                Login
+            </button>
+
+        </form>
+
+    </div>
+
+</div>
+
+
+<!-- =========================
+     APP
+========================= -->
+
+<div id="appContainer">
+
+
 <header class="topbar">
 
     <div class="brand">
-        <h1>Locale Store</h1>
-        <p>Point of Sale System</p>
+
+        <h1>
+            Locale Store
+        </h1>
+
+        <p>
+            Point of Sale System
+        </p>
+
     </div>
 
-    <nav class="nav">
 
-        <button class="nav-btn active" data-section="dashboard">
-            Dashboard
+    <div class="topbar-right">
+
+        <span
+            class="logged-user"
+            id="loggedUser"
+        >
+            Logged in as admin
+        </span>
+
+        <button
+            type="button"
+            id="logoutBtn"
+            class="logout-btn"
+        >
+            Logout
         </button>
 
-        <button class="nav-btn" data-section="pos">
-            POS
-        </button>
-
-        <button class="nav-btn" data-section="inventory">
-            Inventory
-        </button>
-
-        <button class="nav-btn" data-section="history">
-            History
-        </button>
-
-    </nav>
+    </div>
 
 </header>
+
+
+<nav
+    class="nav"
+    style="
+        background:#111827;
+        padding:10px 24px;
+    "
+>
+
+    <button
+        class="nav-btn active"
+        data-section="dashboard"
+    >
+        Dashboard
+    </button>
+
+    <button
+        class="nav-btn"
+        data-section="pos"
+    >
+        POS
+    </button>
+
+    <button
+        class="nav-btn"
+        data-section="inventory"
+    >
+        Inventory
+    </button>
+
+    <button
+        class="nav-btn"
+        data-section="history"
+    >
+        History
+    </button>
+
+</nav>
 
 
 <main class="container">
@@ -566,37 +826,79 @@ th {
 
 <!-- DASHBOARD -->
 
-<section id="dashboard" class="section active">
+<section
+    id="dashboard"
+    class="section active"
+>
 
     <div class="section-header">
 
         <div>
-            <h2>Dashboard</h2>
-            <p>Locale Store overview</p>
+
+            <h2>
+                Dashboard
+            </h2>
+
+            <p>
+                Locale Store overview
+            </p>
+
         </div>
 
     </div>
 
+
     <div class="dashboard-grid">
 
         <div class="dashboard-card">
-            <span class="card-label">Today's Sales</span>
-            <h3 id="todaySales">₱0.00</h3>
+
+            <span class="card-label">
+                Today's Sales
+            </span>
+
+            <h3 id="todaySales">
+                ₱0.00
+            </h3>
+
         </div>
 
-        <div class="dashboard-card">
-            <span class="card-label">Today's Profit</span>
-            <h3 id="todayProfit">₱0.00</h3>
-        </div>
 
         <div class="dashboard-card">
-            <span class="card-label">Total Products</span>
-            <h3 id="totalProducts">0</h3>
+
+            <span class="card-label">
+                Today's Profit
+            </span>
+
+            <h3 id="todayProfit">
+                ₱0.00
+            </h3>
+
         </div>
 
+
         <div class="dashboard-card">
-            <span class="card-label">Low Stock</span>
-            <h3 id="lowStock">0</h3>
+
+            <span class="card-label">
+                Total Products
+            </span>
+
+            <h3 id="totalProducts">
+                0
+            </h3>
+
+        </div>
+
+
+        <div class="dashboard-card">
+
+            <span class="card-label">
+                Low Stock
+            </span>
+
+            <h3 id="lowStock">
+                0
+            </h3>
+
         </div>
 
     </div>
@@ -606,19 +908,30 @@ th {
 
 <!-- POS -->
 
-<section id="pos" class="section">
+<section
+    id="pos"
+    class="section"
+>
 
     <div class="section-header">
 
         <div>
-            <h2>Point of Sale</h2>
-            <p>Scan or enter a product barcode</p>
+
+            <h2>
+                Point of Sale
+            </h2>
+
+            <p>
+                Scan or enter a product barcode
+            </p>
+
         </div>
 
     </div>
 
 
     <div class="pos-layout">
+
 
         <div class="product-area">
 
@@ -649,12 +962,16 @@ th {
 
             </div>
 
+
             <div
                 id="productMessage"
                 class="message"
             ></div>
 
-            <div id="productList"></div>
+
+            <div
+                id="productList"
+            ></div>
 
         </div>
 
@@ -663,7 +980,9 @@ th {
 
             <div class="cart-header">
 
-                <h3>Cart</h3>
+                <h3>
+                    Cart
+                </h3>
 
                 <span id="cartCount">
                     0 items
@@ -671,16 +990,20 @@ th {
 
             </div>
 
+
             <div
                 id="cartItems"
                 class="cart-items"
             ></div>
 
+
             <div class="cart-summary">
 
                 <div class="summary-row">
 
-                    <span>Subtotal</span>
+                    <span>
+                        Subtotal
+                    </span>
 
                     <strong id="cartSubtotal">
                         ₱0.00
@@ -689,9 +1012,13 @@ th {
                 </div>
 
 
-                <div class="summary-row total-row">
+                <div
+                    class="summary-row total-row"
+                >
 
-                    <span>Total</span>
+                    <span>
+                        Total
+                    </span>
 
                     <strong id="cartTotal">
                         ₱0.00
@@ -720,13 +1047,23 @@ th {
 
 <!-- INVENTORY -->
 
-<section id="inventory" class="section">
+<section
+    id="inventory"
+    class="section"
+>
 
     <div class="section-header">
 
         <div>
-            <h2>Inventory</h2>
-            <p>Current Locale Store inventory</p>
+
+            <h2>
+                Inventory
+            </h2>
+
+            <p>
+                Current Locale Store inventory
+            </p>
+
         </div>
 
     </div>
@@ -740,19 +1077,42 @@ th {
 
                 <tr>
 
-                    <th>Barcode</th>
-                    <th>Product</th>
-                    <th>Category</th>
-                    <th>Cost</th>
-                    <th>Price</th>
-                    <th>Stock</th>
-                    <th>Status</th>
+                    <th>
+                        Barcode
+                    </th>
+
+                    <th>
+                        Product
+                    </th>
+
+                    <th>
+                        Category
+                    </th>
+
+                    <th>
+                        Cost
+                    </th>
+
+                    <th>
+                        Price
+                    </th>
+
+                    <th>
+                        Stock
+                    </th>
+
+                    <th>
+                        Status
+                    </th>
 
                 </tr>
 
             </thead>
 
-            <tbody id="inventoryTable"></tbody>
+
+            <tbody
+                id="inventoryTable"
+            ></tbody>
 
         </table>
 
@@ -763,13 +1123,18 @@ th {
 
 <!-- HISTORY -->
 
-<section id="history" class="section">
+<section
+    id="history"
+    class="section"
+>
 
     <div class="section-header">
 
         <div>
 
-            <h2>Transaction History</h2>
+            <h2>
+                Transaction History
+            </h2>
 
             <p>
                 View and print Locale Store transactions
@@ -805,22 +1170,50 @@ th {
 
                 <tr>
 
-                    <th>Sale ID</th>
-                    <th>Date</th>
-                    <th>Time</th>
-                    <th>Total</th>
-                    <th>Cost</th>
-                    <th>Profit</th>
-                    <th>Payment</th>
-                    <th>Change</th>
-                    <th>Action</th>
+                    <th>
+                        Sale ID
+                    </th>
+
+                    <th>
+                        Date
+                    </th>
+
+                    <th>
+                        Time
+                    </th>
+
+                    <th>
+                        Total
+                    </th>
+
+                    <th>
+                        Cost
+                    </th>
+
+                    <th>
+                        Profit
+                    </th>
+
+                    <th>
+                        Payment
+                    </th>
+
+                    <th>
+                        Change
+                    </th>
+
+                    <th>
+                        Action
+                    </th>
 
                 </tr>
 
             </thead>
 
 
-            <tbody id="historyTable"></tbody>
+            <tbody
+                id="historyTable"
+            ></tbody>
 
         </table>
 
@@ -829,6 +1222,8 @@ th {
 </section>
 
 </main>
+
+</div>
 
 
 <!-- SCANNER MODAL -->
@@ -842,7 +1237,9 @@ th {
 
         <div class="modal-header">
 
-            <h2>Scan Barcode</h2>
+            <h2>
+                Scan Barcode
+            </h2>
 
             <button
                 type="button"
@@ -883,7 +1280,9 @@ th {
 
         <div class="modal-header">
 
-            <h2>Checkout</h2>
+            <h2>
+                Checkout
+            </h2>
 
             <button
                 type="button"
@@ -904,7 +1303,9 @@ th {
                     Total Amount
                 </span>
 
-                <strong id="checkoutTotal">
+                <strong
+                    id="checkoutTotal"
+                >
                     ₱0.00
                 </strong>
 
@@ -936,7 +1337,9 @@ th {
                     Change
                 </span>
 
-                <strong id="changeAmount">
+                <strong
+                    id="changeAmount"
+                >
                     ₱0.00
                 </strong>
 
@@ -966,16 +1369,39 @@ th {
 
 <script>
 
+/* =====================================================
+   LOGIN SETTINGS
+===================================================== */
+
+const LOGIN_USERNAME = "admin";
+const LOGIN_PASSWORD = "admin123";
+
+const LOGIN_KEY =
+    "localeStore_loggedIn";
+
+
+/* =====================================================
+   GOOGLE SHEETS
+===================================================== */
+
 const GOOGLE_SHEETS_URL =
 "https://script.google.com/macros/s/AKfycbw-8QO1nhx6JMeT9xZXSU86Ss2K4kFpY3DjqyRPaMCOsu9SSNCWl9OMnp0so41N3JXV3w/exec";
 
 
+/* =====================================================
+   LOCAL STORAGE
+===================================================== */
+
 const PRODUCTS_KEY =
-"storePOS_products_v1";
+    "storePOS_products_v1";
 
 const SALES_KEY =
-"storePOS_sales_v1";
+    "storePOS_sales_v1";
 
+
+/* =====================================================
+   DEFAULT PRODUCTS
+===================================================== */
 
 const defaultProducts = [
 
@@ -1033,17 +1459,207 @@ const defaultProducts = [
 
 
 let products =
-loadProducts();
+    loadProducts();
 
 let sales =
-loadSales();
+    loadSales();
 
 let cart =
-[];
+    [];
 
 let scanner =
-null;
+    null;
 
+
+/* =====================================================
+   LOGIN ELEMENTS
+===================================================== */
+
+const loginScreen =
+    document.getElementById(
+        "loginScreen"
+    );
+
+const appContainer =
+    document.getElementById(
+        "appContainer"
+    );
+
+const loginForm =
+    document.getElementById(
+        "loginForm"
+    );
+
+const usernameInput =
+    document.getElementById(
+        "usernameInput"
+    );
+
+const passwordInput =
+    document.getElementById(
+        "passwordInput"
+    );
+
+const loginError =
+    document.getElementById(
+        "loginError"
+    );
+
+const logoutBtn =
+    document.getElementById(
+        "logoutBtn"
+    );
+
+const loggedUser =
+    document.getElementById(
+        "loggedUser"
+    );
+
+
+/* =====================================================
+   LOGIN FUNCTIONS
+===================================================== */
+
+function showApp() {
+
+    loginScreen.style.display =
+        "none";
+
+    appContainer.style.display =
+        "block";
+
+    loggedUser.textContent =
+        "Logged in as " +
+        LOGIN_USERNAME;
+
+}
+
+
+function showLogin() {
+
+    loginScreen.style.display =
+        "flex";
+
+    appContainer.style.display =
+        "none";
+
+    usernameInput.value =
+        "";
+
+    passwordInput.value =
+        "";
+
+    loginError.textContent =
+        "";
+
+}
+
+
+loginForm.addEventListener(
+    "submit",
+    function(event) {
+
+        event.preventDefault();
+
+
+        const username =
+            usernameInput.value.trim();
+
+        const password =
+            passwordInput.value;
+
+
+        if (
+            username ===
+                LOGIN_USERNAME &&
+            password ===
+                LOGIN_PASSWORD
+        ) {
+
+            localStorage.setItem(
+                LOGIN_KEY,
+                "true"
+            );
+
+
+            showApp();
+
+
+            usernameInput.value =
+                "";
+
+            passwordInput.value =
+                "";
+
+
+        } else {
+
+            loginError.textContent =
+                "Incorrect username or password.";
+
+            passwordInput.value =
+                "";
+
+            passwordInput.focus();
+
+        }
+
+    }
+);
+
+
+/* =====================================================
+   LOGOUT
+===================================================== */
+
+logoutBtn.addEventListener(
+    "click",
+    function() {
+
+        localStorage.removeItem(
+            LOGIN_KEY
+        );
+
+        cart = [];
+
+        renderCart();
+
+        showLogin();
+
+    }
+);
+
+
+/* =====================================================
+   CHECK LOGIN
+===================================================== */
+
+function checkLogin() {
+
+    const loggedIn =
+        localStorage.getItem(
+            LOGIN_KEY
+        );
+
+
+    if (
+        loggedIn === "true"
+    ) {
+
+        showApp();
+
+    } else {
+
+        showLogin();
+
+    }
+
+}
+
+
+/* =====================================================
+   LOAD PRODUCTS
+===================================================== */
 
 function loadProducts() {
 
@@ -1054,10 +1670,12 @@ function loadProducts() {
                 PRODUCTS_KEY
             );
 
+
         if (saved) {
 
             const data =
                 JSON.parse(saved);
+
 
             if (
                 Array.isArray(data) &&
@@ -1072,7 +1690,9 @@ function loadProducts() {
 
     } catch (error) {
 
-        console.error(error);
+        console.error(
+            error
+        );
 
     }
 
@@ -1096,6 +1716,10 @@ function loadProducts() {
 }
 
 
+/* =====================================================
+   LOAD SALES
+===================================================== */
+
 function loadSales() {
 
     try {
@@ -1105,12 +1729,16 @@ function loadSales() {
                 SALES_KEY
             );
 
+
         if (saved) {
 
             const data =
                 JSON.parse(saved);
 
-            if (Array.isArray(data)) {
+
+            if (
+                Array.isArray(data)
+            ) {
 
                 return data;
 
@@ -1120,7 +1748,9 @@ function loadSales() {
 
     } catch (error) {
 
-        console.error(error);
+        console.error(
+            error
+        );
 
     }
 
@@ -1130,12 +1760,17 @@ function loadSales() {
 }
 
 
+/* =====================================================
+   SAVE DATA
+===================================================== */
+
 function saveData() {
 
     localStorage.setItem(
         PRODUCTS_KEY,
         JSON.stringify(products)
     );
+
 
     localStorage.setItem(
         SALES_KEY,
@@ -1145,179 +1780,159 @@ function saveData() {
 }
 
 
-const navButtons =
-document.querySelectorAll(
-    ".nav-btn"
-);
+/* =====================================================
+   ELEMENTS
+===================================================== */
 
+const navButtons =
+    document.querySelectorAll(
+        ".nav-btn"
+    );
 
 const sections =
-document.querySelectorAll(
-    ".section"
-);
-
+    document.querySelectorAll(
+        ".section"
+    );
 
 const barcodeInput =
-document.getElementById(
-    "barcodeInput"
-);
-
+    document.getElementById(
+        "barcodeInput"
+    );
 
 const searchBtn =
-document.getElementById(
-    "searchBtn"
-);
-
+    document.getElementById(
+        "searchBtn"
+    );
 
 const cameraBtn =
-document.getElementById(
-    "cameraBtn"
-);
-
+    document.getElementById(
+        "cameraBtn"
+    );
 
 const productMessage =
-document.getElementById(
-    "productMessage"
-);
-
+    document.getElementById(
+        "productMessage"
+    );
 
 const productList =
-document.getElementById(
-    "productList"
-);
-
+    document.getElementById(
+        "productList"
+    );
 
 const cartItems =
-document.getElementById(
-    "cartItems"
-);
-
+    document.getElementById(
+        "cartItems"
+    );
 
 const cartCount =
-document.getElementById(
-    "cartCount"
-);
-
+    document.getElementById(
+        "cartCount"
+    );
 
 const cartSubtotal =
-document.getElementById(
-    "cartSubtotal"
-);
-
+    document.getElementById(
+        "cartSubtotal"
+    );
 
 const cartTotal =
-document.getElementById(
-    "cartTotal"
-);
-
+    document.getElementById(
+        "cartTotal"
+    );
 
 const checkoutBtn =
-document.getElementById(
-    "checkoutBtn"
-);
-
+    document.getElementById(
+        "checkoutBtn"
+    );
 
 const inventoryTable =
-document.getElementById(
-    "inventoryTable"
-);
-
+    document.getElementById(
+        "inventoryTable"
+    );
 
 const historyTable =
-document.getElementById(
-    "historyTable"
-);
-
+    document.getElementById(
+        "historyTable"
+    );
 
 const historySummary =
-document.getElementById(
-    "historySummary"
-);
-
+    document.getElementById(
+        "historySummary"
+    );
 
 const todaySales =
-document.getElementById(
-    "todaySales"
-);
-
+    document.getElementById(
+        "todaySales"
+    );
 
 const todayProfit =
-document.getElementById(
-    "todayProfit"
-);
-
+    document.getElementById(
+        "todayProfit"
+    );
 
 const totalProducts =
-document.getElementById(
-    "totalProducts"
-);
-
+    document.getElementById(
+        "totalProducts"
+    );
 
 const lowStock =
-document.getElementById(
-    "lowStock"
-);
-
+    document.getElementById(
+        "lowStock"
+    );
 
 const scannerModal =
-document.getElementById(
-    "scannerModal"
-);
-
+    document.getElementById(
+        "scannerModal"
+    );
 
 const closeScannerBtn =
-document.getElementById(
-    "closeScannerBtn"
-);
-
+    document.getElementById(
+        "closeScannerBtn"
+    );
 
 const checkoutModal =
-document.getElementById(
-    "checkoutModal"
-);
-
+    document.getElementById(
+        "checkoutModal"
+    );
 
 const closeCheckoutBtn =
-document.getElementById(
-    "closeCheckoutBtn"
-);
-
+    document.getElementById(
+        "closeCheckoutBtn"
+    );
 
 const checkoutTotal =
-document.getElementById(
-    "checkoutTotal"
-);
-
+    document.getElementById(
+        "checkoutTotal"
+    );
 
 const paymentInput =
-document.getElementById(
-    "paymentInput"
-);
-
+    document.getElementById(
+        "paymentInput"
+    );
 
 const changeAmount =
-document.getElementById(
-    "changeAmount"
-);
-
+    document.getElementById(
+        "changeAmount"
+    );
 
 const checkoutMessage =
-document.getElementById(
-    "checkoutMessage"
-);
-
+    document.getElementById(
+        "checkoutMessage"
+    );
 
 const confirmCheckoutBtn =
-document.getElementById(
-    "confirmCheckoutBtn"
-);
-
+    document.getElementById(
+        "confirmCheckoutBtn"
+    );
 
 const printHistoryBtn =
-document.getElementById(
-    "printHistoryBtn"
-);
+    document.getElementById(
+        "printHistoryBtn"
+    );
 
+
+/* =====================================================
+   CURRENCY
+===================================================== */
 
 function peso(amount) {
 
@@ -1334,19 +1949,40 @@ function peso(amount) {
 }
 
 
+/* =====================================================
+   ESCAPE HTML
+===================================================== */
+
 function escapeHtml(value) {
 
     return String(value)
-        .replaceAll("&", "&amp;")
-        .replaceAll("<", "&lt;")
-        .replaceAll(">", "&gt;")
-        .replaceAll('"', "&quot;")
-        .replaceAll("'", "&#039;");
+        .replaceAll(
+            "&",
+            "&amp;"
+        )
+        .replaceAll(
+            "<",
+            "&lt;"
+        )
+        .replaceAll(
+            ">",
+            "&gt;"
+        )
+        .replaceAll(
+            '"',
+            "&quot;"
+        )
+        .replaceAll(
+            "'",
+            "&#039;"
+        );
 
 }
 
 
-/* NAVIGATION */
+/* =====================================================
+   NAVIGATION
+===================================================== */
 
 navButtons.forEach(
     button => {
@@ -1421,7 +2057,9 @@ navButtons.forEach(
 );
 
 
-/* SEARCH */
+/* =====================================================
+   SEARCH PRODUCT
+===================================================== */
 
 function searchProduct() {
 
@@ -1449,8 +2087,12 @@ function searchProduct() {
     const product =
         products.find(
             item =>
-                String(item.barcode) ===
-                String(barcode)
+                String(
+                    item.barcode
+                ) ===
+                String(
+                    barcode
+                )
         );
 
 
@@ -1468,7 +2110,9 @@ function searchProduct() {
 
 
     if (
-        Number(product.stock) <= 0
+        Number(
+            product.stock
+        ) <= 0
     ) {
 
         productMessage.textContent =
@@ -1494,17 +2138,23 @@ function searchProduct() {
         <div class="product-card">
 
             <h3>
-                ${escapeHtml(product.name)}
+                ${escapeHtml(
+                    product.name
+                )}
             </h3>
 
             <p>
                 Barcode:
-                ${escapeHtml(product.barcode)}
+                ${escapeHtml(
+                    product.barcode
+                )}
             </p>
 
             <p>
                 Category:
-                ${escapeHtml(product.category)}
+                ${escapeHtml(
+                    product.category
+                )}
             </p>
 
             <p>
@@ -1515,12 +2165,14 @@ function searchProduct() {
             <div class="product-card-bottom">
 
                 <strong>
-                    ${peso(product.price)}
+                    ${peso(
+                        product.price
+                    )}
                 </strong>
 
                 <button
-                    class="primary-btn"
                     type="button"
+                    class="primary-btn"
                     onclick="addToCart('${escapeHtml(product.barcode)}')"
                 >
                     Add to Cart
@@ -1546,7 +2198,8 @@ barcodeInput.addEventListener(
     function(event) {
 
         if (
-            event.key === "Enter"
+            event.key ===
+            "Enter"
         ) {
 
             event.preventDefault();
@@ -1559,7 +2212,9 @@ barcodeInput.addEventListener(
 );
 
 
-/* ADD TO CART */
+/* =====================================================
+   ADD TO CART
+===================================================== */
 
 window.addToCart =
 function(barcode) {
@@ -1567,8 +2222,12 @@ function(barcode) {
     const product =
         products.find(
             item =>
-                String(item.barcode) ===
-                String(barcode)
+                String(
+                    item.barcode
+                ) ===
+                String(
+                    barcode
+                )
         );
 
 
@@ -1582,8 +2241,12 @@ function(barcode) {
     const existing =
         cart.find(
             item =>
-                String(item.barcode) ===
-                String(barcode)
+                String(
+                    item.barcode
+                ) ===
+                String(
+                    barcode
+                )
         );
 
 
@@ -1591,7 +2254,9 @@ function(barcode) {
 
         if (
             existing.quantity >=
-            Number(product.stock)
+            Number(
+                product.stock
+            )
         ) {
 
             alert(
@@ -1619,10 +2284,14 @@ function(barcode) {
                 product.category,
 
             price:
-                Number(product.price),
+                Number(
+                    product.price
+                ),
 
             cost:
-                Number(product.cost),
+                Number(
+                    product.cost
+                ),
 
             quantity:
                 1
@@ -1637,7 +2306,9 @@ function(barcode) {
 };
 
 
-/* RENDER CART */
+/* =====================================================
+   RENDER CART
+===================================================== */
 
 function renderCart() {
 
@@ -1687,19 +2358,21 @@ function renderCart() {
     }
 
 
-    let total =
-        0;
+    let total = 0;
 
-    let count =
-        0;
+    let count = 0;
 
 
     cart.forEach(
         (item,index) => {
 
             const lineTotal =
-                Number(item.price) *
-                Number(item.quantity);
+                Number(
+                    item.price
+                ) *
+                Number(
+                    item.quantity
+                );
 
 
             total +=
@@ -1707,7 +2380,9 @@ function renderCart() {
 
 
             count +=
-                Number(item.quantity);
+                Number(
+                    item.quantity
+                );
 
 
             const element =
@@ -1726,32 +2401,29 @@ function renderCart() {
 
                     <div>
 
-                        <div class="cart-item-name">
-
+                        <div
+                            class="cart-item-name"
+                        >
                             ${escapeHtml(
                                 item.name
                             )}
-
                         </div>
 
-                        <div class="cart-item-price">
-
+                        <div
+                            class="cart-item-price"
+                        >
                             ${peso(
                                 item.price
                             )}
                             each
-
                         </div>
 
                     </div>
 
-
                     <strong>
-
                         ${peso(
                             lineTotal
                         )}
-
                     </strong>
 
                 </div>
@@ -1759,7 +2431,9 @@ function renderCart() {
 
                 <div class="cart-item-bottom">
 
-                    <div class="quantity-controls">
+                    <div
+                        class="quantity-controls"
+                    >
 
                         <button
                             type="button"
@@ -1769,11 +2443,9 @@ function renderCart() {
                             −
                         </button>
 
-
                         <strong>
                             ${item.quantity}
                         </strong>
-
 
                         <button
                             type="button"
@@ -1809,7 +2481,9 @@ function renderCart() {
 
 
     cartItems
-        .querySelectorAll("button")
+        .querySelectorAll(
+            "button"
+        )
         .forEach(
             button => {
 
@@ -1857,7 +2531,9 @@ function renderCart() {
 }
 
 
-/* UPDATE CART */
+/* =====================================================
+   UPDATE CART
+===================================================== */
 
 function updateCart(
     index,
@@ -1878,8 +2554,12 @@ function updateCart(
     const product =
         products.find(
             p =>
-                String(p.barcode) ===
-                String(item.barcode)
+                String(
+                    p.barcode
+                ) ===
+                String(
+                    item.barcode
+                )
         );
 
 
@@ -1891,12 +2571,15 @@ function updateCart(
 
 
     if (
-        action === "plus"
+        action ===
+        "plus"
     ) {
 
         if (
             item.quantity >=
-            Number(product.stock)
+            Number(
+                product.stock
+            )
         ) {
 
             alert(
@@ -1914,7 +2597,8 @@ function updateCart(
 
 
     if (
-        action === "minus"
+        action ===
+        "minus"
     ) {
 
         item.quantity--;
@@ -1935,7 +2619,8 @@ function updateCart(
 
 
     if (
-        action === "remove"
+        action ===
+        "remove"
     ) {
 
         cart.splice(
@@ -1951,7 +2636,9 @@ function updateCart(
 }
 
 
-/* TOTAL */
+/* =====================================================
+   CALCULATE TOTAL
+===================================================== */
 
 function calculateTotal() {
 
@@ -1959,8 +2646,12 @@ function calculateTotal() {
         (sum,item) =>
             sum +
             (
-                Number(item.price) *
-                Number(item.quantity)
+                Number(
+                    item.price
+                ) *
+                Number(
+                    item.quantity
+                )
             ),
         0
     );
@@ -1968,14 +2659,17 @@ function calculateTotal() {
 }
 
 
-/* OPEN CHECKOUT */
+/* =====================================================
+   OPEN CHECKOUT
+===================================================== */
 
 checkoutBtn.addEventListener(
     "click",
     function() {
 
         if (
-            cart.length === 0
+            cart.length ===
+            0
         ) {
 
             return;
@@ -2018,7 +2712,9 @@ checkoutBtn.addEventListener(
 );
 
 
-/* CLOSE CHECKOUT */
+/* =====================================================
+   CLOSE CHECKOUT
+===================================================== */
 
 closeCheckoutBtn.addEventListener(
     "click",
@@ -2051,7 +2747,9 @@ checkoutModal.addEventListener(
 );
 
 
-/* CHANGE */
+/* =====================================================
+   PAYMENT / CHANGE
+===================================================== */
 
 paymentInput.addEventListener(
     "input",
@@ -2083,7 +2781,9 @@ paymentInput.addEventListener(
 );
 
 
-/* CONFIRM PAYMENT */
+/* =====================================================
+   CONFIRM CHECKOUT
+===================================================== */
 
 confirmCheckoutBtn.addEventListener(
     "click",
@@ -2144,8 +2844,12 @@ confirmCheckoutBtn.addEventListener(
 
             if (
                 !product ||
-                Number(product.stock) <
-                Number(item.quantity)
+                Number(
+                    product.stock
+                ) <
+                Number(
+                    item.quantity
+                )
             ) {
 
                 checkoutMessage.textContent =
@@ -2167,8 +2871,12 @@ confirmCheckoutBtn.addEventListener(
             item => {
 
                 totalCost +=
-                    Number(item.cost) *
-                    Number(item.quantity);
+                    Number(
+                        item.cost
+                    ) *
+                    Number(
+                        item.quantity
+                    );
 
             }
         );
@@ -2301,7 +3009,7 @@ confirmCheckoutBtn.addEventListener(
         );
 
 
-        /* SAVE */
+        /* SAVE LOCAL */
 
         sales.unshift(
             sale
@@ -2311,7 +3019,7 @@ confirmCheckoutBtn.addEventListener(
         saveData();
 
 
-        /* GOOGLE SHEETS */
+        /* SAVE GOOGLE SHEETS */
 
         sendSaleToGoogleSheets(
             sale
@@ -2387,7 +3095,9 @@ confirmCheckoutBtn.addEventListener(
 );
 
 
-/* GOOGLE SHEETS */
+/* =====================================================
+   GOOGLE SHEETS
+===================================================== */
 
 function sendSaleToGoogleSheets(
     sale
@@ -2396,11 +3106,15 @@ function sendSaleToGoogleSheets(
     fetch(
         GOOGLE_SHEETS_URL,
         {
-            method: "POST",
+
+            method:
+                "POST",
 
             headers: {
+
                 "Content-Type":
                     "text/plain;charset=utf-8"
+
             },
 
             body:
@@ -2442,7 +3156,9 @@ function sendSaleToGoogleSheets(
 }
 
 
-/* INVENTORY */
+/* =====================================================
+   INVENTORY
+===================================================== */
 
 function renderInventory() {
 
@@ -2560,7 +3276,9 @@ function renderInventory() {
 }
 
 
-/* HISTORY */
+/* =====================================================
+   HISTORY
+===================================================== */
 
 function renderHistory() {
 
@@ -2569,7 +3287,8 @@ function renderHistory() {
 
 
     if (
-        sales.length === 0
+        sales.length ===
+        0
     ) {
 
         historyTable.innerHTML = `
@@ -2590,6 +3309,7 @@ function renderHistory() {
 
         historySummary.textContent =
             "No transactions yet.";
+
 
         return;
 
@@ -2674,6 +3394,7 @@ function renderHistory() {
                         View
                     </button>
 
+
                     <button
                         type="button"
                         class="action-btn print-btn"
@@ -2697,7 +3418,9 @@ function renderHistory() {
 }
 
 
-/* VIEW SALE */
+/* =====================================================
+   VIEW SALE
+===================================================== */
 
 window.viewSale =
 function(index) {
@@ -2780,7 +3503,9 @@ function(index) {
 };
 
 
-/* PRINT SALE */
+/* =====================================================
+   PRINT SINGLE SALE
+===================================================== */
 
 window.printSale =
 function(index) {
@@ -2803,7 +3528,9 @@ function(index) {
 };
 
 
-/* PRINT RECEIPT */
+/* =====================================================
+   PRINT RECEIPT
+===================================================== */
 
 function printReceipt(
     sale
@@ -2947,7 +3674,6 @@ function printReceipt(
             <div class="line"></div>
 
             <div>
-
                 <strong>
                     Sale ID:
                 </strong>
@@ -2955,11 +3681,9 @@ function printReceipt(
                 ${escapeHtml(
                     sale.id
                 )}
-
             </div>
 
             <div>
-
                 <strong>
                     Date:
                 </strong>
@@ -2967,11 +3691,9 @@ function printReceipt(
                 ${escapeHtml(
                     sale.date
                 )}
-
             </div>
 
             <div>
-
                 <strong>
                     Time:
                 </strong>
@@ -2979,11 +3701,9 @@ function printReceipt(
                 ${escapeHtml(
                     sale.time
                 )}
-
             </div>
 
             <div class="line"></div>
-
 
             <table>
 
@@ -3011,7 +3731,6 @@ function printReceipt(
 
                 </thead>
 
-
                 <tbody>
 
                     ${itemsHtml}
@@ -3020,52 +3739,38 @@ function printReceipt(
 
             </table>
 
-
             <div class="line"></div>
-
 
             <div class="summary">
 
                 <div class="big">
-
                     Total:
                     ${peso(
                         sale.total
                     )}
-
                 </div>
 
-
                 <div>
-
                     Payment:
                     ${peso(
                         sale.payment
                     )}
-
                 </div>
 
-
                 <div>
-
                     Change:
                     ${peso(
                         sale.change
                     )}
-
                 </div>
 
             </div>
 
-
             <div class="line"></div>
 
-
             <div class="center">
-
                 Thank you for shopping at
                 Locale Store!
-
             </div>
 
         </body>
@@ -3092,14 +3797,17 @@ function printReceipt(
 }
 
 
-/* PRINT ALL HISTORY */
+/* =====================================================
+   PRINT ALL HISTORY
+===================================================== */
 
 printHistoryBtn.addEventListener(
     "click",
     function() {
 
         if (
-            sales.length === 0
+            sales.length ===
+            0
         ) {
 
             alert(
@@ -3253,7 +3961,6 @@ printHistoryBtn.addEventListener(
                     )}
                 </p>
 
-
                 <table>
 
                     <thead>
@@ -3296,7 +4003,6 @@ printHistoryBtn.addEventListener(
 
                     </thead>
 
-
                     <tbody>
 
                         ${rows}
@@ -3327,7 +4033,9 @@ printHistoryBtn.addEventListener(
 );
 
 
-/* DASHBOARD */
+/* =====================================================
+   DASHBOARD
+===================================================== */
 
 function updateDashboard() {
 
@@ -3404,7 +4112,9 @@ function updateDashboard() {
 }
 
 
-/* CAMERA */
+/* =====================================================
+   CAMERA SCANNER
+===================================================== */
 
 cameraBtn.addEventListener(
     "click",
@@ -3499,7 +4209,8 @@ async function startScanner() {
 
         if (
             !cameras ||
-            cameras.length === 0
+            cameras.length ===
+            0
         ) {
 
             throw new Error(
@@ -3617,7 +4328,9 @@ async function startScanner() {
 }
 
 
-/* STOP CAMERA */
+/* =====================================================
+   STOP SCANNER
+===================================================== */
 
 async function stopScanner() {
 
@@ -3662,7 +4375,9 @@ async function stopScanner() {
 }
 
 
-/* INITIALIZE */
+/* =====================================================
+   INITIALIZE
+===================================================== */
 
 function initialize() {
 
@@ -3674,10 +4389,12 @@ function initialize() {
 
     updateDashboard();
 
-    barcodeInput.focus();
+    checkLogin();
 
 }
 
+
+/* START */
 
 initialize();
 
