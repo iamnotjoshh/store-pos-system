@@ -1,35 +1,39 @@
-// ========================================
-// STORE POS SYSTEM
-// COMPLETE APP.JS
-// WITH LOCAL STORAGE SAVE
-// ========================================
+/* =========================================================
+   STORE POS SYSTEM
+   - Local Storage Save Data
+   - Barcode Search
+   - Cart
+   - Checkout
+   - Inventory
+   - Sales
+   - Dashboard
+   - Camera Barcode Scanner
+   ========================================================= */
 
 
-// ========================================
-// STORAGE KEYS
-// ========================================
+/* =========================
+   STORAGE KEYS
+   ========================= */
 
 const PRODUCTS_KEY = "storePOS_products";
 const CART_KEY = "storePOS_cart";
 const SALES_KEY = "storePOS_sales";
-const DASHBOARD_KEY = "storePOS_dashboard";
 
 
-// ========================================
-// DEFAULT PRODUCTS
-// ========================================
+/* =========================
+   DEFAULT PRODUCTS
+   ========================= */
 
 const defaultProducts = [
     {
         barcode: "480000000001",
         name: "Coca-Cola 1.5L",
-        category: "Drinks",
+        category: "Beverages",
         cost: 60,
         price: 85,
         stock: 24,
-        reorderLevel: 5
+        reorder: 5
     },
-
     {
         barcode: "480000000002",
         name: "Lucky Me Pancit Canton",
@@ -37,9 +41,8 @@ const defaultProducts = [
         cost: 10,
         price: 15,
         stock: 50,
-        reorderLevel: 10
+        reorder: 10
     },
-
     {
         barcode: "480000000003",
         name: "Piattos Cheese",
@@ -47,373 +50,200 @@ const defaultProducts = [
         cost: 12,
         price: 18,
         stock: 30,
-        reorderLevel: 5
+        reorder: 5
     }
 ];
 
 
-// ========================================
-// LOAD DATA
-// ========================================
+/* =========================
+   LOAD / SAVE DATA
+   ========================= */
 
-function loadData(key, defaultValue) {
-
+function loadData(key, fallback) {
     try {
+        const data = localStorage.getItem(key);
 
-        const saved = localStorage.getItem(key);
-
-        if (saved !== null) {
-            return JSON.parse(saved);
+        if (!data) {
+            return fallback;
         }
 
+        return JSON.parse(data);
     } catch (error) {
-
-        console.error(
-            "Error loading data:",
-            error
-        );
-
+        console.error("Error loading data:", error);
+        return fallback;
     }
-
-    return defaultValue;
 }
 
-
-// ========================================
-// SAVE DATA
-// ========================================
 
 function saveData(key, data) {
-
     try {
-
-        localStorage.setItem(
-            key,
-            JSON.stringify(data)
-        );
-
-        return true;
-
+        localStorage.setItem(key, JSON.stringify(data));
     } catch (error) {
-
-        console.error(
-            "Error saving data:",
-            error
-        );
-
-        alert(
-            "Unable to save data in this browser."
-        );
-
-        return false;
+        console.error("Error saving data:", error);
     }
 }
 
 
-// ========================================
-// PRODUCTS
-// ========================================
+/* =========================
+   APP DATA
+   ========================= */
 
 let products = loadData(
     PRODUCTS_KEY,
-    defaultProducts
+    JSON.parse(JSON.stringify(defaultProducts))
 );
 
+let cart = loadData(CART_KEY, []);
 
-// ========================================
-// CART
-// ========================================
-
-let cart = loadData(
-    CART_KEY,
-    []
-);
+let sales = loadData(SALES_KEY, []);
 
 
-// ========================================
-// SALES
-// ========================================
+/* =========================
+   ELEMENTS
+   ========================= */
 
-let sales = loadData(
-    SALES_KEY,
-    []
-);
+const barcodeInput = document.getElementById("barcodeInput");
+const scanBtn = document.getElementById("scanBtn");
 
+const productMessage = document.getElementById("productMessage");
+const productList = document.getElementById("productList");
 
-// ========================================
-// DASHBOARD DATA
-// ========================================
+const cartItems = document.getElementById("cartItems");
+const cartCount = document.getElementById("cartCount");
+const cartSubtotal = document.getElementById("cartSubtotal");
+const cartTotal = document.getElementById("cartTotal");
+const checkoutBtn = document.getElementById("checkoutBtn");
 
-let dashboardData = loadData(
-    DASHBOARD_KEY,
-    {
-        date: "",
-        sales: 0,
-        profit: 0
-    }
-);
+const inventoryTable = document.getElementById("inventoryTable");
+const salesTable = document.getElementById("salesTable");
 
+const todaySales = document.getElementById("todaySales");
+const todayProfit = document.getElementById("todayProfit");
+const totalProducts = document.getElementById("totalProducts");
+const lowStock = document.getElementById("lowStock");
 
-// ========================================
-// HTML ELEMENTS
-// ========================================
+const scannerModal = document.getElementById("scannerModal");
+const closeScannerBtn = document.getElementById("closeScannerBtn");
+const scannerVideo = document.getElementById("scannerVideo");
 
-const barcodeInput =
-    document.getElementById("barcodeInput");
-
-const scanBtn =
-    document.getElementById("scanBtn");
-
-const productMessage =
-    document.getElementById("productMessage");
-
-const productList =
-    document.getElementById("productList");
-
-const cartItems =
-    document.getElementById("cartItems");
-
-const cartCount =
-    document.getElementById("cartCount");
-
-const cartSubtotal =
-    document.getElementById("cartSubtotal");
-
-const cartTotal =
-    document.getElementById("cartTotal");
-
-const checkoutBtn =
-    document.getElementById("checkoutBtn");
-
-const inventoryTable =
-    document.getElementById("inventoryTable");
-
-const salesTable =
-    document.getElementById("salesTable");
-
-const todaySales =
-    document.getElementById("todaySales");
-
-const todayProfit =
-    document.getElementById("todayProfit");
-
-const totalProducts =
-    document.getElementById("totalProducts");
-
-const lowStock =
-    document.getElementById("lowStock");
-
-const scannerModal =
-    document.getElementById("scannerModal");
-
-const closeScannerBtn =
-    document.getElementById("closeScannerBtn");
-
-const scannerVideo =
-    document.getElementById("scannerVideo");
-
-const checkoutModal =
-    document.getElementById("checkoutModal");
-
-const closeCheckoutBtn =
-    document.getElementById("closeCheckoutBtn");
-
-const checkoutTotal =
-    document.getElementById("checkoutTotal");
-
-const paymentInput =
-    document.getElementById("paymentInput");
-
-const changeAmount =
-    document.getElementById("changeAmount");
-
-const checkoutMessage =
-    document.getElementById("checkoutMessage");
+const checkoutModal = document.getElementById("checkoutModal");
+const closeCheckoutBtn = document.getElementById("closeCheckoutBtn");
+const checkoutTotal = document.getElementById("checkoutTotal");
+const paymentInput = document.getElementById("paymentInput");
 
 
-// ========================================
-// FORMAT CURRENCY
-// ========================================
+/* =========================
+   HELPER FUNCTIONS
+   ========================= */
 
 function peso(amount) {
-
-    return new Intl.NumberFormat(
-        "en-PH",
-        {
-            style: "currency",
-            currency: "PHP"
-        }
-    ).format(amount || 0);
-
+    return "₱" + Number(amount || 0).toFixed(2);
 }
 
 
-// ========================================
-// GET TODAY
-// ========================================
-
-function getToday() {
-
-    const date = new Date();
-
-    return date.toISOString().split("T")[0];
-
+function escapeHTML(text) {
+    return String(text)
+        .replace(/&/g, "&amp;")
+        .replace(/</g, "&lt;")
+        .replace(/>/g, "&gt;")
+        .replace(/"/g, "&quot;")
+        .replace(/'/g, "&#039;");
 }
 
 
-// ========================================
-// RESET DAILY DASHBOARD IF NEW DAY
-// ========================================
-
-function checkDashboardDate() {
-
-    const today = getToday();
-
-    if (dashboardData.date !== today) {
-
-        dashboardData = {
-            date: today,
-            sales: 0,
-            profit: 0
-        };
-
-        saveData(
-            DASHBOARD_KEY,
-            dashboardData
-        );
-    }
-
+function saveAll() {
+    saveData(PRODUCTS_KEY, products);
+    saveData(CART_KEY, cart);
+    saveData(SALES_KEY, sales);
 }
 
 
-// ========================================
-// NAVIGATION
-// ========================================
+/* =========================
+   NAVIGATION
+   ========================= */
 
-document
-    .querySelectorAll(".nav-btn")
-    .forEach(function(button) {
+document.querySelectorAll(".nav-btn").forEach(button => {
 
-        button.addEventListener(
-            "click",
-            function() {
+    button.addEventListener("click", () => {
 
-                const sectionName =
-                    button.dataset.section;
+        const sectionName = button.dataset.section;
 
-                document
-                    .querySelectorAll(".nav-btn")
-                    .forEach(function(btn) {
-
-                        btn.classList.remove(
-                            "active"
-                        );
-
-                    });
-
-                document
-                    .querySelectorAll(".section")
-                    .forEach(function(section) {
-
-                        section.classList.remove(
-                            "active"
-                        );
-
-                    });
-
-                button.classList.add(
-                    "active"
-                );
-
-                const section =
-                    document.getElementById(
-                        sectionName
-                    );
-
-                if (section) {
-
-                    section.classList.add(
-                        "active"
-                    );
-
-                }
-
-            }
-        );
-
-    });
-
-
-// ========================================
-// SEARCH PRODUCT
-// ========================================
-
-function searchProduct() {
-
-    const barcode =
-        barcodeInput.value.trim();
-
-    if (barcode === "") {
-
-        productMessage.textContent =
-            "Please enter a barcode.";
-
-        productList.innerHTML = "";
-
-        return;
-    }
-
-
-    const product =
-        products.find(function(item) {
-
-            return item.barcode === barcode;
-
+        document.querySelectorAll(".nav-btn").forEach(btn => {
+            btn.classList.remove("active");
         });
 
+        button.classList.add("active");
+
+        document.querySelectorAll(".section").forEach(section => {
+            section.classList.remove("active");
+        });
+
+        const section = document.getElementById(sectionName);
+
+        if (section) {
+            section.classList.add("active");
+        }
+
+        refreshUI();
+    });
+
+});
+
+
+/* =========================
+   PRODUCT SEARCH
+   ========================= */
+
+function searchProduct(barcode) {
+
+    barcode = String(barcode).trim();
+
+    if (!barcode) {
+        showMessage("Please enter a barcode.", "error");
+        return;
+    }
+
+    const product = products.find(
+        item => String(item.barcode) === barcode
+    );
 
     if (!product) {
-
-        productMessage.textContent =
-            "Product not found.";
-
         productList.innerHTML = "";
-
+        showMessage("Product not found.", "error");
         return;
     }
-
 
     if (product.stock <= 0) {
+        productList.innerHTML = `
+            <div class="product-card">
+                <h3>${escapeHTML(product.name)}</h3>
+                <p>Barcode: ${escapeHTML(product.barcode)}</p>
+                <p>Out of stock.</p>
+            </div>
+        `;
 
-        productMessage.textContent =
-            product.name +
-            " is out of stock.";
-
-        productList.innerHTML = "";
-
+        showMessage("Product is out of stock.", "error");
         return;
     }
 
-
-    productMessage.textContent =
-        product.name +
-        " found.";
-
-
     productList.innerHTML = `
-
         <div class="product-card">
 
-            <h3>${product.name}</h3>
+            <h3>${escapeHTML(product.name)}</h3>
 
             <p>
                 Barcode:
-                ${product.barcode}
+                ${escapeHTML(product.barcode)}
+            </p>
+
+            <p>
+                Category:
+                ${escapeHTML(product.category)}
             </p>
 
             <p>
                 Price:
-                ${peso(product.price)}
+                <strong>${peso(product.price)}</strong>
             </p>
 
             <p>
@@ -422,668 +252,431 @@ function searchProduct() {
             </p>
 
             <button
-                id="addProductBtn"
                 class="primary-btn"
-                type="button"
+                onclick="addToCart('${escapeHTML(product.barcode)}')"
             >
                 Add to Cart
             </button>
 
         </div>
-
     `;
 
-
-    const addProductBtn =
-        document.getElementById(
-            "addProductBtn"
-        );
+    showMessage("Product found.", "success");
+}
 
 
-    addProductBtn.addEventListener(
-        "click",
-        function() {
+/* =========================
+   SEARCH EVENTS
+   ========================= */
 
-            addToCart(product);
+if (barcodeInput) {
 
+    barcodeInput.addEventListener("keydown", event => {
+
+        if (event.key === "Enter") {
+            searchProduct(barcodeInput.value);
         }
-    );
+
+    });
 
 }
 
 
-// ========================================
-// BARCODE ENTER
-// ========================================
+function showMessage(message, type = "") {
 
-barcodeInput.addEventListener(
-    "keydown",
-    function(event) {
+    if (!productMessage) return;
 
-        if (event.key === "Enter") {
+    productMessage.textContent = message;
+    productMessage.className = "message";
 
-            event.preventDefault();
-
-            searchProduct();
-
-        }
-
+    if (type) {
+        productMessage.classList.add(type);
     }
-);
+
+}
 
 
-// ========================================
-// ADD TO CART
-// ========================================
+/* =========================
+   ADD TO CART
+   ========================= */
 
-function addToCart(product) {
+function addToCart(barcode) {
 
-    const existing =
-        cart.find(function(item) {
+    const product = products.find(
+        item => String(item.barcode) === String(barcode)
+    );
 
-            return item.barcode ===
-                product.barcode;
+    if (!product) {
+        showMessage("Product not found.", "error");
+        return;
+    }
 
-        });
+    if (product.stock <= 0) {
+        showMessage("Product is out of stock.", "error");
+        return;
+    }
 
+    const existing = cart.find(
+        item => String(item.barcode) === String(barcode)
+    );
 
     if (existing) {
 
-        if (
-            existing.quantity >=
-            product.stock
-        ) {
-
-            productMessage.textContent =
-                "You cannot add more than available stock.";
-
+        if (existing.quantity >= product.stock) {
+            showMessage("Not enough stock.", "error");
             return;
         }
 
-
-        existing.quantity++;
+        existing.quantity += 1;
 
     } else {
 
         cart.push({
-
-            barcode:
-                product.barcode,
-
-            name:
-                product.name,
-
-            price:
-                product.price,
-
-            cost:
-                product.cost,
-
+            barcode: product.barcode,
+            name: product.name,
+            price: product.price,
+            cost: product.cost,
             quantity: 1
-
         });
 
     }
 
-
-    saveData(
-        CART_KEY,
-        cart
-    );
-
+    saveData(CART_KEY, cart);
 
     renderCart();
 
-
-    productMessage.textContent =
-        product.name +
-        " added to cart.";
-
+    showMessage(
+        product.name + " added to cart.",
+        "success"
+    );
 }
 
 
-// ========================================
-// RENDER CART
-// ========================================
+/* =========================
+   CART
+   ========================= */
 
 function renderCart() {
 
-    cartItems.innerHTML = "";
-
+    if (!cartItems) return;
 
     if (cart.length === 0) {
 
         cartItems.innerHTML = `
-
             <div class="empty-cart">
-
                 <p>Your cart is empty.</p>
-
-                <span>
-                    Add a product using the barcode.
-                </span>
-
+                <span>Add a product using the barcode.</span>
             </div>
-
         `;
 
-
-        cartCount.textContent =
-            "0 items";
-
-        cartSubtotal.textContent =
-            peso(0);
-
-        cartTotal.textContent =
-            peso(0);
-
-        checkoutBtn.disabled = true;
-
-        saveData(
-            CART_KEY,
-            cart
-        );
-
+        updateCartSummary();
         return;
     }
 
+    cartItems.innerHTML = cart.map((item, index) => {
 
-    let totalItems = 0;
+        return `
+            <div class="cart-item">
 
-    let subtotal = 0;
-
-
-    cart.forEach(
-        function(item, index) {
-
-            totalItems +=
-                item.quantity;
-
-            subtotal +=
-                item.price *
-                item.quantity;
-
-
-            const itemElement =
-                document.createElement(
-                    "div"
-                );
-
-
-            itemElement.className =
-                "cart-item";
-
-
-            itemElement.innerHTML = `
-
-                <div class="cart-item-name">
+                <div class="cart-item-info">
 
                     <strong>
-                        ${item.name}
+                        ${escapeHTML(item.name)}
                     </strong>
+
+                    <span>
+                        ${peso(item.price)} each
+                    </span>
 
                 </div>
 
-                <div class="cart-item-price">
-
-                    ${peso(item.price)}
-                    each
-
-                </div>
-
-                <div class="cart-item-bottom">
-
-                    <div class="quantity-controls">
-
-                        <button
-                            type="button"
-                            data-action="minus"
-                            data-index="${index}"
-                        >
-                            −
-                        </button>
-
-                        <strong>
-                            ${item.quantity}
-                        </strong>
-
-                        <button
-                            type="button"
-                            data-action="plus"
-                            data-index="${index}"
-                        >
-                            +
-                        </button>
-
-                    </div>
-
-                    <strong>
-                        ${peso(
-                            item.price *
-                            item.quantity
-                        )}
-                    </strong>
+                <div class="quantity-controls">
 
                     <button
-                        type="button"
-                        class="remove-btn"
-                        data-action="remove"
-                        data-index="${index}"
+                        onclick="changeQuantity(${index}, -1)"
                     >
-                        Remove
+                        −
+                    </button>
+
+                    <span>
+                        ${item.quantity}
+                    </span>
+
+                    <button
+                        onclick="changeQuantity(${index}, 1)"
+                    >
+                        +
                     </button>
 
                 </div>
 
-            `;
+                <div class="cart-item-total">
+                    ${peso(item.price * item.quantity)}
+                </div>
 
+                <button
+                    class="remove-btn"
+                    onclick="removeFromCart(${index})"
+                >
+                    ×
+                </button>
 
-            cartItems.appendChild(
-                itemElement
-            );
+            </div>
+        `;
 
-        }
-    );
+    }).join("");
 
-
-    cartCount.textContent =
-        totalItems +
-        (
-            totalItems === 1
-                ? " item"
-                : " items"
-        );
-
-
-    cartSubtotal.textContent =
-        peso(subtotal);
-
-
-    cartTotal.textContent =
-        peso(subtotal);
-
-
-    checkoutBtn.disabled = false;
-
-
-    cartItems
-        .querySelectorAll("button")
-        .forEach(function(button) {
-
-            button.addEventListener(
-                "click",
-                function() {
-
-                    const index =
-                        Number(
-                            button.dataset.index
-                        );
-
-                    const action =
-                        button.dataset.action;
-
-                    updateCart(
-                        index,
-                        action
-                    );
-
-                }
-            );
-
-        });
-
-
-    saveData(
-        CART_KEY,
-        cart
-    );
-
+    updateCartSummary();
 }
 
 
-// ========================================
-// UPDATE CART
-// ========================================
+/* =========================
+   CHANGE QUANTITY
+   ========================= */
 
-function updateCart(
-    index,
-    action
-) {
+function changeQuantity(index, amount) {
 
-    const item =
-        cart[index];
+    const item = cart[index];
 
+    if (!item) return;
 
-    if (!item) {
-        return;
-    }
-
-
-    const product =
-        products.find(function(product) {
-
-            return product.barcode ===
-                item.barcode;
-
-        });
-
-
-    if (!product) {
-        return;
-    }
-
-
-    if (action === "plus") {
-
-        if (
-            item.quantity <
-            product.stock
-        ) {
-
-            item.quantity++;
-
-        } else {
-
-            alert(
-                "No more stock available."
-            );
-
-        }
-
-    }
-
-
-    if (action === "minus") {
-
-        item.quantity--;
-
-        if (
-            item.quantity <= 0
-        ) {
-
-            cart.splice(
-                index,
-                1
-            );
-
-        }
-
-    }
-
-
-    if (action === "remove") {
-
-        cart.splice(
-            index,
-            1
-        );
-
-    }
-
-
-    saveData(
-        CART_KEY,
-        cart
+    const product = products.find(
+        p => String(p.barcode) === String(item.barcode)
     );
 
+    if (!product) return;
+
+    const newQuantity = item.quantity + amount;
+
+    if (newQuantity <= 0) {
+        cart.splice(index, 1);
+    } else {
+
+        if (newQuantity > product.stock) {
+            showMessage("Not enough stock.", "error");
+            return;
+        }
+
+        item.quantity = newQuantity;
+    }
+
+    saveData(CART_KEY, cart);
 
     renderCart();
+}
+
+
+/* =========================
+   REMOVE CART ITEM
+   ========================= */
+
+function removeFromCart(index) {
+
+    if (index < 0 || index >= cart.length) {
+        return;
+    }
+
+    cart.splice(index, 1);
+
+    saveData(CART_KEY, cart);
+
+    renderCart();
+}
+
+
+/* =========================
+   CART TOTAL
+   ========================= */
+
+function getCartTotal() {
+
+    return cart.reduce(
+        (total, item) =>
+            total + Number(item.price) * Number(item.quantity),
+        0
+    );
+}
+
+
+function updateCartSummary() {
+
+    const total = getCartTotal();
+
+    const count = cart.reduce(
+        (total, item) =>
+            total + Number(item.quantity),
+        0
+    );
+
+    if (cartCount) {
+        cartCount.textContent =
+            count + (count === 1 ? " item" : " items");
+    }
+
+    if (cartSubtotal) {
+        cartSubtotal.textContent = peso(total);
+    }
+
+    if (cartTotal) {
+        cartTotal.textContent = peso(total);
+    }
 
 }
 
 
-// ========================================
-// CALCULATE TOTAL
-// ========================================
+/* =========================
+   CHECKOUT MODAL
+   ========================= */
 
-function calculateTotal() {
+if (checkoutBtn) {
 
-    let total = 0;
+    checkoutBtn.addEventListener("click", () => {
 
+        if (cart.length === 0) {
+            alert("Your cart is empty.");
+            return;
+        }
 
-    cart.forEach(function(item) {
+        const total = getCartTotal();
 
-        total +=
-            item.price *
-            item.quantity;
+        if (checkoutTotal) {
+            checkoutTotal.textContent = peso(total);
+        }
+
+        if (paymentInput) {
+            paymentInput.value = "";
+        }
+
+        openModal(checkoutModal);
 
     });
 
+}
 
-    return total;
+
+function openModal(modal) {
+
+    if (!modal) return;
+
+    modal.classList.add("active");
+    modal.style.display = "flex";
+}
+
+
+function closeModal(modal) {
+
+    if (!modal) return;
+
+    modal.classList.remove("active");
+    modal.style.display = "none";
+}
+
+
+if (closeCheckoutBtn) {
+
+    closeCheckoutBtn.addEventListener("click", () => {
+        closeModal(checkoutModal);
+    });
 
 }
 
 
-// ========================================
-// OPEN CHECKOUT
-// ========================================
+/* =========================
+   FIND CHECKOUT BUTTON
+   ========================= */
 
-checkoutBtn.addEventListener(
-    "click",
-    function() {
+function getConfirmCheckoutButton() {
 
-        if (cart.length === 0) {
+    const possibleButtons = [
+        document.getElementById("confirmCheckoutBtn"),
+        document.getElementById("confirmPaymentBtn"),
+        document.getElementById("completeCheckoutBtn"),
+        document.getElementById("payBtn"),
+        document.getElementById("confirmBtn")
+    ];
 
+    for (const button of possibleButtons) {
+        if (button) {
+            return button;
+        }
+    }
+
+    if (checkoutModal) {
+
+        const buttons =
+            checkoutModal.querySelectorAll("button");
+
+        for (const button of buttons) {
+
+            if (
+                button !== closeCheckoutBtn &&
+                !button.classList.contains("close-btn")
+            ) {
+                return button;
+            }
+
+        }
+
+    }
+
+    return null;
+}
+
+
+const confirmCheckoutButton =
+    getConfirmCheckoutButton();
+
+
+/* =========================
+   COMPLETE CHECKOUT
+   ========================= */
+
+function completeCheckout() {
+
+    if (cart.length === 0) {
+        alert("Your cart is empty.");
+        return;
+    }
+
+    const payment =
+        Number(paymentInput ? paymentInput.value : 0);
+
+    const total = getCartTotal();
+
+    if (!payment || payment <= 0) {
+        alert("Please enter payment.");
+        return;
+    }
+
+    if (payment < total) {
+        alert(
+            "Insufficient payment.\n\n" +
+            "Total: " + peso(total) +
+            "\nPayment: " + peso(payment)
+        );
+
+        return;
+    }
+
+
+    /* CHECK STOCK */
+
+    for (const item of cart) {
+
+        const product = products.find(
+            p => String(p.barcode) === String(item.barcode)
+        );
+
+        if (!product) {
             alert(
-                "Your cart is empty."
+                "Product no longer exists: " +
+                item.name
             );
 
             return;
         }
 
-
-        const total =
-            calculateTotal();
-
-
-        checkoutTotal.textContent =
-            peso(total);
-
-
-        paymentInput.value =
-            "";
-
-
-        if (changeAmount) {
-
-            changeAmount.textContent =
-                peso(0);
-
-        }
-
-
-        if (checkoutMessage) {
-
-            checkoutMessage.textContent =
-                "";
-
-        }
-
-
-        checkoutModal.classList.add(
-            "show"
-        );
-
-
-        checkoutModal.classList.remove(
-            "hidden"
-        );
-
-
-        setTimeout(
-            function() {
-
-                paymentInput.focus();
-
-            },
-            100
-        );
-
-    }
-);
-
-
-// ========================================
-// CLOSE CHECKOUT
-// ========================================
-
-if (closeCheckoutBtn) {
-
-    closeCheckoutBtn.addEventListener(
-        "click",
-        function() {
-
-            checkoutModal.classList.remove(
-                "show"
-            );
-
-            checkoutModal.classList.add(
-                "hidden"
-            );
-
-        }
-    );
-
-}
-
-
-// ========================================
-// PAYMENT INPUT
-// ========================================
-
-if (paymentInput) {
-
-    paymentInput.addEventListener(
-        "input",
-        function() {
-
-            const total =
-                calculateTotal();
-
-            const payment =
-                Number(
-                    paymentInput.value
-                );
-
-
-            if (
-                !payment ||
-                payment < total
-            ) {
-
-                if (changeAmount) {
-
-                    changeAmount.textContent =
-                        peso(0);
-
-                }
-
-                if (checkoutMessage) {
-
-                    checkoutMessage.textContent =
-                        "Payment is not enough.";
-
-                }
-
-                return;
-            }
-
-
-            const change =
-                payment - total;
-
-
-            if (changeAmount) {
-
-                changeAmount.textContent =
-                    peso(change);
-
-            }
-
-
-            if (checkoutMessage) {
-
-                checkoutMessage.textContent =
-                    "Payment accepted.";
-
-            }
-
-        }
-    );
-
-}
-
-
-// ========================================
-// CONFIRM CHECKOUT
-// ========================================
-
-function confirmCheckout() {
-
-    if (cart.length === 0) {
-
-        return;
-    }
-
-
-    const total =
-        calculateTotal();
-
-
-    const payment =
-        Number(
-            paymentInput.value
-        );
-
-
-    if (!payment) {
-
-        alert(
-            "Please enter payment."
-        );
-
-        return;
-    }
-
-
-    if (payment < total) {
-
-        alert(
-            "Payment is not enough."
-        );
-
-        return;
-    }
-
-
-    // Check stock before completing
-    for (
-        let i = 0;
-        i < cart.length;
-        i++
-    ) {
-
-        const item =
-            cart[i];
-
-
-        const product =
-            products.find(
-                function(product) {
-
-                    return product.barcode ===
-                        item.barcode;
-
-                }
-            );
-
-
-        if (
-            !product ||
-            product.stock <
-            item.quantity
-        ) {
+        if (item.quantity > product.stock) {
 
             alert(
                 "Not enough stock for " +
@@ -1096,42 +689,33 @@ function confirmCheckout() {
     }
 
 
-    // Calculate cost and profit
+    /* CALCULATE COST AND PROFIT */
+
     let totalCost = 0;
 
-
-    cart.forEach(function(item) {
+    cart.forEach(item => {
 
         totalCost +=
-            item.cost *
-            item.quantity;
+            Number(item.cost) *
+            Number(item.quantity);
 
     });
 
+    const profit = total - totalCost;
 
-    const profit =
-        total -
-        totalCost;
-
-
-    const now =
-        new Date();
-
+    const now = new Date();
 
     const sale = {
 
         id:
             "SALE-" +
-            Date.now(),
+            now.getTime(),
 
         date:
-            now.toISOString()
-                .split("T")[0],
+            now.toLocaleDateString(),
 
         time:
-            now.toLocaleTimeString(
-                "en-PH"
-            ),
+            now.toLocaleTimeString(),
 
         total:
             total,
@@ -1149,749 +733,562 @@ function confirmCheckout() {
             payment - total,
 
         items:
-            JSON.parse(
-                JSON.stringify(cart)
-            )
+            JSON.parse(JSON.stringify(cart))
 
     };
 
 
-    // Deduct stock
-    cart.forEach(function(item) {
+    /* DEDUCT INVENTORY */
 
-        const product =
-            products.find(
-                function(product) {
+    cart.forEach(item => {
 
-                    return product.barcode ===
-                        item.barcode;
-
-                }
-            );
-
+        const product = products.find(
+            p => String(p.barcode) === String(item.barcode)
+        );
 
         if (product) {
+            product.stock -= item.quantity;
 
-            product.stock -=
-                item.quantity;
-
+            if (product.stock < 0) {
+                product.stock = 0;
+            }
         }
 
     });
 
 
-    // Save sale
-    sales.push(
-        sale
-    );
+    /* SAVE SALE */
+
+    sales.unshift(sale);
 
 
-    // Update today's dashboard
-    checkDashboardDate();
+    /* CLEAR CART */
 
-
-    dashboardData.sales +=
-        total;
-
-
-    dashboardData.profit +=
-        profit;
-
-
-    // Save EVERYTHING
-    saveData(
-        PRODUCTS_KEY,
-        products
-    );
-
-
-    saveData(
-        SALES_KEY,
-        sales
-    );
-
-
-    saveData(
-        DASHBOARD_KEY,
-        dashboardData
-    );
-
-
-    // Clear cart
     cart = [];
 
 
-    saveData(
-        CART_KEY,
-        cart
-    );
+    /* SAVE EVERYTHING */
+
+    saveAll();
 
 
-    // Refresh display
+    /* REFRESH DISPLAY */
+
     renderCart();
-
     renderInventory();
-
     renderSales();
-
     updateDashboard();
 
 
-    // Close modal
-    checkoutModal.classList.remove(
-        "show"
+    closeModal(checkoutModal);
+
+
+    if (barcodeInput) {
+        barcodeInput.value = "";
+    }
+
+    if (productList) {
+        productList.innerHTML = "";
+    }
+
+    showMessage(
+        "Checkout successful!",
+        "success"
     );
-
-    checkoutModal.classList.add(
-        "hidden"
-    );
-
-
-    barcodeInput.value = "";
-
-    productList.innerHTML = "";
-
-    productMessage.textContent =
-        "Sale completed successfully.";
-
 
     alert(
         "Checkout successful!\n\n" +
-        "Total: " +
-        peso(total) +
-        "\nPayment: " +
-        peso(payment) +
-        "\nChange: " +
-        peso(payment - total)
-    );
-
-
-    barcodeInput.focus();
-
-}
-
-
-// ========================================
-// FIND CONFIRM CHECKOUT BUTTON
-// ========================================
-
-function setupCheckoutButton() {
-
-    const possibleButtons = [
-
-        document.getElementById(
-            "confirmCheckoutBtn"
-        ),
-
-        document.getElementById(
-            "confirmPaymentBtn"
-        ),
-
-        document.getElementById(
-            "completeCheckoutBtn"
-        ),
-
-        document.querySelector(
-            "#checkoutModal button[type='submit']"
-        )
-
-    ];
-
-
-    possibleButtons.forEach(
-        function(button) {
-
-            if (!button) {
-                return;
-            }
-
-
-            button.addEventListener(
-                "click",
-                function(event) {
-
-                    event.preventDefault();
-
-                    confirmCheckout();
-
-                }
-            );
-
-        }
+        "Total: " + peso(total) +
+        "\nPayment: " + peso(payment) +
+        "\nChange: " + peso(payment - total)
     );
 
 }
 
 
-setupCheckoutButton();
+if (confirmCheckoutButton) {
+
+    confirmCheckoutButton.addEventListener(
+        "click",
+        completeCheckout
+    );
+
+}
 
 
-// ========================================
-// INVENTORY
-// ========================================
+/* =========================
+   INVENTORY
+   ========================= */
 
 function renderInventory() {
 
-    if (!inventoryTable) {
-        return;
-    }
+    if (!inventoryTable) return;
 
+    if (products.length === 0) {
 
-    inventoryTable.innerHTML = "";
-
-
-    products.forEach(
-        function(product) {
-
-            const row =
-                document.createElement(
-                    "tr"
-                );
-
-
-            let status = "In Stock";
-
-
-            if (
-                product.stock <= 0
-            ) {
-
-                status =
-                    "Out of Stock";
-
-            }
-
-            else if (
-                product.stock <=
-                product.reorderLevel
-            ) {
-
-                status =
-                    "Low Stock";
-
-            }
-
-
-            row.innerHTML = `
-
-                <td>
-                    ${product.barcode}
-                </td>
-
-                <td>
-                    ${product.name}
-                </td>
-
-                <td>
-                    ${product.category}
-                </td>
-
-                <td>
-                    ${peso(product.cost)}
-                </td>
-
-                <td>
-                    ${peso(product.price)}
-                </td>
-
-                <td>
-                    ${product.stock}
-                </td>
-
-                <td>
-                    ${status}
-                </td>
-
-            `;
-
-
-            inventoryTable.appendChild(
-                row
-            );
-
-        }
-    );
-
-}
-
-
-// ========================================
-// SALES TABLE
-// ========================================
-
-function renderSales() {
-
-    if (!salesTable) {
-        return;
-    }
-
-
-    salesTable.innerHTML = "";
-
-
-    if (sales.length === 0) {
-
-        salesTable.innerHTML = `
-
+        inventoryTable.innerHTML = `
             <tr>
-
-                <td
-                    colspan="7"
-                    style="text-align:center;"
-                >
-                    No sales yet.
+                <td colspan="7">
+                    No products found.
                 </td>
-
             </tr>
-
         `;
 
         return;
     }
 
 
-    // Newest sale first
-    const salesToDisplay =
-        [...sales].reverse();
+    inventoryTable.innerHTML =
+        products.map(product => {
 
+            let status = "In Stock";
 
-    salesToDisplay.forEach(
-        function(sale) {
+            if (product.stock <= 0) {
+                status = "Out of Stock";
+            } else if (
+                product.stock <= product.reorder
+            ) {
+                status = "Low Stock";
+            }
 
-            const row =
-                document.createElement(
-                    "tr"
-                );
+            return `
+                <tr>
 
+                    <td>
+                        ${escapeHTML(product.barcode)}
+                    </td>
 
-            row.innerHTML = `
+                    <td>
+                        ${escapeHTML(product.name)}
+                    </td>
 
-                <td>
-                    ${sale.id}
-                </td>
+                    <td>
+                        ${escapeHTML(product.category)}
+                    </td>
 
-                <td>
-                    ${sale.date}
-                </td>
+                    <td>
+                        ${peso(product.cost)}
+                    </td>
 
-                <td>
-                    ${sale.time}
-                </td>
+                    <td>
+                        ${peso(product.price)}
+                    </td>
 
-                <td>
-                    ${peso(sale.total)}
-                </td>
+                    <td>
+                        ${product.stock}
+                    </td>
 
-                <td>
-                    ${peso(sale.cost)}
-                </td>
+                    <td>
+                        ${status}
+                    </td>
 
-                <td>
-                    ${peso(sale.profit)}
-                </td>
-
-                <td>
-                    ${peso(sale.payment)}
-                </td>
-
+                </tr>
             `;
 
-
-            salesTable.appendChild(
-                row
-            );
-
-        }
-    );
+        }).join("");
 
 }
 
 
-// ========================================
-// DASHBOARD
-// ========================================
+/* =========================
+   SALES
+   ========================= */
+
+function renderSales() {
+
+    if (!salesTable) return;
+
+    if (sales.length === 0) {
+
+        salesTable.innerHTML = `
+            <tr>
+                <td colspan="7">
+                    No sales yet.
+                </td>
+            </tr>
+        `;
+
+        return;
+    }
+
+
+    salesTable.innerHTML =
+        sales.map(sale => {
+
+            return `
+                <tr>
+
+                    <td>
+                        ${escapeHTML(sale.id)}
+                    </td>
+
+                    <td>
+                        ${escapeHTML(sale.date)}
+                    </td>
+
+                    <td>
+                        ${escapeHTML(sale.time)}
+                    </td>
+
+                    <td>
+                        ${peso(sale.total)}
+                    </td>
+
+                    <td>
+                        ${peso(sale.cost)}
+                    </td>
+
+                    <td>
+                        ${peso(sale.profit)}
+                    </td>
+
+                    <td>
+                        ${peso(sale.payment)}
+                    </td>
+
+                </tr>
+            `;
+
+        }).join("");
+
+}
+
+
+/* =========================
+   DASHBOARD
+   ========================= */
 
 function updateDashboard() {
 
-    checkDashboardDate();
+    const today =
+        new Date().toLocaleDateString();
+
+
+    const todaySalesData =
+        sales.filter(
+            sale => sale.date === today
+        );
+
+
+    const salesAmount =
+        todaySalesData.reduce(
+            (sum, sale) =>
+                sum + Number(sale.total),
+            0
+        );
+
+
+    const profitAmount =
+        todaySalesData.reduce(
+            (sum, sale) =>
+                sum + Number(sale.profit),
+            0
+        );
+
+
+    const lowStockCount =
+        products.filter(
+            product =>
+                product.stock <= product.reorder
+        ).length;
 
 
     if (todaySales) {
-
         todaySales.textContent =
-            peso(
-                dashboardData.sales
-            );
-
+            peso(salesAmount);
     }
 
 
     if (todayProfit) {
-
         todayProfit.textContent =
-            peso(
-                dashboardData.profit
-            );
-
+            peso(profitAmount);
     }
 
 
     if (totalProducts) {
-
         totalProducts.textContent =
             products.length;
-
     }
 
 
     if (lowStock) {
-
-        const lowStockCount =
-            products.filter(
-                function(product) {
-
-                    return (
-                        product.stock <=
-                        product.reorderLevel
-                    );
-
-                }
-            ).length;
-
-
         lowStock.textContent =
             lowStockCount;
-
     }
 
 }
 
 
-// ========================================
-// CAMERA SCANNER
-// ========================================
+/* =========================
+   CAMERA SCANNER
+   ========================= */
 
-let cameraStream = null;
+let scannerStream = null;
 
-
-// ========================================
-// LOAD HTML5 QR CODE
-// ========================================
-
-function loadScannerLibrary(callback) {
-
-    if (
-        typeof Html5Qrcode !==
-        "undefined"
-    ) {
-
-        callback();
-
-        return;
-    }
-
-
-    const script =
-        document.createElement(
-            "script"
-        );
-
-
-    script.src =
-        "https://unpkg.com/html5-qrcode";
-
-
-    script.onload =
-        function() {
-
-            callback();
-
-        };
-
-
-    script.onerror =
-        function() {
-
-            alert(
-                "Unable to load the barcode scanner."
-            );
-
-        };
-
-
-    document.head.appendChild(
-        script
-    );
-
-}
-
-
-// ========================================
-// START CAMERA
-// ========================================
-
-function startCamera() {
-
-    if (!scannerModal) {
-        return;
-    }
-
-
-    scannerModal.classList.add(
-        "show"
-    );
-
-    scannerModal.classList.remove(
-        "hidden"
-    );
-
-
-    loadScannerLibrary(
-        function() {
-
-            const reader =
-                document.createElement(
-                    "div"
-                );
-
-
-            reader.id =
-                "barcodeReader";
-
-
-            reader.style.width =
-                "100%";
-
-
-            const container =
-                scannerModal.querySelector(
-                    ".scanner-container"
-                );
-
-
-            if (!container) {
-                return;
-            }
-
-
-            if (
-                document.getElementById(
-                    "barcodeReader"
-                )
-            ) {
-
-                document.getElementById(
-                    "barcodeReader"
-                ).remove();
-
-            }
-
-
-            if (scannerVideo) {
-
-                scannerVideo.style.display =
-                    "none";
-
-            }
-
-
-            container.prepend(
-                reader
-            );
-
-
-            const scanner =
-                new Html5Qrcode(
-                    "barcodeReader"
-                );
-
-
-            window.storePOSScanner =
-                scanner;
-
-
-            scanner.start(
-
-                {
-                    facingMode:
-                        "environment"
-                },
-
-                {
-                    fps: 10,
-
-                    qrbox: {
-                        width: 250,
-                        height: 150
-                    }
-
-                },
-
-                function(decodedText) {
-
-                    barcodeInput.value =
-                        decodedText;
-
-
-                    stopCamera();
-
-
-                    searchProduct();
-
-                },
-
-                function(errorMessage) {
-
-                    // Ignore scanning errors
-
-                }
-
-            ).catch(
-                function(error) {
-
-                    console.error(
-                        error
-                    );
-
-                    alert(
-                        "Camera could not be started. Please allow camera access."
-                    );
-
-                }
-            );
-
-        }
-    );
-
-}
-
-
-// ========================================
-// STOP CAMERA
-// ========================================
-
-function stopCamera() {
-
-    const scanner =
-        window.storePOSScanner;
-
-
-    if (scanner) {
-
-        scanner.stop()
-            .then(
-                function() {
-
-                    scanner.clear();
-
-                }
-            )
-            .catch(
-                function(error) {
-
-                    console.error(
-                        error
-                    );
-
-                }
-            );
-
-
-        window.storePOSScanner =
-            null;
-
-    }
-
-
-    if (scannerModal) {
-
-        scannerModal.classList.remove(
-            "show"
-        );
-
-        scannerModal.classList.add(
-            "hidden"
-        );
-
-    }
-
-
-    if (scannerVideo) {
-
-        scannerVideo.style.display =
-            "block";
-
-    }
-
-}
-
-
-// ========================================
-// SCAN BUTTON
-// ========================================
 
 if (scanBtn) {
 
     scanBtn.addEventListener(
         "click",
-        function() {
-
-            startCamera();
-
-        }
+        startCameraScanner
     );
 
 }
 
 
-// ========================================
-// CLOSE SCANNER
-// ========================================
+async function startCameraScanner() {
+
+    if (!scannerModal || !scannerVideo) {
+        alert("Scanner is not available.");
+        return;
+    }
+
+    try {
+
+        openModal(scannerModal);
+
+        scannerStream =
+            await navigator.mediaDevices.getUserMedia({
+                video: {
+                    facingMode: {
+                        ideal: "environment"
+                    }
+                },
+                audio: false
+            });
+
+        scannerVideo.srcObject =
+            scannerStream;
+
+        await scannerVideo.play();
+
+        showScannerMessage(
+            "Point your camera at a barcode."
+        );
+
+        startBarcodeDetection();
+
+    } catch (error) {
+
+        console.error(
+            "Camera error:",
+            error
+        );
+
+        showScannerMessage(
+            "Camera access was blocked or unavailable."
+        );
+
+        alert(
+            "Please allow camera access for barcode scanning."
+        );
+
+    }
+
+}
+
+
+function showScannerMessage(message) {
+
+    const messageBox =
+        scannerModal
+            ? scannerModal.querySelector(".scanner-message")
+            : null;
+
+    if (messageBox) {
+        messageBox.textContent = message;
+    }
+
+}
+
+
+/* =========================
+   BARCODE DETECTION
+   ========================= */
+
+let barcodeDetector = null;
+let detectionRunning = false;
+
+
+async function startBarcodeDetection() {
+
+    if (
+        !("BarcodeDetector" in window) ||
+        !scannerVideo
+    ) {
+
+        showScannerMessage(
+            "Your browser does not support automatic barcode detection. You can still enter the barcode manually."
+        );
+
+        return;
+    }
+
+
+    try {
+
+        barcodeDetector =
+            new BarcodeDetector({
+                formats: [
+                    "ean_13",
+                    "ean_8",
+                    "code_128",
+                    "code_39",
+                    "upc_a",
+                    "upc_e",
+                    "qr_code"
+                ]
+            });
+
+    } catch (error) {
+
+        console.error(error);
+
+        return;
+    }
+
+
+    detectionRunning = true;
+
+    detectBarcode();
+
+}
+
+
+async function detectBarcode() {
+
+    if (
+        !detectionRunning ||
+        !scannerVideo ||
+        scannerVideo.readyState < 2
+    ) {
+        if (detectionRunning) {
+            requestAnimationFrame(detectBarcode);
+        }
+
+        return;
+    }
+
+
+    try {
+
+        const barcodes =
+            await barcodeDetector.detect(
+                scannerVideo
+            );
+
+        if (barcodes.length > 0) {
+
+            const code =
+                barcodes[0].rawValue;
+
+            if (code) {
+
+                if (barcodeInput) {
+                    barcodeInput.value = code;
+                }
+
+                stopCameraScanner();
+
+                searchProduct(code);
+
+                return;
+            }
+
+        }
+
+    } catch (error) {
+
+        console.error(
+            "Barcode detection error:",
+            error
+        );
+
+    }
+
+
+    if (detectionRunning) {
+        requestAnimationFrame(
+            detectBarcode
+        );
+    }
+
+}
+
+
+/* =========================
+   STOP CAMERA
+   ========================= */
+
+function stopCameraScanner() {
+
+    detectionRunning = false;
+
+    if (scannerStream) {
+
+        scannerStream
+            .getTracks()
+            .forEach(track => {
+                track.stop();
+            });
+
+        scannerStream = null;
+    }
+
+    if (scannerVideo) {
+        scannerVideo.srcObject = null;
+    }
+
+    closeModal(scannerModal);
+
+}
+
 
 if (closeScannerBtn) {
 
     closeScannerBtn.addEventListener(
         "click",
-        function() {
-
-            stopCamera();
-
-        }
+        stopCameraScanner
     );
 
 }
 
 
-// ========================================
-// CLOSE MODALS WHEN CLICKING OUTSIDE
-// ========================================
+/* =========================
+   CLOSE MODALS WHEN CLICKING OUTSIDE
+   ========================= */
 
-window.addEventListener(
-    "click",
-    function(event) {
+window.addEventListener("click", event => {
+
+    if (
+        event.target === scannerModal
+    ) {
+        stopCameraScanner();
+    }
+
+    if (
+        event.target === checkoutModal
+    ) {
+        closeModal(checkoutModal);
+    }
+
+});
+
+
+/* =========================
+   KEYBOARD SHORTCUT
+   ========================= */
+
+document.addEventListener(
+    "keydown",
+    event => {
 
         if (
-            event.target ===
-            scannerModal
+            event.key === "Escape"
         ) {
 
-            stopCamera();
-
-        }
-
-
-        if (
-            event.target ===
-            checkoutModal
-        ) {
-
-            checkoutModal.classList.remove(
-                "show"
-            );
-
-            checkoutModal.classList.add(
-                "hidden"
-            );
+            stopCameraScanner();
+            closeModal(checkoutModal);
 
         }
 
@@ -1899,55 +1296,45 @@ window.addEventListener(
 );
 
 
-// ========================================
-// INITIALIZE
-// ========================================
+/* =========================
+   REFRESH ALL UI
+   ========================= */
 
-checkDashboardDate();
+function refreshUI() {
 
-renderCart();
-
-renderInventory();
-
-renderSales();
-
-updateDashboard();
-
-
-// ========================================
-// INITIAL FOCUS
-// ========================================
-
-if (barcodeInput) {
-
-    barcodeInput.focus();
+    renderCart();
+    renderInventory();
+    renderSales();
+    updateDashboard();
 
 }
 
 
-// ========================================
-// DEBUG / TEST
-// ========================================
+/* =========================
+   INITIALIZE
+   ========================= */
 
-console.log(
-    "Store POS loaded."
+refreshUI();
+
+
+/* =========================
+   SAVE BEFORE LEAVING PAGE
+   ========================= */
+
+window.addEventListener(
+    "beforeunload",
+    () => {
+        saveAll();
+    }
 );
 
-console.log(
-    "Products:",
-    products
-);
 
-console.log(
-    "Cart:",
-    cart
-);
+/* =========================
+   MAKE FUNCTIONS AVAILABLE
+   ========================= */
 
-console.log(
-    "Sales:",
-    sales
-);
-
-console.log(
-    "Local Storage persistence: ENABLED"
-);
+window.searchProduct = searchProduct;
+window.addToCart = addToCart;
+window.changeQuantity = changeQuantity;
+window.removeFromCart = removeFromCart;
+window.completeCheckout = completeCheckout;
