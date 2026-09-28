@@ -1,6 +1,6 @@
 // ========================================
-// STORE POS
-// JavaScript
+// STORE POS SYSTEM
+// APP.JS
 // ========================================
 
 
@@ -9,7 +9,6 @@
 // ========================================
 
 const products = [
-
     {
         barcode: "480000000001",
         name: "Coca-Cola 1.5L",
@@ -19,7 +18,6 @@ const products = [
         stock: 24,
         reorderLevel: 5
     },
-
     {
         barcode: "480000000002",
         name: "Lucky Me Pancit Canton",
@@ -29,7 +27,6 @@ const products = [
         stock: 50,
         reorderLevel: 10
     },
-
     {
         barcode: "480000000003",
         name: "Piattos Cheese",
@@ -39,7 +36,6 @@ const products = [
         stock: 30,
         reorderLevel: 5
     }
-
 ];
 
 
@@ -54,121 +50,156 @@ let cart = [];
 // SELECT HTML ELEMENTS
 // ========================================
 
-const barcodeInput =
-    document.getElementById("barcodeInput");
+const barcodeInput = document.getElementById("barcodeInput");
+const scanBtn = document.getElementById("scanBtn");
 
-const productResult =
-    document.getElementById("productResult");
+const productMessage = document.getElementById("productMessage");
+const productList = document.getElementById("productList");
 
-const productName =
-    document.getElementById("productName");
+const cartItems = document.getElementById("cartItems");
+const cartCount = document.getElementById("cartCount");
 
-const productBarcode =
-    document.getElementById("productBarcode");
+const cartSubtotal = document.getElementById("cartSubtotal");
+const cartTotal = document.getElementById("cartTotal");
 
-const productStock =
-    document.getElementById("productStock");
+const checkoutBtn = document.getElementById("checkoutBtn");
 
-const productPrice =
-    document.getElementById("productPrice");
+const scannerModal = document.getElementById("scannerModal");
+const closeScannerBtn = document.getElementById("closeScannerBtn");
 
-const addCartButton =
-    document.getElementById("addCartButton");
+const inventoryTable = document.getElementById("inventoryTable");
+const salesTable = document.getElementById("salesTable");
 
-const cartItems =
-    document.getElementById("cartItems");
-
-const cartTotal =
-    document.getElementById("cartTotal");
-
-const cartCount =
-    document.getElementById("cartCount");
-
-const checkoutButton =
-    document.getElementById("checkoutButton");
-
-const scanButton =
-    document.getElementById("scanButton");
-
-const scannerModal =
-    document.getElementById("scannerModal");
-
-const closeScanner =
-    document.getElementById("closeScanner");
-
-const currentDate =
-    document.getElementById("currentDate");
-
-const totalProducts =
-    document.getElementById("totalProducts");
-
-const lowStock =
-    document.getElementById("lowStock");
+const todaySales = document.getElementById("todaySales");
+const todayProfit = document.getElementById("todayProfit");
+const totalProducts = document.getElementById("totalProducts");
+const lowStock = document.getElementById("lowStock");
 
 
 // ========================================
-// FORMAT PESO
+// NAVIGATION
+// ========================================
+
+const navButtons = document.querySelectorAll(".nav-btn");
+const sections = document.querySelectorAll(".section");
+
+navButtons.forEach(button => {
+
+    button.addEventListener("click", function () {
+
+        const sectionId = this.dataset.section;
+
+        navButtons.forEach(btn => {
+            btn.classList.remove("active");
+        });
+
+        this.classList.add("active");
+
+        sections.forEach(section => {
+            section.classList.remove("active");
+        });
+
+        const selectedSection = document.getElementById(sectionId);
+
+        if (selectedSection) {
+            selectedSection.classList.add("active");
+        }
+
+    });
+
+});
+
+
+// ========================================
+// FORMAT CURRENCY
 // ========================================
 
 function formatCurrency(amount) {
 
-    return new Intl.NumberFormat(
-        "en-PH",
-        {
-            style: "currency",
-            currency: "PHP"
-        }
-    ).format(amount);
+    return new Intl.NumberFormat("en-PH", {
+        style: "currency",
+        currency: "PHP"
+    }).format(amount);
 
 }
 
 
 // ========================================
-// SHOW DATE
-// ========================================
-
-function showDate() {
-
-    const today = new Date();
-
-    currentDate.textContent =
-        today.toLocaleDateString(
-            "en-PH",
-            {
-                year: "numeric",
-                month: "long",
-                day: "numeric"
-            }
-        );
-
-}
-
-showDate();
-
-
-// ========================================
-// DASHBOARD PRODUCT COUNT
+// DASHBOARD
 // ========================================
 
 function updateDashboard() {
 
-    totalProducts.textContent =
-        products.length;
+    totalProducts.textContent = products.length;
 
+    const lowStockProducts = products.filter(product => {
+        return product.stock <= product.reorderLevel;
+    });
 
-    const lowStockProducts =
-        products.filter(
-            product =>
-                product.stock <= product.reorderLevel
-        );
-
-
-    lowStock.textContent =
-        lowStockProducts.length;
+    lowStock.textContent = lowStockProducts.length;
 
 }
 
-updateDashboard();
+
+// ========================================
+// DISPLAY PRODUCTS
+// ========================================
+
+function displayProducts() {
+
+    productList.innerHTML = "";
+
+    products.forEach(product => {
+
+        const card = document.createElement("div");
+
+        card.className = "product-result hidden";
+
+        card.innerHTML = `
+            <div class="product-info">
+
+                <h3>${product.name}</h3>
+
+                <p>
+                    Barcode:
+                    <strong>${product.barcode}</strong>
+                </p>
+
+                <p>
+                    Category:
+                    <strong>${product.category}</strong>
+                </p>
+
+                <p>
+                    Stock:
+                    <strong>${product.stock}</strong>
+                </p>
+
+            </div>
+
+            <div class="product-price">
+
+                <span>Selling Price</span>
+
+                <strong>
+                    ${formatCurrency(product.price)}
+                </strong>
+
+            </div>
+
+            <button
+                class="add-cart-button"
+                onclick="addToCart('${product.barcode}')"
+            >
+                Add to Cart
+            </button>
+        `;
+
+        productList.appendChild(card);
+
+    });
+
+}
 
 
 // ========================================
@@ -177,69 +208,93 @@ updateDashboard();
 
 function searchProduct() {
 
-    const barcode =
-        barcodeInput.value.trim();
-
+    const barcode = barcodeInput.value.trim();
 
     if (barcode === "") {
 
-        productResult.classList.add(
-            "hidden"
-        );
+        productMessage.textContent =
+            "Please enter a barcode.";
+
+        productMessage.classList.remove("hidden");
+
+        productList.innerHTML = "";
 
         return;
     }
 
-
-    const product =
-        products.find(
-            product =>
-                product.barcode === barcode
-        );
-
+    const product = products.find(
+        item => item.barcode === barcode
+    );
 
     if (!product) {
 
-        productResult.classList.add(
-            "hidden"
-        );
+        productMessage.textContent =
+            "Product not found.";
 
-        alert(
-            "Product not found."
-        );
+        productMessage.classList.remove("hidden");
 
-        barcodeInput.select();
+        productList.innerHTML = "";
 
         return;
     }
 
 
-    // Display product
+    // Clear message
 
-    productName.textContent =
-        product.name;
+    productMessage.textContent = "";
 
-    productBarcode.textContent =
-        product.barcode;
-
-    productStock.textContent =
-        product.stock;
-
-    productPrice.textContent =
-        formatCurrency(
-            product.price
-        );
+    productMessage.classList.add("hidden");
 
 
-    // Remember selected product
+    // Display searched product
 
-    addCartButton.dataset.barcode =
-        product.barcode;
+    productList.innerHTML = "";
 
+    const card = document.createElement("div");
 
-    productResult.classList.remove(
-        "hidden"
-    );
+    card.className = "product-result";
+
+    card.innerHTML = `
+        <div class="product-info">
+
+            <h3>${product.name}</h3>
+
+            <p>
+                Barcode:
+                <strong>${product.barcode}</strong>
+            </p>
+
+            <p>
+                Category:
+                <strong>${product.category}</strong>
+            </p>
+
+            <p>
+                Stock:
+                <strong>${product.stock}</strong>
+            </p>
+
+        </div>
+
+        <div class="product-price">
+
+            <span>Selling Price</span>
+
+            <strong>
+                ${formatCurrency(product.price)}
+            </strong>
+
+        </div>
+
+        <button
+            class="add-cart-button"
+            onclick="addToCart('${product.barcode}')"
+        >
+            Add to Cart
+        </button>
+    `;
+
+    productList.appendChild(card);
 
 }
 
@@ -248,100 +303,94 @@ function searchProduct() {
 // BARCODE ENTER
 // ========================================
 
-barcodeInput.addEventListener(
-    "keydown",
-    function(event) {
+barcodeInput.addEventListener("keydown", function(event) {
 
-        if (event.key === "Enter") {
+    if (event.key === "Enter") {
 
-            event.preventDefault();
+        event.preventDefault();
 
-            searchProduct();
-
-        }
+        searchProduct();
 
     }
-);
+
+});
+
+
+// ========================================
+// SCAN BUTTON
+// ========================================
+
+scanBtn.addEventListener("click", function() {
+
+    scannerModal.classList.remove("hidden");
+
+});
+
+
+// ========================================
+// CLOSE SCANNER
+// ========================================
+
+closeScannerBtn.addEventListener("click", function() {
+
+    scannerModal.classList.add("hidden");
+
+});
 
 
 // ========================================
 // ADD TO CART
 // ========================================
 
-addCartButton.addEventListener(
-    "click",
-    function() {
+function addToCart(barcode) {
 
-        const barcode =
-            this.dataset.barcode;
+    const product = products.find(
+        item => item.barcode === barcode
+    );
+
+    if (!product) {
+        return;
+    }
+
+    if (product.stock <= 0) {
+
+        alert("This product is out of stock.");
+
+        return;
+    }
 
 
-        const product =
-            products.find(
-                product =>
-                    product.barcode === barcode
-            );
+    const existingItem = cart.find(
+        item => item.barcode === barcode
+    );
 
 
-        if (!product) {
+    if (existingItem) {
 
-            alert(
-                "Please search for a product first."
-            );
+        if (existingItem.quantity >= product.stock) {
+
+            alert("Not enough stock.");
 
             return;
         }
 
+        existingItem.quantity++;
 
-        const existingItem =
-            cart.find(
-                item =>
-                    item.barcode === barcode
-            );
+    } else {
 
-
-        if (existingItem) {
-
-            if (
-                existingItem.quantity >=
-                product.stock
-            ) {
-
-                alert(
-                    "Not enough stock."
-                );
-
-                return;
-            }
-
-
-            existingItem.quantity++;
-
-        }
-
-        else {
-
-            cart.push({
-
-                barcode: product.barcode,
-
-                name: product.name,
-
-                price: product.price,
-
-                cost: product.cost,
-
-                quantity: 1
-
-            });
-
-        }
-
-
-        renderCart();
+        cart.push({
+            barcode: product.barcode,
+            name: product.name,
+            price: product.price,
+            cost: product.cost,
+            quantity: 1
+        });
 
     }
-);
+
+    renderCart();
+
+}
 
 
 // ========================================
@@ -352,24 +401,24 @@ function renderCart() {
 
     cartItems.innerHTML = "";
 
-
     if (cart.length === 0) {
 
         cartItems.innerHTML = `
+            <div class="empty-cart">
 
-            <tr class="empty-cart">
+                <p>Your cart is empty.</p>
 
-                <td colspan="5">
-                    Your cart is empty.
-                </td>
+                <span>
+                    Add a product using the barcode.
+                </span>
 
-            </tr>
-
+            </div>
         `;
 
+        cartCount.textContent = "0 items";
 
-        cartCount.textContent =
-            "0 items";
+        cartSubtotal.textContent =
+            formatCurrency(0);
 
         cartTotal.textContent =
             formatCurrency(0);
@@ -379,88 +428,79 @@ function renderCart() {
 
 
     let total = 0;
-
     let itemCount = 0;
 
 
-    cart.forEach(
-        (item, index) => {
+    cart.forEach((item, index) => {
 
-            const itemTotal =
-                item.price *
-                item.quantity;
+        const itemTotal =
+            item.price * item.quantity;
 
+        total += itemTotal;
 
-            total += itemTotal;
-
-            itemCount +=
-                item.quantity;
+        itemCount += item.quantity;
 
 
-            const row =
-                document.createElement(
-                    "tr"
-                );
+        const row = document.createElement("div");
 
+        row.className = "cart-item";
 
-            row.innerHTML = `
+        row.innerHTML = `
 
-                <td>
+            <div class="cart-item-info">
+
+                <strong>
                     ${item.name}
-                </td>
+                </strong>
 
-                <td>
-                    ${formatCurrency(
-                        item.price
-                    )}
-                </td>
+                <span>
+                    ${formatCurrency(item.price)}
+                </span>
 
-                <td>
+            </div>
 
-                    <button
-                        onclick="decreaseQuantity(${index})"
-                    >
-                        −
-                    </button>
+            <div class="cart-item-actions">
 
+                <button
+                    onclick="decreaseQuantity(${index})"
+                >
+                    −
+                </button>
+
+                <span>
                     ${item.quantity}
+                </span>
 
-                    <button
-                        onclick="increaseQuantity(${index})"
-                    >
-                        +
-                    </button>
+                <button
+                    onclick="increaseQuantity(${index})"
+                >
+                    +
+                </button>
 
-                </td>
+                <button
+                    onclick="removeItem(${index})"
+                >
+                    🗑️
+                </button>
 
-                <td>
-                    ${formatCurrency(
-                        itemTotal
-                    )}
-                </td>
+            </div>
 
-                <td>
+            <strong>
+                ${formatCurrency(itemTotal)}
+            </strong>
 
-                    <button
-                        onclick="removeItem(${index})"
-                    >
-                        🗑️
-                    </button>
+        `;
 
-                </td>
+        cartItems.appendChild(row);
 
-            `;
-
-
-            cartItems.appendChild(row);
-
-        }
-    );
+    });
 
 
     cartCount.textContent =
         itemCount + " items";
 
+    cartSubtotal.textContent =
+        formatCurrency(total);
 
     cartTotal.textContent =
         formatCurrency(total);
@@ -474,30 +514,23 @@ function renderCart() {
 
 function increaseQuantity(index) {
 
-    const item =
-        cart[index];
+    const item = cart[index];
 
+    const product = products.find(
+        product =>
+            product.barcode === item.barcode
+    );
 
-    const product =
-        products.find(
-            product =>
-                product.barcode ===
-                item.barcode
-        );
-
-
-    if (
-        item.quantity >=
-        product.stock
-    ) {
-
-        alert(
-            "Not enough stock."
-        );
-
+    if (!product) {
         return;
     }
 
+    if (item.quantity >= product.stock) {
+
+        alert("Not enough stock.");
+
+        return;
+    }
 
     item.quantity++;
 
@@ -512,25 +545,17 @@ function increaseQuantity(index) {
 
 function decreaseQuantity(index) {
 
-    const item =
-        cart[index];
-
+    const item = cart[index];
 
     if (item.quantity > 1) {
 
         item.quantity--;
 
-    }
+    } else {
 
-    else {
-
-        cart.splice(
-            index,
-            1
-        );
+        cart.splice(index, 1);
 
     }
-
 
     renderCart();
 
@@ -543,11 +568,7 @@ function decreaseQuantity(index) {
 
 function removeItem(index) {
 
-    cart.splice(
-        index,
-        1
-    );
-
+    cart.splice(index, 1);
 
     renderCart();
 
@@ -558,96 +579,159 @@ function removeItem(index) {
 // CHECKOUT
 // ========================================
 
-checkoutButton.addEventListener(
-    "click",
-    function() {
+checkoutBtn.addEventListener("click", function() {
 
-        if (cart.length === 0) {
+    if (cart.length === 0) {
 
-            alert(
-                "Your cart is empty."
-            );
+        alert("Your cart is empty.");
 
-            return;
+        return;
+    }
+
+
+    let total = 0;
+
+    let profit = 0;
+
+
+    cart.forEach(item => {
+
+        total +=
+            item.price * item.quantity;
+
+        profit +=
+            (item.price - item.cost) *
+            item.quantity;
+
+    });
+
+
+    // Update dashboard
+
+    todaySales.textContent =
+        formatCurrency(total);
+
+    todayProfit.textContent =
+        formatCurrency(profit);
+
+
+    // Reduce stock
+
+    cart.forEach(item => {
+
+        const product = products.find(
+            product =>
+                product.barcode === item.barcode
+        );
+
+        if (product) {
+
+            product.stock -=
+                item.quantity;
+
+        }
+
+    });
+
+
+    alert(
+        "Checkout successful!\n\n" +
+        "Total: " +
+        formatCurrency(total)
+    );
+
+
+    cart = [];
+
+    renderCart();
+
+    updateDashboard();
+
+    renderInventory();
+
+    barcodeInput.value = "";
+
+    productList.innerHTML = "";
+
+    barcodeInput.focus();
+
+});
+
+
+// ========================================
+// INVENTORY
+// ========================================
+
+function renderInventory() {
+
+    inventoryTable.innerHTML = "";
+
+    products.forEach(product => {
+
+        const row =
+            document.createElement("tr");
+
+        let status = "In Stock";
+
+        if (product.stock <= 0) {
+
+            status = "Out of Stock";
+
+        } else if (
+            product.stock <= product.reorderLevel
+        ) {
+
+            status = "Low Stock";
+
         }
 
 
-        let total = 0;
+        row.innerHTML = `
 
+            <td>
+                ${product.barcode}
+            </td>
 
-        cart.forEach(
-            item => {
+            <td>
+                ${product.name}
+            </td>
 
-                total +=
-                    item.price *
-                    item.quantity;
+            <td>
+                ${product.category}
+            </td>
 
-            }
-        );
+            <td>
+                ${formatCurrency(product.cost)}
+            </td>
 
+            <td>
+                ${formatCurrency(product.price)}
+            </td>
 
-        alert(
-            "Checkout successful!\n\n" +
-            "Total: " +
-            formatCurrency(total)
-        );
+            <td>
+                ${product.stock}
+            </td>
 
+            <td>
+                ${status}
+            </td>
 
-        cart = [];
+        `;
 
+        inventoryTable.appendChild(row);
 
-        renderCart();
+    });
 
-
-        barcodeInput.value = "";
-
-
-        productResult.classList.add(
-            "hidden"
-        );
-
-
-        barcodeInput.focus();
-
-    }
-);
-
-
-// ========================================
-// SCANNER BUTTON
-// ========================================
-
-scanButton.addEventListener(
-    "click",
-    function() {
-
-        scannerModal.classList.remove(
-            "hidden"
-        );
-
-    }
-);
-
-
-// ========================================
-// CLOSE SCANNER
-// ========================================
-
-closeScanner.addEventListener(
-    "click",
-    function() {
-
-        scannerModal.classList.add(
-            "hidden"
-        );
-
-    }
-);
+}
 
 
 // ========================================
 // INITIALIZE
 // ========================================
+
+updateDashboard();
+
+renderInventory();
 
 renderCart();
 
