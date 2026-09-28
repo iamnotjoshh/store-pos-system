@@ -582,6 +582,7 @@ closeScanner.addEventListener(
 ========================================= */
 
 renderCart();
+javascript
 
 barcodeInput.focus();
 ```
