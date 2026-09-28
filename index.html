@@ -1,23 +1,19 @@
-```html
 <!DOCTYPE html>
 <html lang="en">
+
 <head>
     <meta charset="UTF-8">
 
-    <!-- Responsive for phone/tablet/desktop -->
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
 
-    <title>Locale Store</title>
+    <title>Store POS</title>
 
-    <!-- Our CSS -->
     <link rel="stylesheet" href="style.css">
 </head>
 
 <body>
 
-    <!-- =========================
-         SIDEBAR
-    ========================== -->
+    <!-- SIDEBAR -->
     <aside class="sidebar">
 
         <div class="logo">
@@ -25,6 +21,7 @@
         </div>
 
         <nav>
+
             <button class="nav-item active">
                 🏠 Dashboard
             </button>
@@ -48,102 +45,145 @@
             <button class="nav-item">
                 ⚙️ Settings
             </button>
+
         </nav>
 
     </aside>
 
 
-    <!-- =========================
-         MAIN CONTENT
-    ========================== -->
+    <!-- MAIN CONTENT -->
     <main class="main-content">
 
-        <!-- HEADER -->
+        <!-- TOP BAR -->
         <header class="topbar">
-<script src="app.js"></script>
+
             <div>
+
                 <h1>Store Dashboard</h1>
-                <p>Manage your store easily.</p>
+
+                <p>
+                    Manage your store easily.
+                </p>
+
             </div>
 
             <div class="date">
-                📅 <span id="currentDate"></span>
+
+                📅
+                <span id="currentDate">
+                    Loading...
+                </span>
+
             </div>
 
         </header>
 
 
-        <!-- =========================
-             SUMMARY CARDS
-        ========================== -->
-
+        <!-- SUMMARY -->
         <section class="summary-grid">
 
             <div class="summary-card">
-                <div class="card-icon">💰</div>
+
+                <div class="card-icon">
+                    💰
+                </div>
 
                 <div>
+
                     <p>Today's Sales</p>
-                    <h2>₱0.00</h2>
+
+                    <h2 id="todaySales">
+                        ₱0.00
+                    </h2>
+
                 </div>
+
             </div>
 
 
             <div class="summary-card">
-                <div class="card-icon">📈</div>
+
+                <div class="card-icon">
+                    📈
+                </div>
 
                 <div>
+
                     <p>Today's Profit</p>
-                    <h2>₱0.00</h2>
+
+                    <h2 id="todayProfit">
+                        ₱0.00
+                    </h2>
+
                 </div>
+
             </div>
 
 
             <div class="summary-card">
-                <div class="card-icon">📦</div>
+
+                <div class="card-icon">
+                    📦
+                </div>
 
                 <div>
+
                     <p>Total Products</p>
-                    <h2>0</h2>
+
+                    <h2 id="totalProducts">
+                        0
+                    </h2>
+
                 </div>
+
             </div>
 
 
             <div class="summary-card">
-                <div class="card-icon">⚠️</div>
+
+                <div class="card-icon">
+                    ⚠️
+                </div>
 
                 <div>
+
                     <p>Low Stock</p>
-                    <h2>0</h2>
+
+                    <h2 id="lowStock">
+                        0
+                    </h2>
+
                 </div>
+
             </div>
 
         </section>
 
 
-        <!-- =========================
-             POS SECTION
-        ========================== -->
-
+        <!-- POS -->
         <section class="pos-container">
 
             <div class="pos-header">
 
-                <div>
-                    <h2>🛒 Point of Sale</h2>
-                    <p>Scan a product or enter its barcode.</p>
-                </div>
+                <h2>
+                    🛒 Point of Sale
+                </h2>
+
+                <p>
+                    Scan a product or enter its barcode.
+                </p>
 
             </div>
 
 
-            <!-- BARCODE SEARCH -->
-
+            <!-- BARCODE -->
             <div class="barcode-area">
 
                 <div class="barcode-input-wrapper">
 
-                    <span class="search-icon">🔍</span>
+                    <span class="search-icon">
+                        🔍
+                    </span>
 
                     <input
                         type="text"
@@ -154,9 +194,11 @@
 
                 </div>
 
+
                 <button
                     class="scan-button"
                     id="scanButton"
+                    type="button"
                 >
                     📷 Scan Barcode
                 </button>
@@ -165,7 +207,6 @@
 
 
             <!-- PRODUCT RESULT -->
-
             <div
                 id="productResult"
                 class="product-result hidden"
@@ -192,7 +233,9 @@
 
                 <div class="product-price">
 
-                    <span>Price</span>
+                    <span>
+                        Price
+                    </span>
 
                     <strong id="productPrice">
                         ₱0.00
@@ -204,6 +247,7 @@
                 <button
                     class="add-cart-button"
                     id="addCartButton"
+                    type="button"
                 >
                     + Add to Cart
                 </button>
@@ -211,15 +255,14 @@
             </div>
 
 
-            <!-- =========================
-                 CART
-            ========================== -->
-
+            <!-- CART -->
             <div class="cart-section">
 
                 <div class="cart-header">
 
-                    <h2>🛍️ Cart</h2>
+                    <h2>
+                        🛍️ Cart
+                    </h2>
 
                     <span id="cartCount">
                         0 items
@@ -235,14 +278,30 @@
                         <thead>
 
                             <tr>
-                                <th>Product</th>
-                                <th>Price</th>
-                                <th>Qty</th>
-                                <th>Total</th>
-                                <th></th>
+
+                                <th>
+                                    Product
+                                </th>
+
+                                <th>
+                                    Price
+                                </th>
+
+                                <th>
+                                    Qty
+                                </th>
+
+                                <th>
+                                    Total
+                                </th>
+
+                                <th>
+                                </th>
+
                             </tr>
 
                         </thead>
+
 
                         <tbody id="cartItems">
 
@@ -261,8 +320,7 @@
                 </div>
 
 
-                <!-- CART TOTAL -->
-
+                <!-- TOTAL -->
                 <div class="cart-footer">
 
                     <div class="total-label">
@@ -279,9 +337,11 @@
                 </div>
 
 
+                <!-- CHECKOUT -->
                 <button
                     class="checkout-button"
                     id="checkoutButton"
+                    type="button"
                 >
                     💳 Checkout
                 </button>
@@ -293,14 +353,50 @@
     </main>
 
 
-    <!-- =========================
-         BARCODE SCANNER MODAL
-    ========================== -->
-
+    <!-- BARCODE MODAL -->
     <div
         id="scannerModal"
         class="modal hidden"
     >
 
-        <div class="modal
-```
+        <div class="modal-content">
+
+            <button
+                class="close-button"
+                id="closeScanner"
+                type="button"
+            >
+                ✕
+            </button>
+
+
+            <h2>
+                📷 Scan Barcode
+            </h2>
+
+
+            <p>
+                Barcode camera scanner will be added next.
+            </p>
+
+
+            <div
+                id="barcodeScanner"
+                class="barcode-scanner"
+            >
+                Camera scanner coming soon.
+            </div>
+
+        </div>
+
+    </div>
+
+
+    <!-- IMPORTANT:
+         JavaScript is loaded LAST.
+    -->
+    <script src="app.js"></script>
+
+</body>
+
+</html>
