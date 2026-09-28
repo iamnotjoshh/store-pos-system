@@ -1,189 +1,104 @@
 <!DOCTYPE html>
-<html lang="en">
 
+<html lang="en">
 <head>
     <meta charset="UTF-8">
-
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
 
-    <title>Store POS</title>
+```
+<title>Store POS System</title>
 
-    <link rel="stylesheet" href="style.css">
+<link rel="stylesheet" href="style.css">
+```
+
 </head>
 
 <body>
 
-    <!-- SIDEBAR -->
-    <aside class="sidebar">
+```
+<!-- TOP BAR -->
+<header class="topbar">
+    <div class="brand">
+        <h1>Store POS</h1>
+        <p>Point of Sale System</p>
+    </div>
 
-        <div class="logo">
-            🏪 <span>Store POS</span>
+    <nav class="nav">
+        <button class="nav-btn active" data-section="dashboard">
+            Dashboard
+        </button>
+
+        <button class="nav-btn" data-section="pos">
+            POS
+        </button>
+
+        <button class="nav-btn" data-section="inventory">
+            Inventory
+        </button>
+
+        <button class="nav-btn" data-section="sales">
+            Sales
+        </button>
+    </nav>
+</header>
+
+
+<!-- MAIN CONTENT -->
+<main class="container">
+
+    <!-- DASHBOARD -->
+    <section id="dashboard" class="section active">
+
+        <div class="section-header">
+            <div>
+                <h2>Dashboard</h2>
+                <p>Store overview</p>
+            </div>
         </div>
 
-        <nav>
+        <div class="dashboard-grid">
 
-            <button class="nav-item active">
-                🏠 Dashboard
-            </button>
+            <div class="dashboard-card">
+                <span class="card-label">Today's Sales</span>
+                <h3 id="todaySales">₱0.00</h3>
+            </div>
 
-            <button class="nav-item">
-                🛒 POS
-            </button>
+            <div class="dashboard-card">
+                <span class="card-label">Today's Profit</span>
+                <h3 id="todayProfit">₱0.00</h3>
+            </div>
 
-            <button class="nav-item">
-                📦 Inventory
-            </button>
+            <div class="dashboard-card">
+                <span class="card-label">Total Products</span>
+                <h3 id="totalProducts">0</h3>
+            </div>
 
-            <button class="nav-item">
-                💰 Sales
-            </button>
+            <div class="dashboard-card">
+                <span class="card-label">Low Stock</span>
+                <h3 id="lowStock">0</h3>
+            </div>
 
-            <button class="nav-item">
-                📊 Reports
-            </button>
+        </div>
 
-            <button class="nav-item">
-                ⚙️ Settings
-            </button>
-
-        </nav>
-
-    </aside>
+    </section>
 
 
-    <!-- MAIN CONTENT -->
-    <main class="main-content">
+    <!-- POS -->
+    <section id="pos" class="section">
 
-        <!-- TOP BAR -->
-        <header class="topbar">
-
+        <div class="section-header">
             <div>
-
-                <h1>Store Dashboard</h1>
-
-                <p>
-                    Manage your store easily.
-                </p>
-
+                <h2>Point of Sale</h2>
+                <p>Scan or enter a product barcode</p>
             </div>
+        </div>
 
-            <div class="date">
+        <div class="pos-layout">
 
-                📅
-                <span id="currentDate">
-                    Loading...
-                </span>
+            <!-- PRODUCT AREA -->
+            <div class="product-area">
 
-            </div>
-
-        </header>
-
-
-        <!-- SUMMARY -->
-        <section class="summary-grid">
-
-            <div class="summary-card">
-
-                <div class="card-icon">
-                    💰
-                </div>
-
-                <div>
-
-                    <p>Today's Sales</p>
-
-                    <h2 id="todaySales">
-                        ₱0.00
-                    </h2>
-
-                </div>
-
-            </div>
-
-
-            <div class="summary-card">
-
-                <div class="card-icon">
-                    📈
-                </div>
-
-                <div>
-
-                    <p>Today's Profit</p>
-
-                    <h2 id="todayProfit">
-                        ₱0.00
-                    </h2>
-
-                </div>
-
-            </div>
-
-
-            <div class="summary-card">
-
-                <div class="card-icon">
-                    📦
-                </div>
-
-                <div>
-
-                    <p>Total Products</p>
-
-                    <h2 id="totalProducts">
-                        0
-                    </h2>
-
-                </div>
-
-            </div>
-
-
-            <div class="summary-card">
-
-                <div class="card-icon">
-                    ⚠️
-                </div>
-
-                <div>
-
-                    <p>Low Stock</p>
-
-                    <h2 id="lowStock">
-                        0
-                    </h2>
-
-                </div>
-
-            </div>
-
-        </section>
-
-
-        <!-- POS -->
-        <section class="pos-container">
-
-            <div class="pos-header">
-
-                <h2>
-                    🛒 Point of Sale
-                </h2>
-
-                <p>
-                    Scan a product or enter its barcode.
-                </p>
-
-            </div>
-
-
-            <!-- BARCODE -->
-            <div class="barcode-area">
-
-                <div class="barcode-input-wrapper">
-
-                    <span class="search-icon">
-                        🔍
-                    </span>
+                <div class="barcode-box">
 
                     <input
                         type="text"
@@ -192,211 +107,197 @@
                         autocomplete="off"
                     >
 
-                </div>
-
-
-                <button
-                    class="scan-button"
-                    id="scanButton"
-                    type="button"
-                >
-                    📷 Scan Barcode
-                </button>
-
-            </div>
-
-
-            <!-- PRODUCT RESULT -->
-            <div
-                id="productResult"
-                class="product-result hidden"
-            >
-
-                <div class="product-info">
-
-                    <h3 id="productName">
-                        Product Name
-                    </h3>
-
-                    <p>
-                        Barcode:
-                        <span id="productBarcode"></span>
-                    </p>
-
-                    <p>
-                        Stock:
-                        <strong id="productStock"></strong>
-                    </p>
+                    <button id="scanBtn" class="primary-btn">
+                        Scan Barcode
+                    </button>
 
                 </div>
 
+                <div id="productMessage" class="message"></div>
 
-                <div class="product-price">
-
-                    <span>
-                        Price
-                    </span>
-
-                    <strong id="productPrice">
-                        ₱0.00
-                    </strong>
-
+                <div id="productList" class="product-list">
+                    <!-- Products will appear here -->
                 </div>
-
-
-                <button
-                    class="add-cart-button"
-                    id="addCartButton"
-                    type="button"
-                >
-                    + Add to Cart
-                </button>
 
             </div>
 
 
             <!-- CART -->
-            <div class="cart-section">
+            <div class="cart-area">
 
                 <div class="cart-header">
-
-                    <h2>
-                        🛍️ Cart
-                    </h2>
-
-                    <span id="cartCount">
-                        0 items
-                    </span>
-
+                    <h3>Cart</h3>
+                    <span id="cartCount">0 items</span>
                 </div>
 
+                <div id="cartItems" class="cart-items">
 
-                <div class="cart-table-wrapper">
-
-                    <table>
-
-                        <thead>
-
-                            <tr>
-
-                                <th>
-                                    Product
-                                </th>
-
-                                <th>
-                                    Price
-                                </th>
-
-                                <th>
-                                    Qty
-                                </th>
-
-                                <th>
-                                    Total
-                                </th>
-
-                                <th>
-                                </th>
-
-                            </tr>
-
-                        </thead>
-
-
-                        <tbody id="cartItems">
-
-                            <tr class="empty-cart">
-
-                                <td colspan="5">
-                                    Your cart is empty.
-                                </td>
-
-                            </tr>
-
-                        </tbody>
-
-                    </table>
-
-                </div>
-
-
-                <!-- TOTAL -->
-                <div class="cart-footer">
-
-                    <div class="total-label">
-                        TOTAL
-                    </div>
-
-                    <div
-                        class="total-price"
-                        id="cartTotal"
-                    >
-                        ₱0.00
+                    <div class="empty-cart">
+                        <p>Your cart is empty.</p>
+                        <span>Add a product using the barcode.</span>
                     </div>
 
                 </div>
 
+                <div class="cart-summary">
 
-                <!-- CHECKOUT -->
-                <button
-                    class="checkout-button"
-                    id="checkoutButton"
-                    type="button"
-                >
-                    💳 Checkout
-                </button>
+                    <div class="summary-row">
+                        <span>Subtotal</span>
+                        <strong id="cartSubtotal">₱0.00</strong>
+                    </div>
+
+                    <div class="summary-row total-row">
+                        <span>Total</span>
+                        <strong id="cartTotal">₱0.00</strong>
+                    </div>
+
+                    <button id="checkoutBtn" class="checkout-btn">
+                        Checkout
+                    </button>
+
+                </div>
 
             </div>
 
-        </section>
+        </div>
 
-    </main>
+    </section>
 
 
-    <!-- BARCODE MODAL -->
-    <div
-        id="scannerModal"
-        class="modal hidden"
-    >
+    <!-- INVENTORY -->
+    <section id="inventory" class="section">
 
-        <div class="modal-content">
+        <div class="section-header">
+            <div>
+                <h2>Inventory</h2>
+                <p>Manage your store products</p>
+            </div>
+        </div>
 
-            <button
-                class="close-button"
-                id="closeScanner"
-                type="button"
-            >
-                ✕
+        <div class="table-container">
+
+            <table>
+
+                <thead>
+                    <tr>
+                        <th>Barcode</th>
+                        <th>Product</th>
+                        <th>Category</th>
+                        <th>Cost Price</th>
+                        <th>Selling Price</th>
+                        <th>Stock</th>
+                        <th>Status</th>
+                    </tr>
+                </thead>
+
+                <tbody id="inventoryTable">
+                    <!-- Inventory will appear here -->
+                </tbody>
+
+            </table>
+
+        </div>
+
+    </section>
+
+
+    <!-- SALES -->
+    <section id="sales" class="section">
+
+        <div class="section-header">
+            <div>
+                <h2>Sales</h2>
+                <p>View completed transactions</p>
+            </div>
+        </div>
+
+        <div class="table-container">
+
+            <table>
+
+                <thead>
+                    <tr>
+                        <th>Sale ID</th>
+                        <th>Date</th>
+                        <th>Time</th>
+                        <th>Total Sales</th>
+                        <th>Total Cost</th>
+                        <th>Profit</th>
+                        <th>Payment</th>
+                    </tr>
+                </thead>
+
+                <tbody id="salesTable">
+                    <!-- Sales will appear here -->
+                </tbody>
+
+            </table>
+
+        </div>
+
+    </section>
+
+</main>
+
+
+<!-- BARCODE SCANNER MODAL -->
+<div id="scannerModal" class="modal">
+
+    <div class="modal-content">
+
+        <div class="modal-header">
+            <h2>Scan Barcode</h2>
+
+            <button id="closeScannerBtn" class="close-btn">
+                ×
             </button>
+        </div>
 
+        <div class="scanner-container">
 
-            <h2>
-                📷 Scan Barcode
-            </h2>
+            <video
+                id="scannerVideo"
+                autoplay
+                playsinline
+            ></video>
 
-
-            <p>
-                Barcode camera scanner will be added next.
-            </p>
-
-
-            <div
-                id="barcodeScanner"
-                class="barcode-scanner"
-            >
-                Camera scanner coming soon.
+            <div class="scanner-message">
+                Point your camera at a barcode.
             </div>
 
         </div>
 
     </div>
 
+</div>
 
-    <!-- IMPORTANT:
-         JavaScript is loaded LAST.
-    -->
-    <script src="app.js"></script>
 
-</body>
+<!-- CHECKOUT MODAL -->
+<div id="checkoutModal" class="modal">
 
-</html>
+    <div class="modal-content checkout-modal">
+
+        <div class="modal-header">
+            <h2>Checkout</h2>
+
+            <button id="closeCheckoutBtn" class="close-btn">
+                ×
+            </button>
+        </div>
+
+        <div class="checkout-details">
+
+            <div class="checkout-total">
+                <span>Total Amount</span>
+                <strong id="checkoutTotal">₱0.00</strong>
+            </div>
+
+            <label for="paymentInput">
+                Payment
+            </label>
+
+            <input
+                type="number"
+                id="paymentInput"
+                placeholder="Enter
+```
