@@ -1,0 +1,306 @@
+```html
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+
+    <!-- Responsive for phone/tablet/desktop -->
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+    <title>Store POS</title>
+
+    <!-- Our CSS -->
+    <link rel="stylesheet" href="style.css">
+</head>
+
+<body>
+
+    <!-- =========================
+         SIDEBAR
+    ========================== -->
+    <aside class="sidebar">
+
+        <div class="logo">
+            🏪 <span>Store POS</span>
+        </div>
+
+        <nav>
+            <button class="nav-item active">
+                🏠 Dashboard
+            </button>
+
+            <button class="nav-item">
+                🛒 POS
+            </button>
+
+            <button class="nav-item">
+                📦 Inventory
+            </button>
+
+            <button class="nav-item">
+                💰 Sales
+            </button>
+
+            <button class="nav-item">
+                📊 Reports
+            </button>
+
+            <button class="nav-item">
+                ⚙️ Settings
+            </button>
+        </nav>
+
+    </aside>
+
+
+    <!-- =========================
+         MAIN CONTENT
+    ========================== -->
+    <main class="main-content">
+
+        <!-- HEADER -->
+        <header class="topbar">
+
+            <div>
+                <h1>Store Dashboard</h1>
+                <p>Manage your store easily.</p>
+            </div>
+
+            <div class="date">
+                📅 <span id="currentDate"></span>
+            </div>
+
+        </header>
+
+
+        <!-- =========================
+             SUMMARY CARDS
+        ========================== -->
+
+        <section class="summary-grid">
+
+            <div class="summary-card">
+                <div class="card-icon">💰</div>
+
+                <div>
+                    <p>Today's Sales</p>
+                    <h2>₱0.00</h2>
+                </div>
+            </div>
+
+
+            <div class="summary-card">
+                <div class="card-icon">📈</div>
+
+                <div>
+                    <p>Today's Profit</p>
+                    <h2>₱0.00</h2>
+                </div>
+            </div>
+
+
+            <div class="summary-card">
+                <div class="card-icon">📦</div>
+
+                <div>
+                    <p>Total Products</p>
+                    <h2>0</h2>
+                </div>
+            </div>
+
+
+            <div class="summary-card">
+                <div class="card-icon">⚠️</div>
+
+                <div>
+                    <p>Low Stock</p>
+                    <h2>0</h2>
+                </div>
+            </div>
+
+        </section>
+
+
+        <!-- =========================
+             POS SECTION
+        ========================== -->
+
+        <section class="pos-container">
+
+            <div class="pos-header">
+
+                <div>
+                    <h2>🛒 Point of Sale</h2>
+                    <p>Scan a product or enter its barcode.</p>
+                </div>
+
+            </div>
+
+
+            <!-- BARCODE SEARCH -->
+
+            <div class="barcode-area">
+
+                <div class="barcode-input-wrapper">
+
+                    <span class="search-icon">🔍</span>
+
+                    <input
+                        type="text"
+                        id="barcodeInput"
+                        placeholder="Scan or enter barcode..."
+                        autocomplete="off"
+                    >
+
+                </div>
+
+                <button
+                    class="scan-button"
+                    id="scanButton"
+                >
+                    📷 Scan Barcode
+                </button>
+
+            </div>
+
+
+            <!-- PRODUCT RESULT -->
+
+            <div
+                id="productResult"
+                class="product-result hidden"
+            >
+
+                <div class="product-info">
+
+                    <h3 id="productName">
+                        Product Name
+                    </h3>
+
+                    <p>
+                        Barcode:
+                        <span id="productBarcode"></span>
+                    </p>
+
+                    <p>
+                        Stock:
+                        <strong id="productStock"></strong>
+                    </p>
+
+                </div>
+
+
+                <div class="product-price">
+
+                    <span>Price</span>
+
+                    <strong id="productPrice">
+                        ₱0.00
+                    </strong>
+
+                </div>
+
+
+                <button
+                    class="add-cart-button"
+                    id="addCartButton"
+                >
+                    + Add to Cart
+                </button>
+
+            </div>
+
+
+            <!-- =========================
+                 CART
+            ========================== -->
+
+            <div class="cart-section">
+
+                <div class="cart-header">
+
+                    <h2>🛍️ Cart</h2>
+
+                    <span id="cartCount">
+                        0 items
+                    </span>
+
+                </div>
+
+
+                <div class="cart-table-wrapper">
+
+                    <table>
+
+                        <thead>
+
+                            <tr>
+                                <th>Product</th>
+                                <th>Price</th>
+                                <th>Qty</th>
+                                <th>Total</th>
+                                <th></th>
+                            </tr>
+
+                        </thead>
+
+                        <tbody id="cartItems">
+
+                            <tr class="empty-cart">
+
+                                <td colspan="5">
+                                    Your cart is empty.
+                                </td>
+
+                            </tr>
+
+                        </tbody>
+
+                    </table>
+
+                </div>
+
+
+                <!-- CART TOTAL -->
+
+                <div class="cart-footer">
+
+                    <div class="total-label">
+                        TOTAL
+                    </div>
+
+                    <div
+                        class="total-price"
+                        id="cartTotal"
+                    >
+                        ₱0.00
+                    </div>
+
+                </div>
+
+
+                <button
+                    class="checkout-button"
+                    id="checkoutButton"
+                >
+                    💳 Checkout
+                </button>
+
+            </div>
+
+        </section>
+
+    </main>
+
+
+    <!-- =========================
+         BARCODE SCANNER MODAL
+    ========================== -->
+
+    <div
+        id="scannerModal"
+        class="modal hidden"
+    >
+
+        <div class="modal
+```
