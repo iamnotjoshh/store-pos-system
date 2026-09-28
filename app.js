@@ -84,6 +84,15 @@ document.addEventListener("DOMContentLoaded", function () {
     const scanBtn =
         document.getElementById("scanBtn");
 
+    const cameraScanBtn =
+        document.getElementById("cameraScanBtn");
+
+    const stopCameraBtn =
+        document.getElementById("stopCameraBtn");
+
+    const cameraScanner =
+        document.getElementById("cameraScanner");
+
     const productMessage =
         document.getElementById("productMessage");
 
@@ -145,6 +154,10 @@ document.addEventListener("DOMContentLoaded", function () {
 
     const lowStockElement =
         document.getElementById("lowStock");
+
+
+    // Camera scanner
+    let html5QrCode = null;
 
 
     // ==============================
@@ -262,6 +275,7 @@ document.addEventListener("DOMContentLoaded", function () {
             <button
                 class="add-cart-button"
                 id="addProductButton"
+                type="button"
             >
                 Add to Cart
             </button>
@@ -299,6 +313,163 @@ document.addEventListener("DOMContentLoaded", function () {
 
 
     // ==============================
+    // CAMERA BARCODE SCANNER
+    // ==============================
+
+    cameraScanBtn.addEventListener(
+        "click",
+        startCamera
+    );
+
+
+    stopCameraBtn.addEventListener(
+        "click",
+        stopCamera
+    );
+
+
+    function startCamera() {
+
+        cameraScanner.style.display = "block";
+
+        productMessage.textContent =
+            "Starting camera...";
+
+        html5QrCode =
+            new Html5Qrcode("reader");
+
+        Html5Qrcode.getCameras()
+            .then(function (devices) {
+
+                if (!devices || devices.length === 0) {
+
+                    productMessage.textContent =
+                        "No camera found.";
+
+                    cameraScanner.style.display =
+                        "none";
+
+                    return;
+                }
+
+                // Prefer the back camera on phones
+                let cameraId =
+                    devices[devices.length - 1].id;
+
+                for (let i = 0; i < devices.length; i++) {
+
+                    const label =
+                        devices[i].label.toLowerCase();
+
+                    if (
+                        label.includes("back") ||
+                        label.includes("rear") ||
+                        label.includes("environment")
+                    ) {
+                        cameraId =
+                            devices[i].id;
+
+                        break;
+                    }
+
+                }
+
+
+                html5QrCode.start(
+
+                    cameraId,
+
+                    {
+                        fps: 10,
+
+                        qrbox: {
+                            width: 280,
+                            height: 120
+                        },
+
+                        aspectRatio: 1.777778
+
+                    },
+
+                    function (decodedText) {
+
+                        barcodeInput.value =
+                            decodedText;
+
+                        productMessage.textContent =
+                            "Barcode scanned: " +
+                            decodedText;
+
+                        stopCamera();
+
+                        searchProduct();
+
+                    },
+
+                    function () {
+                        // Keep scanning.
+                    }
+
+                );
+
+            })
+
+            .catch(function (error) {
+
+                console.error(error);
+
+                productMessage.textContent =
+                    "Camera access was denied or unavailable.";
+
+                cameraScanner.style.display =
+                    "none";
+
+                if (html5QrCode) {
+                    html5QrCode = null;
+                }
+
+            });
+
+    }
+
+
+    function stopCamera() {
+
+        if (!html5QrCode) {
+
+            cameraScanner.style.display =
+                "none";
+
+            return;
+        }
+
+        html5QrCode
+            .stop()
+            .then(function () {
+
+                html5QrCode.clear();
+
+                html5QrCode = null;
+
+                cameraScanner.style.display =
+                    "none";
+
+            })
+            .catch(function (error) {
+
+                console.error(error);
+
+                html5QrCode = null;
+
+                cameraScanner.style.display =
+                    "none";
+
+            });
+
+    }
+
+
+    // ==============================
     // ADD TO CART
     // ==============================
 
@@ -324,11 +495,13 @@ document.addEventListener("DOMContentLoaded", function () {
         } else {
 
             cart.push({
+
                 barcode: product.barcode,
                 name: product.name,
                 price: product.price,
                 cost: product.cost,
                 quantity: 1
+
             });
 
         }
@@ -406,6 +579,7 @@ document.addEventListener("DOMContentLoaded", function () {
                         <button
                             data-action="minus"
                             data-index="${index}"
+                            type="button"
                         >
                             −
                         </button>
@@ -417,6 +591,7 @@ document.addEventListener("DOMContentLoaded", function () {
                         <button
                             data-action="plus"
                             data-index="${index}"
+                            type="button"
                         >
                             +
                         </button>
@@ -431,6 +606,7 @@ document.addEventListener("DOMContentLoaded", function () {
                         class="remove-btn"
                         data-action="remove"
                         data-index="${index}"
+                        type="button"
                     >
                         Remove
                     </button>
@@ -753,6 +929,7 @@ document.addEventListener("DOMContentLoaded", function () {
 
             checkoutMessage.textContent =
                 "Payment successful!";
+
 
             setTimeout(function () {
 
