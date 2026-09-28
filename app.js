@@ -951,10 +951,6 @@ function checkout() {
     );
 
 
-    // Automatically print receipt
-    printReceipt(sale);
-
-
     barcodeInput.focus();
 
 }
