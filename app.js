@@ -1,24 +1,23 @@
-javascript
-/* =========================================
-   STORE POS - APP.JS
-========================================= */
+// ========================================
+// STORE POS
+// JavaScript
+// ========================================
 
 
-/* =========================================
-   TEMPORARY PRODUCT DATABASE
-
-   For now, we are using sample products.
-   Later, these will come from Google Sheets.
-========================================= */
+// ========================================
+// SAMPLE PRODUCTS
+// ========================================
 
 const products = [
+
     {
         barcode: "480000000001",
         name: "Coca-Cola 1.5L",
         category: "Drinks",
         cost: 60,
         price: 85,
-        stock: 24
+        stock: 24,
+        reorderLevel: 5
     },
 
     {
@@ -27,7 +26,8 @@ const products = [
         category: "Food",
         cost: 10,
         price: 15,
-        stock: 50
+        stock: 50,
+        reorderLevel: 10
     },
 
     {
@@ -36,21 +36,23 @@ const products = [
         category: "Snacks",
         cost: 12,
         price: 18,
-        stock: 30
+        stock: 30,
+        reorderLevel: 5
     }
+
 ];
 
 
-/* =========================================
-   CART
-========================================= */
+// ========================================
+// CART
+// ========================================
 
 let cart = [];
 
 
-/* =========================================
-   GET HTML ELEMENTS
-========================================= */
+// ========================================
+// SELECT HTML ELEMENTS
+// ========================================
 
 const barcodeInput =
     document.getElementById("barcodeInput");
@@ -97,65 +99,122 @@ const closeScanner =
 const currentDate =
     document.getElementById("currentDate");
 
+const totalProducts =
+    document.getElementById("totalProducts");
 
-/* =========================================
-   CURRENT DATE
-========================================= */
+const lowStock =
+    document.getElementById("lowStock");
 
-function showCurrentDate() {
+
+// ========================================
+// FORMAT PESO
+// ========================================
+
+function formatCurrency(amount) {
+
+    return new Intl.NumberFormat(
+        "en-PH",
+        {
+            style: "currency",
+            currency: "PHP"
+        }
+    ).format(amount);
+
+}
+
+
+// ========================================
+// SHOW DATE
+// ========================================
+
+function showDate() {
 
     const today = new Date();
 
-    const options = {
-        year: "numeric",
-        month: "long",
-        day: "numeric"
-    };
-
     currentDate.textContent =
         today.toLocaleDateString(
-            "en-US",
-            options
+            "en-PH",
+            {
+                year: "numeric",
+                month: "long",
+                day: "numeric"
+            }
         );
+
 }
 
-showCurrentDate();
+showDate();
 
 
-/* =========================================
-   SEARCH PRODUCT BY BARCODE
-========================================= */
+// ========================================
+// DASHBOARD PRODUCT COUNT
+// ========================================
+
+function updateDashboard() {
+
+    totalProducts.textContent =
+        products.length;
+
+
+    const lowStockProducts =
+        products.filter(
+            product =>
+                product.stock <= product.reorderLevel
+        );
+
+
+    lowStock.textContent =
+        lowStockProducts.length;
+
+}
+
+updateDashboard();
+
+
+// ========================================
+// SEARCH PRODUCT
+// ========================================
 
 function searchProduct() {
 
     const barcode =
         barcodeInput.value.trim();
 
+
     if (barcode === "") {
-        productResult.classList.add("hidden");
+
+        productResult.classList.add(
+            "hidden"
+        );
+
         return;
     }
 
 
     const product =
         products.find(
-            item => item.barcode === barcode
+            product =>
+                product.barcode === barcode
         );
 
 
     if (!product) {
 
-        productResult.classList.add("hidden");
+        productResult.classList.add(
+            "hidden"
+        );
 
         alert(
             "Product not found."
         );
 
+        barcodeInput.select();
+
         return;
     }
 
 
-    /* Display product */
+    // Display product
 
     productName.textContent =
         product.name;
@@ -167,10 +226,12 @@ function searchProduct() {
         product.stock;
 
     productPrice.textContent =
-        formatCurrency(product.price);
+        formatCurrency(
+            product.price
+        );
 
 
-    /* Store selected product */
+    // Remember selected product
 
     addCartButton.dataset.barcode =
         product.barcode;
@@ -179,36 +240,33 @@ function searchProduct() {
     productResult.classList.remove(
         "hidden"
     );
+
 }
 
 
-/* =========================================
-   BARCODE INPUT
-========================================= */
+// ========================================
+// BARCODE ENTER
+// ========================================
 
 barcodeInput.addEventListener(
     "keydown",
     function(event) {
-
-        /*
-         Many barcode scanners automatically
-         press ENTER after scanning.
-        */
 
         if (event.key === "Enter") {
 
             event.preventDefault();
 
             searchProduct();
+
         }
 
     }
 );
 
 
-/* =========================================
-   ADD PRODUCT TO CART
-========================================= */
+// ========================================
+// ADD TO CART
+// ========================================
 
 addCartButton.addEventListener(
     "click",
@@ -217,21 +275,23 @@ addCartButton.addEventListener(
         const barcode =
             this.dataset.barcode;
 
+
         const product =
             products.find(
-                item => item.barcode === barcode
+                product =>
+                    product.barcode === barcode
             );
 
 
         if (!product) {
+
+            alert(
+                "Please search for a product first."
+            );
+
             return;
         }
 
-
-        /*
-         Check if product is already
-         inside the cart.
-        */
 
         const existingItem =
             cart.find(
@@ -243,8 +303,8 @@ addCartButton.addEventListener(
         if (existingItem) {
 
             if (
-                existingItem.quantity
-                >= product.stock
+                existingItem.quantity >=
+                product.stock
             ) {
 
                 alert(
@@ -254,9 +314,12 @@ addCartButton.addEventListener(
                 return;
             }
 
+
             existingItem.quantity++;
 
-        } else {
+        }
+
+        else {
 
             cart.push({
 
@@ -281,9 +344,9 @@ addCartButton.addEventListener(
 );
 
 
-/* =========================================
-   DISPLAY CART
-========================================= */
+// ========================================
+// DISPLAY CART
+// ========================================
 
 function renderCart() {
 
@@ -293,12 +356,17 @@ function renderCart() {
     if (cart.length === 0) {
 
         cartItems.innerHTML = `
+
             <tr class="empty-cart">
+
                 <td colspan="5">
                     Your cart is empty.
                 </td>
+
             </tr>
+
         `;
+
 
         cartCount.textContent =
             "0 items";
@@ -312,7 +380,7 @@ function renderCart() {
 
     let total = 0;
 
-    let totalItems = 0;
+    let itemCount = 0;
 
 
     cart.forEach(
@@ -325,7 +393,7 @@ function renderCart() {
 
             total += itemTotal;
 
-            totalItems +=
+            itemCount +=
                 item.quantity;
 
 
@@ -391,21 +459,23 @@ function renderCart() {
 
 
     cartCount.textContent =
-        `${totalItems} items`;
+        itemCount + " items";
 
 
     cartTotal.textContent =
         formatCurrency(total);
+
 }
 
 
-/* =========================================
-   INCREASE QUANTITY
-========================================= */
+// ========================================
+// INCREASE QUANTITY
+// ========================================
 
 function increaseQuantity(index) {
 
-    const item = cart[index];
+    const item =
+        cart[index];
 
 
     const product =
@@ -432,65 +502,61 @@ function increaseQuantity(index) {
     item.quantity++;
 
     renderCart();
+
 }
 
 
-/* =========================================
-   DECREASE QUANTITY
-========================================= */
+// ========================================
+// DECREASE QUANTITY
+// ========================================
 
 function decreaseQuantity(index) {
 
-    const item = cart[index];
+    const item =
+        cart[index];
 
 
     if (item.quantity > 1) {
 
         item.quantity--;
 
-    } else {
+    }
 
-        cart.splice(index, 1);
+    else {
+
+        cart.splice(
+            index,
+            1
+        );
 
     }
 
 
     renderCart();
+
 }
 
 
-/* =========================================
-   REMOVE ITEM
-========================================= */
+// ========================================
+// REMOVE ITEM
+// ========================================
 
 function removeItem(index) {
 
-    cart.splice(index, 1);
+    cart.splice(
+        index,
+        1
+    );
+
 
     renderCart();
-}
-
-
-/* =========================================
-   FORMAT CURRENCY
-========================================= */
-
-function formatCurrency(amount) {
-
-    return new Intl.NumberFormat(
-        "en-PH",
-        {
-            style: "currency",
-            currency: "PHP"
-        }
-    ).format(amount);
 
 }
 
 
-/* =========================================
-   CHECKOUT
-========================================= */
+// ========================================
+// CHECKOUT
+// ========================================
 
 checkoutButton.addEventListener(
     "click",
@@ -527,31 +593,29 @@ checkoutButton.addEventListener(
         );
 
 
-        /*
-         * Later:
-         *
-         * This section will send the
-         * transaction to Google Sheets.
-         */
-
-
         cart = [];
+
 
         renderCart();
 
+
         barcodeInput.value = "";
+
 
         productResult.classList.add(
             "hidden"
         );
 
+
+        barcodeInput.focus();
+
     }
 );
 
 
-/* =========================================
-   BARCODE SCANNER MODAL
-========================================= */
+// ========================================
+// SCANNER BUTTON
+// ========================================
 
 scanButton.addEventListener(
     "click",
@@ -565,6 +629,10 @@ scanButton.addEventListener(
 );
 
 
+// ========================================
+// CLOSE SCANNER
+// ========================================
+
 closeScanner.addEventListener(
     "click",
     function() {
@@ -577,12 +645,10 @@ closeScanner.addEventListener(
 );
 
 
-/* =========================================
-   INITIALIZE
-========================================= */
+// ========================================
+// INITIALIZE
+// ========================================
 
 renderCart();
-javascript
 
 barcodeInput.focus();
-```
