@@ -1,1 +1,1 @@
-# store-pos-system
+# Locale Store Database
