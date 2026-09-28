@@ -1,231 +1,248 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-  <meta charset="UTF-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>Store POS System</title>
-  <link rel="stylesheet" href="style.css">
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Store POS System</title>
+    <link rel="stylesheet" href="style.css">
 </head>
 
 <body>
 
-<header>
-  <h1>Store POS System</h1>
-  <nav>
-    <button onclick="showSection('dashboard')">Dashboard</button>
-    <button onclick="showSection('pos')">POS</button>
-    <button onclick="showSection('inventory')">Inventory</button>
-    <button onclick="showSection('history')">History</button>
-  </nav>
+<header class="topbar">
+    <div class="brand">
+        <h1>Store POS</h1>
+        <p>Point of Sale System</p>
+    </div>
+
+    <nav class="nav">
+        <button class="nav-btn active" data-section="dashboard">Dashboard</button>
+        <button class="nav-btn" data-section="pos">POS</button>
+        <button class="nav-btn" data-section="inventory">Inventory</button>
+        <button class="nav-btn" data-section="sales">Sales / History</button>
+    </nav>
 </header>
 
-<main>
+<main class="container">
 
-  <!-- DASHBOARD -->
-  <section id="dashboard" class="section active">
-    <h2>Dashboard</h2>
+    <!-- DASHBOARD -->
+    <section id="dashboard" class="section active">
 
-    <div class="cards">
-      <div class="card">
-        <span>Today's Sales</span>
-        <strong id="todaySales">₱0.00</strong>
-      </div>
+        <div class="section-header">
+            <div>
+                <h2>Dashboard</h2>
+                <p>Store overview</p>
+            </div>
+        </div>
 
-      <div class="card">
-        <span>Today's Profit</span>
-        <strong id="todayProfit">₱0.00</strong>
-      </div>
+        <div class="dashboard-grid">
 
-      <div class="card">
-        <span>Total Products</span>
-        <strong id="totalProducts">0</strong>
-      </div>
+            <div class="dashboard-card">
+                <span class="card-label">Today's Sales</span>
+                <h3 id="todaySales">₱0.00</h3>
+            </div>
 
-      <div class="card">
-        <span>Low Stock</span>
-        <strong id="lowStock">0</strong>
-      </div>
-    </div>
-  </section>
+            <div class="dashboard-card">
+                <span class="card-label">Today's Profit</span>
+                <h3 id="todayProfit">₱0.00</h3>
+            </div>
 
+            <div class="dashboard-card">
+                <span class="card-label">Total Products</span>
+                <h3 id="totalProducts">0</h3>
+            </div>
 
-  <!-- POS -->
-  <section id="pos" class="section">
+            <div class="dashboard-card">
+                <span class="card-label">Low Stock</span>
+                <h3 id="lowStock">0</h3>
+            </div>
 
-    <h2>Point of Sale</h2>
+        </div>
 
-    <div class="search-box">
-      <input
-        type="text"
-        id="barcodeInput"
-        placeholder="Enter barcode"
-      >
-
-      <button id="scanBtn">Search</button>
-      <button id="cameraBtn">Scan Camera</button>
-    </div>
-
-    <div id="productMessage"></div>
-
-    <div id="productList"></div>
-
-    <h3>Cart</h3>
-
-    <div id="cartItems"></div>
-
-    <div class="cart-summary">
-      <p>Items: <span id="cartCount">0</span></p>
-      <p>Subtotal: <strong id="cartSubtotal">₱0.00</strong></p>
-      <p>Total: <strong id="cartTotal">₱0.00</strong></p>
-
-      <button id="checkoutBtn" class="checkout-btn">
-        Checkout
-      </button>
-    </div>
-
-  </section>
+    </section>
 
 
-  <!-- INVENTORY -->
-  <section id="inventory" class="section">
+    <!-- POS -->
+    <section id="pos" class="section">
 
-    <h2>Inventory</h2>
+        <div class="section-header">
+            <div>
+                <h2>Point of Sale</h2>
+                <p>Scan or enter a product barcode</p>
+            </div>
+        </div>
 
-    <div class="table-container">
-      <table>
-        <thead>
-          <tr>
-            <th>Barcode</th>
-            <th>Product</th>
-            <th>Cost</th>
-            <th>Price</th>
-            <th>Stock</th>
-            <th>Status</th>
-          </tr>
-        </thead>
+        <div class="pos-layout">
 
-        <tbody id="inventoryTable"></tbody>
-      </table>
-    </div>
+            <div class="product-area">
 
-  </section>
+                <div class="barcode-box">
+
+                    <input
+                        type="text"
+                        id="barcodeInput"
+                        placeholder="Scan or enter barcode..."
+                        autocomplete="off"
+                    >
+
+                    <button id="scanBtn" class="primary-btn">
+                        Scan Camera
+                    </button>
+
+                </div>
+
+                <div id="productMessage" class="message"></div>
+
+                <div id="productList" class="product-list"></div>
+
+            </div>
 
 
-  <!-- HISTORY -->
-  <section id="history" class="section">
+            <div class="cart-area">
 
-    <div class="history-header">
-      <div>
-        <h2>Sales History</h2>
-        <p>All completed transactions are saved here.</p>
-      </div>
+                <div class="cart-header">
+                    <h3>Cart</h3>
+                    <span id="cartCount">0 items</span>
+                </div>
 
-      <button onclick="clearHistory()" class="danger-btn">
-        Clear History
-      </button>
-    </div>
+                <div id="cartItems" class="cart-items">
 
-    <div class="table-container">
-      <table>
-        <thead>
-          <tr>
-            <th>Sale ID</th>
-            <th>Date</th>
-            <th>Time</th>
-            <th>Items</th>
-            <th>Total</th>
-            <th>Payment</th>
-            <th>Change</th>
-            <th>Action</th>
-          </tr>
-        </thead>
+                    <div class="empty-cart">
+                        <p>Your cart is empty.</p>
+                        <span>Add a product using the barcode.</span>
+                    </div>
 
-        <tbody id="historyTable"></tbody>
-      </table>
-    </div>
+                </div>
 
-  </section>
+                <div class="cart-summary">
+
+                    <div class="summary-row">
+                        <span>Subtotal</span>
+                        <strong id="cartSubtotal">₱0.00</strong>
+                    </div>
+
+                    <div class="summary-row total-row">
+                        <span>Total</span>
+                        <strong id="cartTotal">₱0.00</strong>
+                    </div>
+
+                    <button id="checkoutBtn" class="checkout-btn">
+                        Checkout
+                    </button>
+
+                </div>
+
+            </div>
+
+        </div>
+
+    </section>
+
+
+    <!-- INVENTORY -->
+    <section id="inventory" class="section">
+
+        <div class="section-header">
+            <div>
+                <h2>Inventory</h2>
+                <p>Manage your store products</p>
+            </div>
+        </div>
+
+        <div class="table-container">
+
+            <table>
+
+                <thead>
+                    <tr>
+                        <th>Barcode</th>
+                        <th>Product</th>
+                        <th>Category</th>
+                        <th>Cost Price</th>
+                        <th>Selling Price</th>
+                        <th>Stock</th>
+                        <th>Status</th>
+                    </tr>
+                </thead>
+
+                <tbody id="inventoryTable"></tbody>
+
+            </table>
+
+        </div>
+
+    </section>
+
+
+    <!-- SALES / HISTORY -->
+    <section id="sales" class="section">
+
+        <div class="section-header">
+            <div>
+                <h2>Sales / Transaction History</h2>
+                <p>View and print completed transactions</p>
+            </div>
+
+            <button id="printAllSalesBtn" class="primary-btn">
+                Print History
+            </button>
+        </div>
+
+        <div class="table-container">
+
+            <table>
+
+                <thead>
+                    <tr>
+                        <th>Sale ID</th>
+                        <th>Date</th>
+                        <th>Time</th>
+                        <th>Total Sales</th>
+                        <th>Total Cost</th>
+                        <th>Profit</th>
+                        <th>Payment</th>
+                        <th>Change</th>
+                        <th>Action</th>
+                    </tr>
+                </thead>
+
+                <tbody id="salesTable"></tbody>
+
+            </table>
+
+        </div>
+
+    </section>
 
 </main>
 
 
-<!-- CAMERA MODAL -->
-<div id="cameraModal" class="modal">
+<!-- SCANNER MODAL -->
+<div id="scannerModal" class="modal">
 
-  <div class="modal-content">
+    <div class="modal-content">
 
-    <button class="close-btn" id="closeCameraBtn">&times;</button>
+        <div class="modal-header">
 
-    <h2>Scan Barcode</h2>
+            <h2>Scan Barcode</h2>
 
-    <div id="reader"></div>
+            <button id="closeScannerBtn" class="close-btn">
+                ×
+            </button>
 
-    <p id="scannerMessage">
-      Point your camera at a barcode.
-    </p>
+        </div>
 
-  </div>
+        <div id="reader"></div>
 
-</div>
+        <p class="scanner-message">
+            Point your camera at the barcode.
+        </p>
 
-
-<!-- CHECKOUT MODAL -->
-<div id="checkoutModal" class="modal">
-
-  <div class="modal-content">
-
-    <button class="close-btn" id="closeCheckoutBtn">&times;</button>
-
-    <h2>Checkout</h2>
-
-    <div class="checkout-info">
-      <p>Total:</p>
-      <strong id="checkoutTotal">₱0.00</strong>
     </div>
 
-    <label>Payment</label>
-
-    <input
-      type="number"
-      id="paymentInput"
-      placeholder="Enter payment"
-      min="0"
-      step="0.01"
-    >
-
-    <div class="change-box">
-      Change:
-      <strong id="changeAmount">₱0.00</strong>
-    </div>
-
-    <p id="checkoutMessage"></p>
-
-    <button id="confirmCheckoutBtn" class="checkout-btn">
-      Confirm Payment
-    </button>
-
-  </div>
-
 </div>
 
 
-<!-- HISTORY DETAILS MODAL -->
-<div id="historyModal" class="modal">
-
-  <div class="modal-content receipt">
-
-    <button class="close-btn" id="closeHistoryBtn">&times;</button>
-
-    <h2>Transaction Details</h2>
-
-    <div id="historyDetails"></div>
-
-  </div>
-
-</div>
-
-
-<script src="https://unpkg.com/html5-qrcode"></script>
 <script src="app.js"></script>
 
 </body>
