@@ -1,38 +1,26 @@
-/* =========================================================
-   STORE POS SYSTEM
-   - Local Storage Save Data
-   - Barcode Search
-   - Cart
-   - Checkout
-   - Inventory
-   - Sales
-   - Dashboard
-   - Camera Barcode Scanner
-   ========================================================= */
-
-
-/* =========================
-   STORAGE KEYS
-   ========================= */
+// ========================================
+// STORE POS SYSTEM
+// COMPLETE VERSION WITH SAVE DATA
+// ========================================
 
 const PRODUCTS_KEY = "storePOS_products";
 const CART_KEY = "storePOS_cart";
 const SALES_KEY = "storePOS_sales";
 
 
-/* =========================
-   DEFAULT PRODUCTS
-   ========================= */
+// ========================================
+// DEFAULT PRODUCTS
+// ========================================
 
 const defaultProducts = [
     {
         barcode: "480000000001",
         name: "Coca-Cola 1.5L",
-        category: "Beverages",
+        category: "Drinks",
         cost: 60,
         price: 85,
         stock: 24,
-        reorder: 5
+        reorderLevel: 5
     },
     {
         barcode: "480000000002",
@@ -41,7 +29,7 @@ const defaultProducts = [
         cost: 10,
         price: 15,
         stock: 50,
-        reorder: 10
+        reorderLevel: 10
     },
     {
         barcode: "480000000003",
@@ -50,200 +38,335 @@ const defaultProducts = [
         cost: 12,
         price: 18,
         stock: 30,
-        reorder: 5
+        reorderLevel: 5
     }
 ];
 
 
-/* =========================
-   LOAD / SAVE DATA
-   ========================= */
+// ========================================
+// STORAGE
+// ========================================
 
-function loadData(key, fallback) {
+function loadData(key, defaultValue) {
+
     try {
-        const data = localStorage.getItem(key);
 
-        if (!data) {
-            return fallback;
+        const saved =
+            localStorage.getItem(key);
+
+        if (saved === null) {
+
+            return defaultValue;
+
         }
 
-        return JSON.parse(data);
+        return JSON.parse(saved);
+
     } catch (error) {
-        console.error("Error loading data:", error);
-        return fallback;
+
+        console.error(error);
+
+        return defaultValue;
+
     }
+
 }
 
 
 function saveData(key, data) {
+
     try {
-        localStorage.setItem(key, JSON.stringify(data));
+
+        localStorage.setItem(
+            key,
+            JSON.stringify(data)
+        );
+
     } catch (error) {
-        console.error("Error saving data:", error);
+
+        console.error(error);
+
     }
+
 }
 
-
-/* =========================
-   APP DATA
-   ========================= */
 
 let products = loadData(
     PRODUCTS_KEY,
-    JSON.parse(JSON.stringify(defaultProducts))
+    JSON.parse(
+        JSON.stringify(defaultProducts)
+    )
 );
 
-let cart = loadData(CART_KEY, []);
+let cart = loadData(
+    CART_KEY,
+    []
+);
 
-let sales = loadData(SALES_KEY, []);
-
-
-/* =========================
-   ELEMENTS
-   ========================= */
-
-const barcodeInput = document.getElementById("barcodeInput");
-const scanBtn = document.getElementById("scanBtn");
-
-const productMessage = document.getElementById("productMessage");
-const productList = document.getElementById("productList");
-
-const cartItems = document.getElementById("cartItems");
-const cartCount = document.getElementById("cartCount");
-const cartSubtotal = document.getElementById("cartSubtotal");
-const cartTotal = document.getElementById("cartTotal");
-const checkoutBtn = document.getElementById("checkoutBtn");
-
-const inventoryTable = document.getElementById("inventoryTable");
-const salesTable = document.getElementById("salesTable");
-
-const todaySales = document.getElementById("todaySales");
-const todayProfit = document.getElementById("todayProfit");
-const totalProducts = document.getElementById("totalProducts");
-const lowStock = document.getElementById("lowStock");
-
-const scannerModal = document.getElementById("scannerModal");
-const closeScannerBtn = document.getElementById("closeScannerBtn");
-const scannerVideo = document.getElementById("scannerVideo");
-
-const checkoutModal = document.getElementById("checkoutModal");
-const closeCheckoutBtn = document.getElementById("closeCheckoutBtn");
-const checkoutTotal = document.getElementById("checkoutTotal");
-const paymentInput = document.getElementById("paymentInput");
+let sales = loadData(
+    SALES_KEY,
+    []
+);
 
 
-/* =========================
-   HELPER FUNCTIONS
-   ========================= */
+// ========================================
+// ELEMENTS
+// ========================================
 
-function peso(amount) {
-    return "₱" + Number(amount || 0).toFixed(2);
-}
+const barcodeInput =
+    document.getElementById("barcodeInput");
 
+const scanBtn =
+    document.getElementById("scanBtn");
 
-function escapeHTML(text) {
-    return String(text)
-        .replace(/&/g, "&amp;")
-        .replace(/</g, "&lt;")
-        .replace(/>/g, "&gt;")
-        .replace(/"/g, "&quot;")
-        .replace(/'/g, "&#039;");
-}
+const productMessage =
+    document.getElementById("productMessage");
 
+const productList =
+    document.getElementById("productList");
 
-function saveAll() {
-    saveData(PRODUCTS_KEY, products);
-    saveData(CART_KEY, cart);
-    saveData(SALES_KEY, sales);
-}
+const cartItems =
+    document.getElementById("cartItems");
 
+const cartCount =
+    document.getElementById("cartCount");
 
-/* =========================
-   NAVIGATION
-   ========================= */
+const cartSubtotal =
+    document.getElementById("cartSubtotal");
 
-document.querySelectorAll(".nav-btn").forEach(button => {
+const cartTotal =
+    document.getElementById("cartTotal");
 
-    button.addEventListener("click", () => {
+const checkoutBtn =
+    document.getElementById("checkoutBtn");
 
-        const sectionName = button.dataset.section;
+const inventoryTable =
+    document.getElementById("inventoryTable");
 
-        document.querySelectorAll(".nav-btn").forEach(btn => {
-            btn.classList.remove("active");
-        });
+const salesTable =
+    document.getElementById("salesTable");
 
-        button.classList.add("active");
+const todaySales =
+    document.getElementById("todaySales");
 
-        document.querySelectorAll(".section").forEach(section => {
-            section.classList.remove("active");
-        });
+const todayProfit =
+    document.getElementById("todayProfit");
 
-        const section = document.getElementById(sectionName);
+const totalProducts =
+    document.getElementById("totalProducts");
 
-        if (section) {
-            section.classList.add("active");
-        }
+const lowStock =
+    document.getElementById("lowStock");
 
-        refreshUI();
-    });
+const scannerModal =
+    document.getElementById("scannerModal");
 
-});
+const closeScannerBtn =
+    document.getElementById("closeScannerBtn");
 
+const scannerVideo =
+    document.getElementById("scannerVideo");
 
-/* =========================
-   PRODUCT SEARCH
-   ========================= */
+const checkoutModal =
+    document.getElementById("checkoutModal");
 
-function searchProduct(barcode) {
+const closeCheckoutBtn =
+    document.getElementById("closeCheckoutBtn");
 
-    barcode = String(barcode).trim();
+const checkoutTotal =
+    document.getElementById("checkoutTotal");
 
-    if (!barcode) {
-        showMessage("Please enter a barcode.", "error");
-        return;
-    }
+const paymentInput =
+    document.getElementById("paymentInput");
 
-    const product = products.find(
-        item => String(item.barcode) === barcode
+const changeAmount =
+    document.getElementById("changeAmount");
+
+const checkoutMessage =
+    document.getElementById("checkoutMessage");
+
+const confirmCheckoutBtn =
+    document.getElementById(
+        "confirmCheckoutBtn"
     );
 
-    if (!product) {
+
+// ========================================
+// CURRENCY
+// ========================================
+
+function money(amount) {
+
+    return new Intl.NumberFormat(
+        "en-PH",
+        {
+            style: "currency",
+            currency: "PHP"
+        }
+    ).format(Number(amount) || 0);
+
+}
+
+
+// ========================================
+// SAVE EVERYTHING
+// ========================================
+
+function saveEverything() {
+
+    saveData(
+        PRODUCTS_KEY,
+        products
+    );
+
+    saveData(
+        CART_KEY,
+        cart
+    );
+
+    saveData(
+        SALES_KEY,
+        sales
+    );
+
+}
+
+
+// ========================================
+// NAVIGATION
+// ========================================
+
+document
+    .querySelectorAll(".nav-btn")
+    .forEach(button => {
+
+        button.addEventListener(
+            "click",
+            function() {
+
+                const section =
+                    this.dataset.section;
+
+                document
+                    .querySelectorAll(".nav-btn")
+                    .forEach(btn => {
+                        btn.classList.remove(
+                            "active"
+                        );
+                    });
+
+                this.classList.add(
+                    "active"
+                );
+
+                document
+                    .querySelectorAll(".section")
+                    .forEach(sec => {
+                        sec.classList.remove(
+                            "active"
+                        );
+                    });
+
+                const target =
+                    document.getElementById(
+                        section
+                    );
+
+                if (target) {
+
+                    target.classList.add(
+                        "active"
+                    );
+
+                }
+
+                refreshAll();
+
+            }
+        );
+
+    });
+
+
+// ========================================
+// PRODUCT SEARCH
+// ========================================
+
+function searchProduct() {
+
+    const barcode =
+        barcodeInput.value.trim();
+
+    if (!barcode) {
+
         productList.innerHTML = "";
-        showMessage("Product not found.", "error");
+
+        showMessage("");
+
         return;
+
+    }
+
+    const product =
+        products.find(
+            item =>
+                String(item.barcode) ===
+                String(barcode)
+        );
+
+    if (!product) {
+
+        productList.innerHTML = "";
+
+        showMessage(
+            "Product not found.",
+            "error"
+        );
+
+        return;
+
     }
 
     if (product.stock <= 0) {
+
         productList.innerHTML = `
             <div class="product-card">
-                <h3>${escapeHTML(product.name)}</h3>
-                <p>Barcode: ${escapeHTML(product.barcode)}</p>
+                <h3>${product.name}</h3>
+                <p>Barcode: ${product.barcode}</p>
                 <p>Out of stock.</p>
             </div>
         `;
 
-        showMessage("Product is out of stock.", "error");
+        showMessage(
+            "Product is out of stock.",
+            "error"
+        );
+
         return;
+
     }
 
     productList.innerHTML = `
+
         <div class="product-card">
 
-            <h3>${escapeHTML(product.name)}</h3>
+            <h3>${product.name}</h3>
 
             <p>
                 Barcode:
-                ${escapeHTML(product.barcode)}
+                ${product.barcode}
             </p>
 
             <p>
                 Category:
-                ${escapeHTML(product.category)}
+                ${product.category}
             </p>
 
             <p>
                 Price:
-                <strong>${peso(product.price)}</strong>
+                <strong>
+                    ${money(product.price)}
+                </strong>
             </p>
 
             <p>
@@ -253,1042 +376,1030 @@ function searchProduct(barcode) {
 
             <button
                 class="primary-btn"
-                onclick="addToCart('${escapeHTML(product.barcode)}')"
+                id="addProductToCartBtn"
             >
                 Add to Cart
             </button>
 
         </div>
+
     `;
 
-    showMessage("Product found.", "success");
+    const addButton =
+        document.getElementById(
+            "addProductToCartBtn"
+        );
+
+    if (addButton) {
+
+        addButton.onclick =
+            function() {
+
+                addToCart(
+                    product.barcode
+                );
+
+            };
+
+    }
+
+    showMessage(
+        "Product found.",
+        "success"
+    );
+
 }
 
 
-/* =========================
-   SEARCH EVENTS
-   ========================= */
+// ========================================
+// BARCODE ENTER
+// ========================================
 
-if (barcodeInput) {
-
-    barcodeInput.addEventListener("keydown", event => {
+barcodeInput.addEventListener(
+    "keydown",
+    function(event) {
 
         if (event.key === "Enter") {
-            searchProduct(barcodeInput.value);
+
+            event.preventDefault();
+
+            searchProduct();
+
         }
 
-    });
+    }
+);
 
-}
 
+// ========================================
+// MESSAGE
+// ========================================
 
-function showMessage(message, type = "") {
+function showMessage(
+    message,
+    type = ""
+) {
 
-    if (!productMessage) return;
+    productMessage.textContent =
+        message;
 
-    productMessage.textContent = message;
-    productMessage.className = "message";
+    productMessage.className =
+        "message";
 
     if (type) {
-        productMessage.classList.add(type);
+
+        productMessage.classList.add(
+            type
+        );
+
     }
 
 }
 
 
-/* =========================
-   ADD TO CART
-   ========================= */
+// ========================================
+// ADD TO CART
+// ========================================
 
 function addToCart(barcode) {
 
-    const product = products.find(
-        item => String(item.barcode) === String(barcode)
-    );
+    const product =
+        products.find(
+            item =>
+                String(item.barcode) ===
+                String(barcode)
+        );
 
     if (!product) {
-        showMessage("Product not found.", "error");
+
         return;
+
     }
 
     if (product.stock <= 0) {
-        showMessage("Product is out of stock.", "error");
+
+        alert(
+            "Product is out of stock."
+        );
+
         return;
+
     }
 
-    const existing = cart.find(
-        item => String(item.barcode) === String(barcode)
-    );
+    const existing =
+        cart.find(
+            item =>
+                String(item.barcode) ===
+                String(barcode)
+        );
 
     if (existing) {
 
-        if (existing.quantity >= product.stock) {
-            showMessage("Not enough stock.", "error");
+        if (
+            existing.quantity >=
+            product.stock
+        ) {
+
+            alert(
+                "Not enough stock."
+            );
+
             return;
+
         }
 
-        existing.quantity += 1;
+        existing.quantity++;
 
     } else {
 
         cart.push({
-            barcode: product.barcode,
-            name: product.name,
-            price: product.price,
-            cost: product.cost,
+
+            barcode:
+                product.barcode,
+
+            name:
+                product.name,
+
+            price:
+                product.price,
+
+            cost:
+                product.cost,
+
             quantity: 1
+
         });
 
     }
 
-    saveData(CART_KEY, cart);
+    saveEverything();
 
     renderCart();
 
-    showMessage(
-        product.name + " added to cart.",
-        "success"
-    );
 }
 
 
-/* =========================
-   CART
-   ========================= */
+// ========================================
+// RENDER CART
+// ========================================
 
 function renderCart() {
-
-    if (!cartItems) return;
 
     if (cart.length === 0) {
 
         cartItems.innerHTML = `
+
             <div class="empty-cart">
+
                 <p>Your cart is empty.</p>
-                <span>Add a product using the barcode.</span>
+
+                <span>
+                    Add a product using the barcode.
+                </span>
+
             </div>
+
         `;
 
-        updateCartSummary();
+        cartCount.textContent =
+            "0 items";
+
+        cartSubtotal.textContent =
+            money(0);
+
+        cartTotal.textContent =
+            money(0);
+
         return;
+
     }
 
-    cartItems.innerHTML = cart.map((item, index) => {
 
-        return `
-            <div class="cart-item">
+    let total = 0;
 
-                <div class="cart-item-info">
+    let count = 0;
 
-                    <strong>
-                        ${escapeHTML(item.name)}
-                    </strong>
 
-                    <span>
-                        ${peso(item.price)} each
-                    </span>
+    cartItems.innerHTML =
+        cart.map(
+            (item, index) => {
 
-                </div>
+                const itemTotal =
+                    item.price *
+                    item.quantity;
 
-                <div class="quantity-controls">
+                total += itemTotal;
 
-                    <button
-                        onclick="changeQuantity(${index}, -1)"
-                    >
-                        −
-                    </button>
+                count +=
+                    item.quantity;
 
-                    <span>
-                        ${item.quantity}
-                    </span>
+                return `
 
-                    <button
-                        onclick="changeQuantity(${index}, 1)"
-                    >
-                        +
-                    </button>
+                    <div class="cart-item">
 
-                </div>
+                        <div>
 
-                <div class="cart-item-total">
-                    ${peso(item.price * item.quantity)}
-                </div>
+                            <strong>
+                                ${item.name}
+                            </strong>
 
-                <button
-                    class="remove-btn"
-                    onclick="removeFromCart(${index})"
-                >
-                    ×
-                </button>
+                            <br>
 
-            </div>
-        `;
+                            <span>
+                                ${money(item.price)}
+                                each
+                            </span>
 
-    }).join("");
+                        </div>
 
-    updateCartSummary();
+                        <div class="quantity-controls">
+
+                            <button
+                                onclick="
+                                    decreaseQuantity(
+                                        ${index}
+                                    )
+                                "
+                            >
+                                −
+                            </button>
+
+                            <span>
+                                ${item.quantity}
+                            </span>
+
+                            <button
+                                onclick="
+                                    increaseQuantity(
+                                        ${index}
+                                    )
+                                "
+                            >
+                                +
+                            </button>
+
+                        </div>
+
+                        <strong>
+                            ${money(itemTotal)}
+                        </strong>
+
+                        <button
+                            onclick="
+                                removeItem(
+                                    ${index}
+                                )
+                            "
+                        >
+                            ×
+                        </button>
+
+                    </div>
+
+                `;
+
+            }
+        ).join("");
+
+
+    cartCount.textContent =
+        count +
+        (count === 1
+            ? " item"
+            : " items");
+
+    cartSubtotal.textContent =
+        money(total);
+
+    cartTotal.textContent =
+        money(total);
+
 }
 
 
-/* =========================
-   CHANGE QUANTITY
-   ========================= */
+// ========================================
+// QUANTITY
+// ========================================
 
-function changeQuantity(index, amount) {
+function increaseQuantity(index) {
 
-    const item = cart[index];
+    const item =
+        cart[index];
 
     if (!item) return;
 
-    const product = products.find(
-        p => String(p.barcode) === String(item.barcode)
-    );
+    const product =
+        products.find(
+            p =>
+                String(p.barcode) ===
+                String(item.barcode)
+        );
 
-    if (!product) return;
+    if (
+        item.quantity >=
+        product.stock
+    ) {
 
-    const newQuantity = item.quantity + amount;
+        alert(
+            "Not enough stock."
+        );
 
-    if (newQuantity <= 0) {
-        cart.splice(index, 1);
+        return;
+
+    }
+
+    item.quantity++;
+
+    saveEverything();
+
+    renderCart();
+
+}
+
+
+function decreaseQuantity(index) {
+
+    const item =
+        cart[index];
+
+    if (!item) return;
+
+    if (item.quantity > 1) {
+
+        item.quantity--;
+
     } else {
 
-        if (newQuantity > product.stock) {
-            showMessage("Not enough stock.", "error");
-            return;
-        }
+        cart.splice(
+            index,
+            1
+        );
 
-        item.quantity = newQuantity;
     }
 
-    saveData(CART_KEY, cart);
+    saveEverything();
 
     renderCart();
+
 }
 
 
-/* =========================
-   REMOVE CART ITEM
-   ========================= */
+function removeItem(index) {
 
-function removeFromCart(index) {
+    cart.splice(
+        index,
+        1
+    );
 
-    if (index < 0 || index >= cart.length) {
-        return;
-    }
-
-    cart.splice(index, 1);
-
-    saveData(CART_KEY, cart);
+    saveEverything();
 
     renderCart();
+
 }
 
 
-/* =========================
-   CART TOTAL
-   ========================= */
+// ========================================
+// CART TOTAL
+// ========================================
 
 function getCartTotal() {
 
     return cart.reduce(
-        (total, item) =>
-            total + Number(item.price) * Number(item.quantity),
+        (sum, item) =>
+            sum +
+            item.price *
+            item.quantity,
         0
     );
-}
-
-
-function updateCartSummary() {
-
-    const total = getCartTotal();
-
-    const count = cart.reduce(
-        (total, item) =>
-            total + Number(item.quantity),
-        0
-    );
-
-    if (cartCount) {
-        cartCount.textContent =
-            count + (count === 1 ? " item" : " items");
-    }
-
-    if (cartSubtotal) {
-        cartSubtotal.textContent = peso(total);
-    }
-
-    if (cartTotal) {
-        cartTotal.textContent = peso(total);
-    }
 
 }
 
 
-/* =========================
-   CHECKOUT MODAL
-   ========================= */
+// ========================================
+// OPEN CHECKOUT
+// ========================================
 
-if (checkoutBtn) {
-
-    checkoutBtn.addEventListener("click", () => {
+checkoutBtn.addEventListener(
+    "click",
+    function() {
 
         if (cart.length === 0) {
-            alert("Your cart is empty.");
+
+            alert(
+                "Your cart is empty."
+            );
+
             return;
+
         }
 
-        const total = getCartTotal();
+        const total =
+            getCartTotal();
 
-        if (checkoutTotal) {
-            checkoutTotal.textContent = peso(total);
-        }
+        checkoutTotal.textContent =
+            money(total);
 
-        if (paymentInput) {
-            paymentInput.value = "";
-        }
+        paymentInput.value = "";
 
-        openModal(checkoutModal);
+        changeAmount.textContent =
+            money(0);
 
-    });
+        checkoutMessage.textContent =
+            "";
 
-}
+        checkoutModal.classList.add(
+            "active"
+        );
 
+        checkoutModal.style.display =
+            "flex";
 
-function openModal(modal) {
+        paymentInput.focus();
 
-    if (!modal) return;
-
-    modal.classList.add("active");
-    modal.style.display = "flex";
-}
-
-
-function closeModal(modal) {
-
-    if (!modal) return;
-
-    modal.classList.remove("active");
-    modal.style.display = "none";
-}
-
-
-if (closeCheckoutBtn) {
-
-    closeCheckoutBtn.addEventListener("click", () => {
-        closeModal(checkoutModal);
-    });
-
-}
-
-
-/* =========================
-   FIND CHECKOUT BUTTON
-   ========================= */
-
-function getConfirmCheckoutButton() {
-
-    const possibleButtons = [
-        document.getElementById("confirmCheckoutBtn"),
-        document.getElementById("confirmPaymentBtn"),
-        document.getElementById("completeCheckoutBtn"),
-        document.getElementById("payBtn"),
-        document.getElementById("confirmBtn")
-    ];
-
-    for (const button of possibleButtons) {
-        if (button) {
-            return button;
-        }
     }
+);
 
-    if (checkoutModal) {
 
-        const buttons =
-            checkoutModal.querySelectorAll("button");
+// ========================================
+// PAYMENT / CHANGE
+// ========================================
 
-        for (const button of buttons) {
+paymentInput.addEventListener(
+    "input",
+    function() {
+
+        const payment =
+            Number(this.value) || 0;
+
+        const total =
+            getCartTotal();
+
+        const change =
+            payment - total;
+
+        changeAmount.textContent =
+            money(
+                change > 0
+                    ? change
+                    : 0
+            );
+
+    }
+);
+
+
+// ========================================
+// CLOSE CHECKOUT
+// ========================================
+
+closeCheckoutBtn.addEventListener(
+    "click",
+    function() {
+
+        closeCheckout();
+
+    }
+);
+
+
+function closeCheckout() {
+
+    checkoutModal.classList.remove(
+        "active"
+    );
+
+    checkoutModal.style.display =
+        "none";
+
+}
+
+
+// ========================================
+// COMPLETE CHECKOUT
+// ========================================
+
+confirmCheckoutBtn.addEventListener(
+    "click",
+    function() {
+
+        if (cart.length === 0) {
+
+            return;
+
+        }
+
+        const total =
+            getCartTotal();
+
+        const payment =
+            Number(
+                paymentInput.value
+            );
+
+
+        if (!payment || payment <= 0) {
+
+            checkoutMessage.textContent =
+                "Please enter payment.";
+
+            return;
+
+        }
+
+
+        if (payment < total) {
+
+            checkoutMessage.textContent =
+                "Insufficient payment.";
+
+            return;
+
+        }
+
+
+        // Check stock first
+
+        for (const item of cart) {
+
+            const product =
+                products.find(
+                    p =>
+                        String(
+                            p.barcode
+                        ) ===
+                        String(
+                            item.barcode
+                        )
+                );
+
+            if (!product) {
+
+                alert(
+                    "Product not found."
+                );
+
+                return;
+
+            }
 
             if (
-                button !== closeCheckoutBtn &&
-                !button.classList.contains("close-btn")
+                item.quantity >
+                product.stock
             ) {
-                return button;
+
+                alert(
+                    "Not enough stock for " +
+                    product.name
+                );
+
+                return;
+
             }
 
         }
 
-    }
 
-    return null;
-}
+        // Calculate cost
 
+        let totalCost = 0;
 
-const confirmCheckoutButton =
-    getConfirmCheckoutButton();
+        cart.forEach(
+            item => {
 
+                totalCost +=
+                    item.cost *
+                    item.quantity;
 
-/* =========================
-   COMPLETE CHECKOUT
-   ========================= */
-
-function completeCheckout() {
-
-    if (cart.length === 0) {
-        alert("Your cart is empty.");
-        return;
-    }
-
-    const payment =
-        Number(paymentInput ? paymentInput.value : 0);
-
-    const total = getCartTotal();
-
-    if (!payment || payment <= 0) {
-        alert("Please enter payment.");
-        return;
-    }
-
-    if (payment < total) {
-        alert(
-            "Insufficient payment.\n\n" +
-            "Total: " + peso(total) +
-            "\nPayment: " + peso(payment)
-        );
-
-        return;
-    }
-
-
-    /* CHECK STOCK */
-
-    for (const item of cart) {
-
-        const product = products.find(
-            p => String(p.barcode) === String(item.barcode)
-        );
-
-        if (!product) {
-            alert(
-                "Product no longer exists: " +
-                item.name
-            );
-
-            return;
-        }
-
-        if (item.quantity > product.stock) {
-
-            alert(
-                "Not enough stock for " +
-                item.name
-            );
-
-            return;
-        }
-
-    }
-
-
-    /* CALCULATE COST AND PROFIT */
-
-    let totalCost = 0;
-
-    cart.forEach(item => {
-
-        totalCost +=
-            Number(item.cost) *
-            Number(item.quantity);
-
-    });
-
-    const profit = total - totalCost;
-
-    const now = new Date();
-
-    const sale = {
-
-        id:
-            "SALE-" +
-            now.getTime(),
-
-        date:
-            now.toLocaleDateString(),
-
-        time:
-            now.toLocaleTimeString(),
-
-        total:
-            total,
-
-        cost:
-            totalCost,
-
-        profit:
-            profit,
-
-        payment:
-            payment,
-
-        change:
-            payment - total,
-
-        items:
-            JSON.parse(JSON.stringify(cart))
-
-    };
-
-
-    /* DEDUCT INVENTORY */
-
-    cart.forEach(item => {
-
-        const product = products.find(
-            p => String(p.barcode) === String(item.barcode)
-        );
-
-        if (product) {
-            product.stock -= item.quantity;
-
-            if (product.stock < 0) {
-                product.stock = 0;
             }
-        }
-
-    });
+        );
 
 
-    /* SAVE SALE */
-
-    sales.unshift(sale);
-
-
-    /* CLEAR CART */
-
-    cart = [];
+        const profit =
+            total -
+            totalCost;
 
 
-    /* SAVE EVERYTHING */
-
-    saveAll();
-
-
-    /* REFRESH DISPLAY */
-
-    renderCart();
-    renderInventory();
-    renderSales();
-    updateDashboard();
+        const now =
+            new Date();
 
 
-    closeModal(checkoutModal);
+        // Deduct inventory
+
+        cart.forEach(
+            item => {
+
+                const product =
+                    products.find(
+                        p =>
+                            String(
+                                p.barcode
+                            ) ===
+                            String(
+                                item.barcode
+                            )
+                    );
+
+                product.stock -=
+                    item.quantity;
+
+            }
+        );
 
 
-    if (barcodeInput) {
+        // Create sale
+
+        const sale = {
+
+            id:
+                "SALE-" +
+                now.getTime(),
+
+            date:
+                now.toLocaleDateString(
+                    "en-PH"
+                ),
+
+            time:
+                now.toLocaleTimeString(
+                    "en-PH"
+                ),
+
+            total:
+                total,
+
+            cost:
+                totalCost,
+
+            profit:
+                profit,
+
+            payment:
+                payment,
+
+            change:
+                payment - total,
+
+            items:
+                JSON.parse(
+                    JSON.stringify(cart)
+                )
+
+        };
+
+
+        sales.unshift(
+            sale
+        );
+
+
+        // Clear cart
+
+        cart = [];
+
+
+        // SAVE EVERYTHING
+
+        saveEverything();
+
+
+        // Update screen
+
+        renderCart();
+
+        renderInventory();
+
+        renderSales();
+
+        updateDashboard();
+
+
+        closeCheckout();
+
+
         barcodeInput.value = "";
-    }
 
-    if (productList) {
         productList.innerHTML = "";
+
+        showMessage(
+            "Checkout successful!",
+            "success"
+        );
+
+
+        alert(
+            "Checkout successful!\n\n" +
+            "Total: " +
+            money(total) +
+            "\nPayment: " +
+            money(payment) +
+            "\nChange: " +
+            money(
+                payment - total
+            )
+        );
+
     }
-
-    showMessage(
-        "Checkout successful!",
-        "success"
-    );
-
-    alert(
-        "Checkout successful!\n\n" +
-        "Total: " + peso(total) +
-        "\nPayment: " + peso(payment) +
-        "\nChange: " + peso(payment - total)
-    );
-
-}
+);
 
 
-if (confirmCheckoutButton) {
-
-    confirmCheckoutButton.addEventListener(
-        "click",
-        completeCheckout
-    );
-
-}
-
-
-/* =========================
-   INVENTORY
-   ========================= */
+// ========================================
+// INVENTORY
+// ========================================
 
 function renderInventory() {
 
-    if (!inventoryTable) return;
-
-    if (products.length === 0) {
-
-        inventoryTable.innerHTML = `
-            <tr>
-                <td colspan="7">
-                    No products found.
-                </td>
-            </tr>
-        `;
-
-        return;
-    }
+    if (
+        !inventoryTable
+    ) return;
 
 
     inventoryTable.innerHTML =
-        products.map(product => {
+        products.map(
+            product => {
 
-            let status = "In Stock";
+                let status =
+                    "In Stock";
 
-            if (product.stock <= 0) {
-                status = "Out of Stock";
-            } else if (
-                product.stock <= product.reorder
-            ) {
-                status = "Low Stock";
+                if (
+                    product.stock <= 0
+                ) {
+
+                    status =
+                        "Out of Stock";
+
+                } else if (
+                    product.stock <=
+                    product.reorderLevel
+                ) {
+
+                    status =
+                        "Low Stock";
+
+                }
+
+
+                return `
+
+                    <tr>
+
+                        <td>
+                            ${product.barcode}
+                        </td>
+
+                        <td>
+                            ${product.name}
+                        </td>
+
+                        <td>
+                            ${product.category}
+                        </td>
+
+                        <td>
+                            ${money(
+                                product.cost
+                            )}
+                        </td>
+
+                        <td>
+                            ${money(
+                                product.price
+                            )}
+                        </td>
+
+                        <td>
+                            ${product.stock}
+                        </td>
+
+                        <td>
+                            ${status}
+                        </td>
+
+                    </tr>
+
+                `;
+
             }
-
-            return `
-                <tr>
-
-                    <td>
-                        ${escapeHTML(product.barcode)}
-                    </td>
-
-                    <td>
-                        ${escapeHTML(product.name)}
-                    </td>
-
-                    <td>
-                        ${escapeHTML(product.category)}
-                    </td>
-
-                    <td>
-                        ${peso(product.cost)}
-                    </td>
-
-                    <td>
-                        ${peso(product.price)}
-                    </td>
-
-                    <td>
-                        ${product.stock}
-                    </td>
-
-                    <td>
-                        ${status}
-                    </td>
-
-                </tr>
-            `;
-
-        }).join("");
+        ).join("");
 
 }
 
 
-/* =========================
-   SALES
-   ========================= */
+// ========================================
+// SALES
+// ========================================
 
 function renderSales() {
 
     if (!salesTable) return;
 
+
     if (sales.length === 0) {
 
         salesTable.innerHTML = `
+
             <tr>
+
                 <td colspan="7">
                     No sales yet.
                 </td>
+
             </tr>
+
         `;
 
         return;
+
     }
 
 
     salesTable.innerHTML =
-        sales.map(sale => {
+        sales.map(
+            sale => {
 
-            return `
-                <tr>
+                return `
 
-                    <td>
-                        ${escapeHTML(sale.id)}
-                    </td>
+                    <tr>
 
-                    <td>
-                        ${escapeHTML(sale.date)}
-                    </td>
+                        <td>
+                            ${sale.id}
+                        </td>
 
-                    <td>
-                        ${escapeHTML(sale.time)}
-                    </td>
+                        <td>
+                            ${sale.date}
+                        </td>
 
-                    <td>
-                        ${peso(sale.total)}
-                    </td>
+                        <td>
+                            ${sale.time}
+                        </td>
 
-                    <td>
-                        ${peso(sale.cost)}
-                    </td>
+                        <td>
+                            ${money(
+                                sale.total
+                            )}
+                        </td>
 
-                    <td>
-                        ${peso(sale.profit)}
-                    </td>
+                        <td>
+                            ${money(
+                                sale.cost
+                            )}
+                        </td>
 
-                    <td>
-                        ${peso(sale.payment)}
-                    </td>
+                        <td>
+                            ${money(
+                                sale.profit
+                            )}
+                        </td>
 
-                </tr>
-            `;
+                        <td>
+                            ${money(
+                                sale.payment
+                            )}
+                        </td>
 
-        }).join("");
+                    </tr>
+
+                `;
+
+            }
+        ).join("");
 
 }
 
 
-/* =========================
-   DASHBOARD
-   ========================= */
+// ========================================
+// DASHBOARD
+// ========================================
 
 function updateDashboard() {
 
     const today =
-        new Date().toLocaleDateString();
+        new Date().toLocaleDateString(
+            "en-PH"
+        );
 
 
-    const todaySalesData =
+    const todayData =
         sales.filter(
-            sale => sale.date === today
+            sale =>
+                sale.date === today
         );
 
 
-    const salesAmount =
-        todaySalesData.reduce(
+    const salesTotal =
+        todayData.reduce(
             (sum, sale) =>
-                sum + Number(sale.total),
+                sum +
+                Number(
+                    sale.total
+                ),
             0
         );
 
 
-    const profitAmount =
-        todaySalesData.reduce(
+    const profitTotal =
+        todayData.reduce(
             (sum, sale) =>
-                sum + Number(sale.profit),
+                sum +
+                Number(
+                    sale.profit
+                ),
             0
         );
 
 
-    const lowStockCount =
+    const low =
         products.filter(
             product =>
-                product.stock <= product.reorder
+                product.stock <=
+                product.reorderLevel
         ).length;
 
 
-    if (todaySales) {
-        todaySales.textContent =
-            peso(salesAmount);
-    }
+    todaySales.textContent =
+        money(salesTotal);
 
+    todayProfit.textContent =
+        money(profitTotal);
 
-    if (todayProfit) {
-        todayProfit.textContent =
-            peso(profitAmount);
-    }
+    totalProducts.textContent =
+        products.length;
 
-
-    if (totalProducts) {
-        totalProducts.textContent =
-            products.length;
-    }
-
-
-    if (lowStock) {
-        lowStock.textContent =
-            lowStockCount;
-    }
+    lowStock.textContent =
+        low;
 
 }
 
 
-/* =========================
-   CAMERA SCANNER
-   ========================= */
+// ========================================
+// CAMERA SCANNER
+// ========================================
 
-let scannerStream = null;
-
-
-if (scanBtn) {
-
-    scanBtn.addEventListener(
-        "click",
-        startCameraScanner
-    );
-
-}
+let html5QrCode = null;
 
 
-async function startCameraScanner() {
+scanBtn.addEventListener(
+    "click",
+    async function() {
 
-    if (!scannerModal || !scannerVideo) {
-        alert("Scanner is not available.");
-        return;
-    }
-
-    try {
-
-        openModal(scannerModal);
-
-        scannerStream =
-            await navigator.mediaDevices.getUserMedia({
-                video: {
-                    facingMode: {
-                        ideal: "environment"
-                    }
-                },
-                audio: false
-            });
-
-        scannerVideo.srcObject =
-            scannerStream;
-
-        await scannerVideo.play();
-
-        showScannerMessage(
-            "Point your camera at a barcode."
+        scannerModal.classList.add(
+            "active"
         );
 
-        startBarcodeDetection();
-
-    } catch (error) {
-
-        console.error(
-            "Camera error:",
-            error
-        );
-
-        showScannerMessage(
-            "Camera access was blocked or unavailable."
-        );
-
-        alert(
-            "Please allow camera access for barcode scanning."
-        );
-
-    }
-
-}
+        scannerModal.style.display =
+            "flex";
 
 
-function showScannerMessage(message) {
-
-    const messageBox =
-        scannerModal
-            ? scannerModal.querySelector(".scanner-message")
-            : null;
-
-    if (messageBox) {
-        messageBox.textContent = message;
-    }
-
-}
-
-
-/* =========================
-   BARCODE DETECTION
-   ========================= */
-
-let barcodeDetector = null;
-let detectionRunning = false;
-
-
-async function startBarcodeDetection() {
-
-    if (
-        !("BarcodeDetector" in window) ||
-        !scannerVideo
-    ) {
-
-        showScannerMessage(
-            "Your browser does not support automatic barcode detection. You can still enter the barcode manually."
-        );
-
-        return;
-    }
-
-
-    try {
-
-        barcodeDetector =
-            new BarcodeDetector({
-                formats: [
-                    "ean_13",
-                    "ean_8",
-                    "code_128",
-                    "code_39",
-                    "upc_a",
-                    "upc_e",
-                    "qr_code"
-                ]
-            });
-
-    } catch (error) {
-
-        console.error(error);
-
-        return;
-    }
-
-
-    detectionRunning = true;
-
-    detectBarcode();
-
-}
-
-
-async function detectBarcode() {
-
-    if (
-        !detectionRunning ||
-        !scannerVideo ||
-        scannerVideo.readyState < 2
-    ) {
-        if (detectionRunning) {
-            requestAnimationFrame(detectBarcode);
-        }
-
-        return;
-    }
-
-
-    try {
-
-        const barcodes =
-            await barcodeDetector.detect(
-                scannerVideo
+        html5QrCode =
+            new Html5Qrcode(
+                "scannerVideo"
             );
 
-        if (barcodes.length > 0) {
 
-            const code =
-                barcodes[0].rawValue;
+        try {
 
-            if (code) {
+            await html5QrCode.start(
 
-                if (barcodeInput) {
-                    barcodeInput.value = code;
-                }
+                {
+                    facingMode:
+                        "environment"
+                },
 
-                stopCameraScanner();
+                {
+                    fps: 10,
 
-                searchProduct(code);
+                    qrbox: {
+                        width: 250,
+                        height: 150
+                    }
 
-                return;
-            }
+                },
 
-        }
+                function(decodedText) {
 
-    } catch (error) {
+                    barcodeInput.value =
+                        decodedText;
 
-        console.error(
-            "Barcode detection error:",
-            error
-        );
+                    stopScanner();
 
-    }
+                    searchProduct();
 
+                },
 
-    if (detectionRunning) {
-        requestAnimationFrame(
-            detectBarcode
-        );
-    }
+                function() {}
 
-}
+            );
 
+        } catch (error) {
 
-/* =========================
-   STOP CAMERA
-   ========================= */
+            console.error(
+                error
+            );
 
-function stopCameraScanner() {
+            alert(
+                "Unable to start camera."
+            );
 
-    detectionRunning = false;
-
-    if (scannerStream) {
-
-        scannerStream
-            .getTracks()
-            .forEach(track => {
-                track.stop();
-            });
-
-        scannerStream = null;
-    }
-
-    if (scannerVideo) {
-        scannerVideo.srcObject = null;
-    }
-
-    closeModal(scannerModal);
-
-}
-
-
-if (closeScannerBtn) {
-
-    closeScannerBtn.addEventListener(
-        "click",
-        stopCameraScanner
-    );
-
-}
-
-
-/* =========================
-   CLOSE MODALS WHEN CLICKING OUTSIDE
-   ========================= */
-
-window.addEventListener("click", event => {
-
-    if (
-        event.target === scannerModal
-    ) {
-        stopCameraScanner();
-    }
-
-    if (
-        event.target === checkoutModal
-    ) {
-        closeModal(checkoutModal);
-    }
-
-});
-
-
-/* =========================
-   KEYBOARD SHORTCUT
-   ========================= */
-
-document.addEventListener(
-    "keydown",
-    event => {
-
-        if (
-            event.key === "Escape"
-        ) {
-
-            stopCameraScanner();
-            closeModal(checkoutModal);
+            stopScanner();
 
         }
 
@@ -1296,45 +1407,88 @@ document.addEventListener(
 );
 
 
-/* =========================
-   REFRESH ALL UI
-   ========================= */
+// ========================================
+// STOP SCANNER
+// ========================================
 
-function refreshUI() {
+async function stopScanner() {
+
+    if (html5QrCode) {
+
+        try {
+
+            await html5QrCode.stop();
+
+        } catch (error) {}
+
+        try {
+
+            await html5QrCode.clear();
+
+        } catch (error) {}
+
+        html5QrCode = null;
+
+    }
+
+
+    scannerModal.classList.remove(
+        "active"
+    );
+
+    scannerModal.style.display =
+        "none";
+
+}
+
+
+closeScannerBtn.addEventListener(
+    "click",
+    stopScanner
+);
+
+
+// ========================================
+// REFRESH EVERYTHING
+// ========================================
+
+function refreshAll() {
 
     renderCart();
+
     renderInventory();
+
     renderSales();
+
     updateDashboard();
 
 }
 
 
-/* =========================
-   INITIALIZE
-   ========================= */
+// ========================================
+// START
+// ========================================
 
-refreshUI();
+refreshAll();
 
-
-/* =========================
-   SAVE BEFORE LEAVING PAGE
-   ========================= */
-
-window.addEventListener(
-    "beforeunload",
-    () => {
-        saveAll();
-    }
-);
+barcodeInput.focus();
 
 
-/* =========================
-   MAKE FUNCTIONS AVAILABLE
-   ========================= */
+// ========================================
+// MAKE FUNCTIONS AVAILABLE
+// ========================================
 
-window.searchProduct = searchProduct;
-window.addToCart = addToCart;
-window.changeQuantity = changeQuantity;
-window.removeFromCart = removeFromCart;
-window.completeCheckout = completeCheckout;
+window.addToCart =
+    addToCart;
+
+window.increaseQuantity =
+    increaseQuantity;
+
+window.decreaseQuantity =
+    decreaseQuantity;
+
+window.removeItem =
+    removeItem;
+
+window.searchProduct =
+    searchProduct;
