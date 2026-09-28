@@ -1,11 +1,14 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
+
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
 <title>Locale Store</title>
 
 <style>
+
 * {
     box-sizing: border-box;
 }
@@ -49,7 +52,6 @@ body {
 .login-title h1 {
     margin: 0;
     font-size: 30px;
-    color: #111827;
 }
 
 .login-title p {
@@ -92,16 +94,11 @@ body {
     cursor: pointer;
 }
 
-.login-btn:hover {
-    background: #1d4ed8;
-}
-
 .login-error {
     min-height: 20px;
     margin-bottom: 10px;
     text-align: center;
     color: #dc2626;
-    font-size: 14px;
 }
 
 /* =========================
@@ -120,6 +117,7 @@ body {
     justify-content: space-between;
     align-items: center;
     gap: 20px;
+    flex-wrap: wrap;
 }
 
 .brand h1 {
@@ -154,10 +152,6 @@ body {
     font-weight: 700;
 }
 
-.logout-btn:hover {
-    background: #b91c1c;
-}
-
 .navbar {
     background: #111827;
     padding: 10px 24px;
@@ -174,10 +168,6 @@ body {
     border-radius: 8px;
     cursor: pointer;
     font-weight: 600;
-}
-
-.nav-btn:hover {
-    background: #e5e7eb;
 }
 
 .nav-btn.active {
@@ -217,7 +207,9 @@ body {
     color: #6b7280;
 }
 
-/* DASHBOARD */
+/* =========================
+   DASHBOARD
+========================= */
 
 .dashboard-grid {
     display: grid;
@@ -242,7 +234,9 @@ body {
     font-size: 25px;
 }
 
-/* POS */
+/* =========================
+   POS
+========================= */
 
 .pos-layout {
     display: grid;
@@ -282,10 +276,6 @@ body {
     font-weight: 600;
 }
 
-.primary-btn:hover {
-    background: #1d4ed8;
-}
-
 .message {
     min-height: 22px;
     margin: 14px 0;
@@ -305,7 +295,6 @@ body {
     background: #eff6ff;
     border-radius: 10px;
     padding: 16px;
-    margin-top: 10px;
 }
 
 .product-card h3 {
@@ -319,38 +308,17 @@ body {
 }
 
 .product-card-bottom {
-    margin-top: 14px;
     display: flex;
     justify-content: space-between;
     align-items: center;
     gap: 10px;
+    margin-top: 15px;
 }
 
 .cart-header {
     display: flex;
     justify-content: space-between;
     align-items: center;
-    margin-bottom: 15px;
-}
-
-.cart-header h3 {
-    margin: 0;
-}
-
-#cartCount {
-    color: #6b7280;
-    font-size: 14px;
-}
-
-.empty-cart {
-    text-align: center;
-    padding: 30px 10px;
-    color: #6b7280;
-}
-
-.empty-cart p {
-    margin: 0 0 5px;
-    color: #374151;
 }
 
 .cart-item {
@@ -375,11 +343,10 @@ body {
 }
 
 .cart-item-bottom {
-    margin-top: 10px;
     display: flex;
-    align-items: center;
     justify-content: space-between;
-    gap: 10px;
+    align-items: center;
+    margin-top: 10px;
 }
 
 .quantity-controls {
@@ -399,17 +366,23 @@ body {
 
 .remove-btn {
     border: none;
-    background: #fee2e2 !important;
+    background: #fee2e2;
     color: #b91c1c;
-    padding: 6px 9px;
+    padding: 7px 10px;
     border-radius: 6px;
     cursor: pointer;
 }
 
+.empty-cart {
+    text-align: center;
+    padding: 30px 10px;
+    color: #6b7280;
+}
+
 .cart-summary {
-    margin-top: 18px;
     border-top: 1px solid #e5e7eb;
-    padding-top: 16px;
+    margin-top: 15px;
+    padding-top: 15px;
 }
 
 .summary-row {
@@ -437,10 +410,11 @@ body {
 
 .checkout-btn:disabled {
     background: #9ca3af;
-    cursor: not-allowed;
 }
 
-/* TABLE */
+/* =========================
+   TABLE
+========================= */
 
 .table-container {
     background: white;
@@ -464,11 +438,9 @@ td {
 
 th {
     background: #f9fafb;
-    font-size: 13px;
 }
 
 .status {
-    display: inline-block;
     padding: 5px 8px;
     border-radius: 6px;
     font-size: 12px;
@@ -496,7 +468,6 @@ th {
     border-radius: 6px;
     cursor: pointer;
     margin-right: 4px;
-    font-weight: 600;
 }
 
 .view-btn {
@@ -508,12 +479,9 @@ th {
     color: white;
 }
 
-.history-summary {
-    margin-bottom: 15px;
-    color: #6b7280;
-}
-
-/* MODALS */
+/* =========================
+   MODAL
+========================= */
 
 .modal {
     position: fixed;
@@ -545,10 +513,6 @@ th {
     justify-content: space-between;
     align-items: center;
     margin-bottom: 15px;
-}
-
-.modal-header h2 {
-    margin: 0;
 }
 
 .close-btn {
@@ -588,32 +552,9 @@ th {
     justify-content: space-between;
 }
 
-.checkout-message {
-    margin-top: 10px;
-    color: #dc2626;
-}
-
-.confirm-btn {
-    width: 100%;
-    margin-top: 15px;
-    border: none;
-    background: #16a34a;
-    color: white;
-    padding: 13px;
-    border-radius: 8px;
-    font-weight: 700;
-    cursor: pointer;
-}
-
-#reader {
-    width: 100%;
-    max-width: 450px;
-    margin: auto;
-}
-
 /* MOBILE */
 
-@media (max-width: 950px) {
+@media (max-width: 850px) {
 
     .dashboard-grid {
         grid-template-columns: 1fr 1fr;
@@ -621,10 +562,6 @@ th {
 
     .pos-layout {
         grid-template-columns: 1fr;
-    }
-
-    .topbar {
-        flex-wrap: wrap;
     }
 
 }
@@ -651,20 +588,16 @@ th {
         flex: 1;
     }
 
-    .user-area {
-        width: 100%;
-        justify-content: space-between;
-    }
-
 }
 </style>
+
 </head>
 
 <body>
 
 
 <!-- ==================================================
-     LOGIN SCREEN
+     LOGIN
 ================================================== -->
 
 <div id="loginScreen">
@@ -688,7 +621,7 @@ th {
 
             <div class="login-field">
 
-                <label for="usernameInput">
+                <label>
                     Username
                 </label>
 
@@ -696,7 +629,6 @@ th {
                     type="text"
                     id="usernameInput"
                     placeholder="Enter username"
-                    autocomplete="username"
                     required
                 >
 
@@ -705,7 +637,7 @@ th {
 
             <div class="login-field">
 
-                <label for="passwordInput">
+                <label>
                     Password
                 </label>
 
@@ -713,7 +645,6 @@ th {
                     type="password"
                     id="passwordInput"
                     placeholder="Enter password"
-                    autocomplete="current-password"
                     required
                 >
 
@@ -741,510 +672,483 @@ th {
 
 
 <!-- ==================================================
-     APPLICATION
+     APP
 ================================================== -->
 
 <div id="appContainer">
 
-    <!-- TOP BAR -->
 
-    <header class="topbar">
+<header class="topbar">
 
-        <div class="brand">
+    <div class="brand">
 
-            <h1>
-                Locale Store
-            </h1>
+        <h1>
+            Locale Store
+        </h1>
+
+        <p>
+            Point of Sale System
+        </p>
+
+    </div>
+
+
+    <div class="user-area">
+
+        <span
+            id="userLabel"
+            class="user-label"
+        >
+            Logged in as admin
+        </span>
+
+
+        <button
+            id="logoutBtn"
+            class="logout-btn"
+            type="button"
+        >
+            Logout
+        </button>
+
+    </div>
+
+</header>
+
+
+<nav class="navbar">
+
+    <button
+        class="nav-btn active"
+        data-section="dashboard"
+    >
+        Dashboard
+    </button>
+
+    <button
+        class="nav-btn"
+        data-section="pos"
+    >
+        POS
+    </button>
+
+    <button
+        class="nav-btn"
+        data-section="inventory"
+    >
+        Inventory
+    </button>
+
+    <button
+        class="nav-btn"
+        data-section="history"
+    >
+        History
+    </button>
+
+</nav>
+
+
+<main class="container">
+
+
+<!-- DASHBOARD -->
+
+<section
+    id="dashboard"
+    class="section active"
+>
+
+    <div class="section-header">
+
+        <div>
+
+            <h2>
+                Dashboard
+            </h2>
 
             <p>
-                Point of Sale System
+                Locale Store overview
             </p>
 
         </div>
 
+    </div>
 
-        <div class="user-area">
 
-            <span
-                id="userLabel"
-                class="user-label"
-            >
-                Logged in as admin
+    <div class="dashboard-grid">
+
+        <div class="dashboard-card">
+
+            <span class="card-label">
+                Today's Sales
             </span>
 
-            <button
-                id="logoutBtn"
-                class="logout-btn"
-                type="button"
-            >
-                Logout
-            </button>
+            <h3 id="todaySales">
+                ₱0.00
+            </h3>
 
         </div>
 
-    </header>
 
+        <div class="dashboard-card">
 
-    <!-- NAVIGATION -->
+            <span class="card-label">
+                Today's Profit
+            </span>
 
-    <nav class="navbar">
+            <h3 id="todayProfit">
+                ₱0.00
+            </h3>
 
-        <button
-            class="nav-btn active"
-            data-section="dashboard"
-        >
-            Dashboard
-        </button>
+        </div>
 
-        <button
-            class="nav-btn"
-            data-section="pos"
-        >
-            POS
-        </button>
 
-        <button
-            class="nav-btn"
-            data-section="inventory"
-        >
-            Inventory
-        </button>
+        <div class="dashboard-card">
 
-        <button
-            class="nav-btn"
-            data-section="history"
-        >
-            History
-        </button>
+            <span class="card-label">
+                Total Products
+            </span>
 
-    </nav>
+            <h3 id="totalProducts">
+                0
+            </h3>
 
+        </div>
 
-    <main class="container">
 
+        <div class="dashboard-card">
 
-        <!-- ==================================================
-             DASHBOARD
-        ================================================== -->
+            <span class="card-label">
+                Low Stock
+            </span>
 
-        <section
-            id="dashboard"
-            class="section active"
-        >
+            <h3 id="lowStock">
+                0
+            </h3>
 
-            <div class="section-header">
+        </div>
 
-                <div>
+    </div>
 
-                    <h2>
-                        Dashboard
-                    </h2>
+</section>
 
-                    <p>
-                        Locale Store overview
-                    </p>
 
-                </div>
+<!-- POS -->
 
-            </div>
+<section
+    id="pos"
+    class="section"
+>
 
+    <div class="section-header">
 
-            <div class="dashboard-grid">
+        <div>
 
-                <div class="dashboard-card">
+            <h2>
+                Point of Sale
+            </h2>
 
-                    <span class="card-label">
-                        Today's Sales
-                    </span>
+            <p>
+                Scan or enter a product barcode
+            </p>
 
-                    <h3 id="todaySales">
-                        ₱0.00
-                    </h3>
+        </div>
 
-                </div>
+    </div>
 
 
-                <div class="dashboard-card">
+    <div class="pos-layout">
 
-                    <span class="card-label">
-                        Today's Profit
-                    </span>
 
-                    <h3 id="todayProfit">
-                        ₱0.00
-                    </h3>
+        <div class="product-area">
 
-                </div>
+            <div class="barcode-box">
 
-
-                <div class="dashboard-card">
-
-                    <span class="card-label">
-                        Total Products
-                    </span>
-
-                    <h3 id="totalProducts">
-                        0
-                    </h3>
-
-                </div>
-
-
-                <div class="dashboard-card">
-
-                    <span class="card-label">
-                        Low Stock
-                    </span>
-
-                    <h3 id="lowStock">
-                        0
-                    </h3>
-
-                </div>
-
-            </div>
-
-        </section>
-
-
-        <!-- ==================================================
-             POS
-        ================================================== -->
-
-        <section
-            id="pos"
-            class="section"
-        >
-
-            <div class="section-header">
-
-                <div>
-
-                    <h2>
-                        Point of Sale
-                    </h2>
-
-                    <p>
-                        Scan or enter a product barcode
-                    </p>
-
-                </div>
-
-            </div>
-
-
-            <div class="pos-layout">
-
-
-                <!-- PRODUCT -->
-
-                <div class="product-area">
-
-                    <div class="barcode-box">
-
-                        <input
-                            type="text"
-                            id="barcodeInput"
-                            placeholder="Scan or enter barcode..."
-                            autocomplete="off"
-                        >
-
-
-                        <button
-                            type="button"
-                            id="searchBtn"
-                            class="primary-btn"
-                        >
-                            Search
-                        </button>
-
-
-                        <button
-                            type="button"
-                            id="cameraBtn"
-                            class="primary-btn"
-                        >
-                            Camera
-                        </button>
-
-                    </div>
-
-
-                    <div
-                        id="productMessage"
-                        class="message"
-                    ></div>
-
-
-                    <div
-                        id="productList"
-                    ></div>
-
-                </div>
-
-
-                <!-- CART -->
-
-                <div class="cart-area">
-
-                    <div class="cart-header">
-
-                        <h3>
-                            Cart
-                        </h3>
-
-                        <span id="cartCount">
-                            0 items
-                        </span>
-
-                    </div>
-
-
-                    <div
-                        id="cartItems"
-                    ></div>
-
-
-                    <div class="cart-summary">
-
-                        <div class="summary-row">
-
-                            <span>
-                                Subtotal
-                            </span>
-
-                            <strong
-                                id="cartSubtotal"
-                            >
-                                ₱0.00
-                            </strong>
-
-                        </div>
-
-
-                        <div
-                            class="summary-row total-row"
-                        >
-
-                            <span>
-                                Total
-                            </span>
-
-                            <strong
-                                id="cartTotal"
-                            >
-                                ₱0.00
-                            </strong>
-
-                        </div>
-
-
-                        <button
-                            type="button"
-                            id="checkoutBtn"
-                            class="checkout-btn"
-                            disabled
-                        >
-                            Checkout
-                        </button>
-
-                    </div>
-
-                </div>
-
-            </div>
-
-        </section>
-
-
-        <!-- ==================================================
-             INVENTORY
-        ================================================== -->
-
-        <section
-            id="inventory"
-            class="section"
-        >
-
-            <div class="section-header">
-
-                <div>
-
-                    <h2>
-                        Inventory
-                    </h2>
-
-                    <p>
-                        Current Locale Store inventory
-                    </p>
-
-                </div>
-
-            </div>
-
-
-            <div class="table-container">
-
-                <table>
-
-                    <thead>
-
-                        <tr>
-
-                            <th>
-                                Barcode
-                            </th>
-
-                            <th>
-                                Product
-                            </th>
-
-                            <th>
-                                Category
-                            </th>
-
-                            <th>
-                                Cost
-                            </th>
-
-                            <th>
-                                Price
-                            </th>
-
-                            <th>
-                                Stock
-                            </th>
-
-                            <th>
-                                Status
-                            </th>
-
-                        </tr>
-
-                    </thead>
-
-
-                    <tbody
-                        id="inventoryTable"
-                    ></tbody>
-
-                </table>
-
-            </div>
-
-        </section>
-
-
-        <!-- ==================================================
-             HISTORY
-        ================================================== -->
-
-        <section
-            id="history"
-            class="section"
-        >
-
-            <div class="section-header">
-
-                <div>
-
-                    <h2>
-                        Transaction History
-                    </h2>
-
-                    <p>
-                        Locale Store sales history
-                    </p>
-
-                </div>
+                <input
+                    type="text"
+                    id="barcodeInput"
+                    placeholder="Scan or enter barcode..."
+                    autocomplete="off"
+                >
 
 
                 <button
                     type="button"
-                    id="printHistoryBtn"
+                    id="searchBtn"
                     class="primary-btn"
                 >
-                    Print History
+                    Search
+                </button>
+
+
+                <button
+                    type="button"
+                    id="cameraBtn"
+                    class="primary-btn"
+                >
+                    Camera
                 </button>
 
             </div>
 
 
             <div
-                id="historySummary"
-                class="history-summary"
-            >
-                No transactions yet.
-            </div>
+                id="productMessage"
+                class="message"
+            ></div>
 
 
-            <div class="table-container">
+            <div
+                id="productList"
+            ></div>
 
-                <table>
-
-                    <thead>
-
-                        <tr>
-
-                            <th>
-                                Sale ID
-                            </th>
-
-                            <th>
-                                Date
-                            </th>
-
-                            <th>
-                                Time
-                            </th>
-
-                            <th>
-                                Total
-                            </th>
-
-                            <th>
-                                Cost
-                            </th>
-
-                            <th>
-                                Profit
-                            </th>
-
-                            <th>
-                                Payment
-                            </th>
-
-                            <th>
-                                Change
-                            </th>
-
-                            <th>
-                                Action
-                            </th>
-
-                        </tr>
-
-                    </thead>
+        </div>
 
 
-                    <tbody
-                        id="historyTable"
-                    ></tbody>
+        <div class="cart-area">
 
-                </table>
+            <div class="cart-header">
+
+                <h3>
+                    Cart
+                </h3>
+
+                <span id="cartCount">
+                    0 items
+                </span>
 
             </div>
 
-        </section>
 
-    </main>
+            <div id="cartItems"></div>
+
+
+            <div class="cart-summary">
+
+                <div class="summary-row">
+
+                    <span>
+                        Subtotal
+                    </span>
+
+                    <strong id="cartSubtotal">
+                        ₱0.00
+                    </strong>
+
+                </div>
+
+
+                <div class="summary-row total-row">
+
+                    <span>
+                        Total
+                    </span>
+
+                    <strong id="cartTotal">
+                        ₱0.00
+                    </strong>
+
+                </div>
+
+
+                <button
+                    type="button"
+                    id="checkoutBtn"
+                    class="checkout-btn"
+                    disabled
+                >
+                    Checkout
+                </button>
+
+            </div>
+
+        </div>
+
+    </div>
+
+</section>
+
+
+<!-- INVENTORY -->
+
+<section
+    id="inventory"
+    class="section"
+>
+
+    <div class="section-header">
+
+        <div>
+
+            <h2>
+                Inventory
+            </h2>
+
+            <p>
+                Current Locale Store inventory
+            </p>
+
+        </div>
+
+    </div>
+
+
+    <div class="table-container">
+
+        <table>
+
+            <thead>
+
+                <tr>
+
+                    <th>
+                        Barcode
+                    </th>
+
+                    <th>
+                        Product
+                    </th>
+
+                    <th>
+                        Category
+                    </th>
+
+                    <th>
+                        Cost
+                    </th>
+
+                    <th>
+                        Price
+                    </th>
+
+                    <th>
+                        Stock
+                    </th>
+
+                    <th>
+                        Status
+                    </th>
+
+                </tr>
+
+            </thead>
+
+
+            <tbody
+                id="inventoryTable"
+            ></tbody>
+
+        </table>
+
+    </div>
+
+</section>
+
+
+<!-- HISTORY -->
+
+<section
+    id="history"
+    class="section"
+>
+
+    <div class="section-header">
+
+        <div>
+
+            <h2>
+                Transaction History
+            </h2>
+
+            <p>
+                Locale Store transaction history
+            </p>
+
+        </div>
+
+
+        <button
+            type="button"
+            id="printHistoryBtn"
+            class="primary-btn"
+        >
+            Print History
+        </button>
+
+    </div>
+
+
+    <p id="historySummary">
+        No transactions yet.
+    </p>
+
+
+    <div class="table-container">
+
+        <table>
+
+            <thead>
+
+                <tr>
+
+                    <th>
+                        Sale ID
+                    </th>
+
+                    <th>
+                        Date
+                    </th>
+
+                    <th>
+                        Time
+                    </th>
+
+                    <th>
+                        Total
+                    </th>
+
+                    <th>
+                        Cost
+                    </th>
+
+                    <th>
+                        Profit
+                    </th>
+
+                    <th>
+                        Payment
+                    </th>
+
+                    <th>
+                        Change
+                    </th>
+
+                    <th>
+                        Action
+                    </th>
+
+                </tr>
+
+            </thead>
+
+
+            <tbody
+                id="historyTable"
+            ></tbody>
+
+        </table>
+
+    </div>
+
+</section>
+
+</main>
 
 </div>
 
 
-<!-- ==================================================
-     CAMERA MODAL
-================================================== -->
+<!-- SCANNER -->
 
 <div
     id="scannerModal"
@@ -1273,13 +1177,8 @@ th {
         <div id="reader"></div>
 
 
-        <p
-            style="
-                text-align:center;
-                color:#6b7280;
-            "
-        >
-            Point your camera at the barcode.
+        <p style="text-align:center;color:#6b7280;">
+            Point the camera at the barcode.
         </p>
 
     </div>
@@ -1287,9 +1186,7 @@ th {
 </div>
 
 
-<!-- ==================================================
-     CHECKOUT MODAL
-================================================== -->
+<!-- CHECKOUT -->
 
 <div
     id="checkoutModal"
@@ -1321,9 +1218,7 @@ th {
                 Total Amount
             </span>
 
-            <strong
-                id="checkoutTotal"
-            >
+            <strong id="checkoutTotal">
                 ₱0.00
             </strong>
 
@@ -1332,7 +1227,7 @@ th {
 
         <div class="checkout-field">
 
-            <label for="paymentInput">
+            <label>
                 Customer Payment
             </label>
 
@@ -1353,9 +1248,7 @@ th {
                 Change
             </span>
 
-            <strong
-                id="changeAmount"
-            >
+            <strong id="changeAmount">
                 ₱0.00
             </strong>
 
@@ -1364,7 +1257,7 @@ th {
 
         <div
             id="checkoutMessage"
-            class="checkout-message"
+            style="color:#dc2626;margin-top:10px;"
         ></div>
 
 
@@ -1372,6 +1265,17 @@ th {
             type="button"
             id="confirmCheckoutBtn"
             class="confirm-btn"
+            style="
+                width:100%;
+                margin-top:15px;
+                border:none;
+                background:#16a34a;
+                color:white;
+                padding:13px;
+                border-radius:8px;
+                font-weight:700;
+                cursor:pointer;
+            "
         >
             Confirm Payment
         </button>
@@ -1390,13 +1294,8 @@ th {
 const LOGIN_USERNAME = "admin";
 const LOGIN_PASSWORD = "admin123";
 
-/*
-   NEW KEY:
-   This forces the new login screen to appear
-   even if an older version had saved login data.
-*/
 const LOGIN_KEY =
-    "localeStore_auth_v2";
+    "localeStore_login_v3";
 
 
 const loginScreen =
@@ -1434,6 +1333,11 @@ const logoutBtn =
         "logoutBtn"
     );
 
+const userLabel =
+    document.getElementById(
+        "userLabel"
+    );
+
 
 function showLogin() {
 
@@ -1448,7 +1352,7 @@ function showLogin() {
 }
 
 
-function showApp() {
+function showApp(username) {
 
     loginScreen.style.display =
         "none";
@@ -1456,8 +1360,74 @@ function showApp() {
     appContainer.style.display =
         "block";
 
+    userLabel.textContent =
+        "Logged in as " + username;
+
 }
 
+
+/* =====================================================
+   GOOGLE LOGIN LOG
+===================================================== */
+
+function logLoginToGoogleSheets(
+    username
+) {
+
+    fetch(
+        GOOGLE_SHEETS_URL,
+        {
+
+            method:
+                "POST",
+
+            headers: {
+                "Content-Type":
+                    "text/plain;charset=utf-8"
+            },
+
+            body:
+                JSON.stringify({
+
+                    action:
+                        "logLogin",
+
+                    username:
+                        username
+
+                }),
+
+            mode:
+                "no-cors"
+
+        }
+    )
+    .then(
+        () => {
+
+            console.log(
+                "Login recorded in Google Sheets."
+            );
+
+        }
+    )
+    .catch(
+        error => {
+
+            console.error(
+                "Login log error:",
+                error
+            );
+
+        }
+    );
+
+}
+
+
+/* =====================================================
+   LOGIN SUBMIT
+===================================================== */
 
 loginForm.addEventListener(
     "submit",
@@ -1468,6 +1438,7 @@ loginForm.addEventListener(
 
         const username =
             usernameInput.value.trim();
+
 
         const password =
             passwordInput.value;
@@ -1482,7 +1453,12 @@ loginForm.addEventListener(
 
             localStorage.setItem(
                 LOGIN_KEY,
-                "logged_in"
+                username
+            );
+
+
+            logLoginToGoogleSheets(
+                username
             );
 
 
@@ -1490,7 +1466,9 @@ loginForm.addEventListener(
                 "";
 
 
-            showApp();
+            showApp(
+                username
+            );
 
 
             usernameInput.value =
@@ -1498,7 +1476,6 @@ loginForm.addEventListener(
 
             passwordInput.value =
                 "";
-
 
         } else {
 
@@ -1516,7 +1493,9 @@ loginForm.addEventListener(
 );
 
 
-/* LOGOUT */
+/* =====================================================
+   LOGOUT
+===================================================== */
 
 logoutBtn.addEventListener(
     "click",
@@ -1525,6 +1504,7 @@ logoutBtn.addEventListener(
         localStorage.removeItem(
             LOGIN_KEY
         );
+
 
         cart = [];
 
@@ -1545,7 +1525,7 @@ const GOOGLE_SHEETS_URL =
 
 
 /* =====================================================
-   LOCAL STORAGE
+   STORAGE
 ===================================================== */
 
 const PRODUCTS_KEY =
@@ -1556,7 +1536,7 @@ const SALES_KEY =
 
 
 /* =====================================================
-   DEFAULT PRODUCTS
+   PRODUCTS
 ===================================================== */
 
 const defaultProducts = [
@@ -1631,7 +1611,7 @@ let scanner =
 
 
 /* =====================================================
-   LOAD PRODUCTS
+   STORAGE FUNCTIONS
 ===================================================== */
 
 function loadProducts() {
@@ -1661,7 +1641,7 @@ function loadProducts() {
 
         }
 
-    } catch (error) {
+    } catch(error) {
 
         console.error(error);
 
@@ -1686,10 +1666,6 @@ function loadProducts() {
 
 }
 
-
-/* =====================================================
-   LOAD SALES
-===================================================== */
 
 function loadSales() {
 
@@ -1717,7 +1693,7 @@ function loadSales() {
 
         }
 
-    } catch (error) {
+    } catch(error) {
 
         console.error(error);
 
@@ -1728,10 +1704,6 @@ function loadSales() {
 
 }
 
-
-/* =====================================================
-   SAVE DATA
-===================================================== */
 
 function saveData() {
 
@@ -1758,168 +1730,140 @@ const navButtons =
         ".nav-btn"
     );
 
-
 const sections =
     document.querySelectorAll(
         ".section"
     );
-
 
 const barcodeInput =
     document.getElementById(
         "barcodeInput"
     );
 
-
 const searchBtn =
     document.getElementById(
         "searchBtn"
     );
-
 
 const cameraBtn =
     document.getElementById(
         "cameraBtn"
     );
 
-
 const productMessage =
     document.getElementById(
         "productMessage"
     );
-
 
 const productList =
     document.getElementById(
         "productList"
     );
 
-
 const cartItems =
     document.getElementById(
         "cartItems"
     );
-
 
 const cartCount =
     document.getElementById(
         "cartCount"
     );
 
-
 const cartSubtotal =
     document.getElementById(
         "cartSubtotal"
     );
-
 
 const cartTotal =
     document.getElementById(
         "cartTotal"
     );
 
-
 const checkoutBtn =
     document.getElementById(
         "checkoutBtn"
     );
-
 
 const inventoryTable =
     document.getElementById(
         "inventoryTable"
     );
 
-
 const historyTable =
     document.getElementById(
         "historyTable"
     );
-
 
 const historySummary =
     document.getElementById(
         "historySummary"
     );
 
-
 const todaySales =
     document.getElementById(
         "todaySales"
     );
-
 
 const todayProfit =
     document.getElementById(
         "todayProfit"
     );
 
-
 const totalProducts =
     document.getElementById(
         "totalProducts"
     );
-
 
 const lowStock =
     document.getElementById(
         "lowStock"
     );
 
-
 const scannerModal =
     document.getElementById(
         "scannerModal"
     );
-
 
 const closeScannerBtn =
     document.getElementById(
         "closeScannerBtn"
     );
 
-
 const checkoutModal =
     document.getElementById(
         "checkoutModal"
     );
-
 
 const closeCheckoutBtn =
     document.getElementById(
         "closeCheckoutBtn"
     );
 
-
 const checkoutTotal =
     document.getElementById(
         "checkoutTotal"
     );
-
 
 const paymentInput =
     document.getElementById(
         "paymentInput"
     );
 
-
 const changeAmount =
     document.getElementById(
         "changeAmount"
     );
-
 
 const checkoutMessage =
     document.getElementById(
         "checkoutMessage"
     );
 
-
 const confirmCheckoutBtn =
     document.getElementById(
         "confirmCheckoutBtn"
     );
-
 
 const printHistoryBtn =
     document.getElementById(
@@ -1928,7 +1872,7 @@ const printHistoryBtn =
 
 
 /* =====================================================
-   CURRENCY
+   HELPERS
 ===================================================== */
 
 function peso(amount) {
@@ -1946,33 +1890,14 @@ function peso(amount) {
 }
 
 
-/* =====================================================
-   ESCAPE
-===================================================== */
-
 function escapeHtml(value) {
 
     return String(value)
-        .replaceAll(
-            "&",
-            "&amp;"
-        )
-        .replaceAll(
-            "<",
-            "&lt;"
-        )
-        .replaceAll(
-            ">",
-            "&gt;"
-        )
-        .replaceAll(
-            '"',
-            "&quot;"
-        )
-        .replaceAll(
-            "'",
-            "&#039;"
-        );
+        .replaceAll("&", "&amp;")
+        .replaceAll("<", "&lt;")
+        .replaceAll(">", "&gt;")
+        .replaceAll('"', "&quot;")
+        .replaceAll("'", "&#039;");
 
 }
 
@@ -2013,19 +1938,13 @@ navButtons.forEach(
                 );
 
 
-                const target =
-                    document.getElementById(
+                document
+                    .getElementById(
                         targetId
-                    );
-
-
-                if (target) {
-
-                    target.classList.add(
+                    )
+                    .classList.add(
                         "active"
                     );
-
-                }
 
 
                 if (
@@ -2107,12 +2026,13 @@ function searchProduct() {
 
 
     if (
-        Number(product.stock) <=
-        0
+        Number(
+            product.stock
+        ) <= 0
     ) {
 
         productMessage.textContent =
-            "This product is out of stock.";
+            "Product is out of stock.";
 
         productMessage.className =
             "message error";
@@ -2154,21 +2074,17 @@ function searchProduct() {
             </p>
 
             <p>
-                Available Stock:
+                Stock:
                 ${product.stock}
             </p>
 
-
-            <div
-                class="product-card-bottom"
-            >
+            <div class="product-card-bottom">
 
                 <strong>
                     ${peso(
                         product.price
                     )}
                 </strong>
-
 
                 <button
                     type="button"
@@ -2213,7 +2129,7 @@ barcodeInput.addEventListener(
 
 
 /* =====================================================
-   ADD TO CART
+   CART
 ===================================================== */
 
 window.addToCart =
@@ -2232,9 +2148,7 @@ function(barcode) {
 
 
     if (!product) {
-
         return;
-
     }
 
 
@@ -2266,7 +2180,6 @@ function(barcode) {
             return;
 
         }
-
 
         existing.quantity++;
 
@@ -2305,10 +2218,6 @@ function(barcode) {
 
 };
 
-
-/* =====================================================
-   CART
-===================================================== */
 
 function renderCart() {
 
@@ -2405,25 +2314,24 @@ function renderCart() {
 
                     <div>
 
-                        <div
-                            class="cart-item-name"
-                        >
+                        <div class="cart-item-name">
+
                             ${escapeHtml(
                                 item.name
                             )}
+
                         </div>
 
-                        <div
-                            class="cart-item-price"
-                        >
+                        <div class="cart-item-price">
+
                             ${peso(
                                 item.price
                             )}
                             each
+
                         </div>
 
                     </div>
-
 
                     <strong>
 
@@ -2438,9 +2346,7 @@ function renderCart() {
 
                 <div class="cart-item-bottom">
 
-                    <div
-                        class="quantity-controls"
-                    >
+                    <div class="quantity-controls">
 
                         <button
                             type="button"
@@ -2501,13 +2407,10 @@ function renderCart() {
                     function() {
 
                         updateCart(
-
                             Number(
                                 this.dataset.index
                             ),
-
                             this.dataset.action
-
                         );
 
                     }
@@ -2540,10 +2443,6 @@ function renderCart() {
 }
 
 
-/* =====================================================
-   UPDATE CART
-===================================================== */
-
 function updateCart(
     index,
     action
@@ -2554,9 +2453,7 @@ function updateCart(
 
 
     if (!item) {
-
         return;
-
     }
 
 
@@ -2573,9 +2470,7 @@ function updateCart(
 
 
     if (!product) {
-
         return;
-
     }
 
 
@@ -2646,10 +2541,6 @@ function updateCart(
 }
 
 
-/* =====================================================
-   CHECKOUT
-===================================================== */
-
 function calculateTotal() {
 
     return cart.reduce(
@@ -2669,6 +2560,10 @@ function calculateTotal() {
 }
 
 
+/* =====================================================
+   CHECKOUT
+===================================================== */
+
 checkoutBtn.addEventListener(
     "click",
     function() {
@@ -2683,12 +2578,10 @@ checkoutBtn.addEventListener(
         }
 
 
-        const total =
-            calculateTotal();
-
-
         checkoutTotal.textContent =
-            peso(total);
+            peso(
+                calculateTotal()
+            );
 
 
         paymentInput.value =
@@ -2730,25 +2623,6 @@ closeCheckoutBtn.addEventListener(
 );
 
 
-checkoutModal.addEventListener(
-    "click",
-    function(event) {
-
-        if (
-            event.target ===
-            checkoutModal
-        ) {
-
-            checkoutModal.classList.remove(
-                "show"
-            );
-
-        }
-
-    }
-);
-
-
 paymentInput.addEventListener(
     "input",
     function() {
@@ -2763,16 +2637,12 @@ paymentInput.addEventListener(
             calculateTotal();
 
 
-        const change =
-            payment -
-            total;
-
-
         changeAmount.textContent =
             peso(
-                change > 0
-                    ? change
-                    : 0
+                Math.max(
+                    payment - total,
+                    0
+                )
             );
 
     }
@@ -2780,7 +2650,7 @@ paymentInput.addEventListener(
 
 
 /* =====================================================
-   CONFIRM CHECKOUT
+   CONFIRM PAYMENT
 ===================================================== */
 
 confirmCheckoutBtn.addEventListener(
@@ -2861,14 +2731,14 @@ confirmCheckoutBtn.addEventListener(
         }
 
 
-        let totalCost =
+        let cost =
             0;
 
 
         cart.forEach(
             item => {
 
-                totalCost +=
+                cost +=
                     Number(
                         item.cost
                     ) *
@@ -2882,7 +2752,7 @@ confirmCheckoutBtn.addEventListener(
 
         const profit =
             total -
-            totalCost;
+            cost;
 
 
         const change =
@@ -2917,7 +2787,7 @@ confirmCheckoutBtn.addEventListener(
 
             cost:
                 Number(
-                    totalCost.toFixed(2)
+                    cost.toFixed(2)
                 ),
 
             profit:
@@ -2946,19 +2816,13 @@ confirmCheckoutBtn.addEventListener(
                             item.name,
 
                         quantity:
-                            Number(
-                                item.quantity
-                            ),
+                            item.quantity,
 
                         price:
-                            Number(
-                                item.price
-                            ),
+                            item.price,
 
                         cost:
-                            Number(
-                                item.cost
-                            ),
+                            item.cost,
 
                         lineTotal:
                             Number(
@@ -2992,9 +2856,7 @@ confirmCheckoutBtn.addEventListener(
                 if (product) {
 
                     product.stock -=
-                        Number(
-                            item.quantity
-                        );
+                        item.quantity;
 
                 }
 
@@ -3029,7 +2891,6 @@ confirmCheckoutBtn.addEventListener(
 
         barcodeInput.value =
             "";
-
 
         productList.innerHTML =
             "";
@@ -3079,7 +2940,7 @@ confirmCheckoutBtn.addEventListener(
 
 
 /* =====================================================
-   GOOGLE SHEETS
+   GOOGLE SHEETS SALE
 ===================================================== */
 
 function sendSaleToGoogleSheets(
@@ -3094,10 +2955,8 @@ function sendSaleToGoogleSheets(
                 "POST",
 
             headers: {
-
                 "Content-Type":
                     "text/plain;charset=utf-8"
-
             },
 
             body:
@@ -3116,24 +2975,11 @@ function sendSaleToGoogleSheets(
 
         }
     )
-    .then(
-        () => {
-
-            console.log(
-                "Sale sent to Google Sheets."
-            );
-
-        }
-    )
     .catch(
-        error => {
-
+        error =>
             console.error(
-                "Google Sheets error:",
                 error
-            );
-
-        }
+            )
     );
 
 }
@@ -3374,6 +3220,7 @@ function renderHistory() {
                         View
                     </button>
 
+
                     <button
                         type="button"
                         class="action-btn print-btn"
@@ -3409,29 +3256,27 @@ function(index) {
 
 
     if (!sale) {
-
         return;
-
     }
 
 
-    let message =
+    let text =
         "LOCALE STORE\n\n";
 
 
-    message +=
+    text +=
         "Sale ID: " +
         sale.id +
         "\n";
 
 
-    message +=
+    text +=
         "Date: " +
         sale.date +
         "\n";
 
 
-    message +=
+    text +=
         "Time: " +
         sale.time +
         "\n\n";
@@ -3440,7 +3285,7 @@ function(index) {
     sale.items.forEach(
         item => {
 
-            message +=
+            text +=
                 item.name +
                 " x" +
                 item.quantity +
@@ -3454,21 +3299,21 @@ function(index) {
     );
 
 
-    message +=
+    text +=
         "\nTotal: " +
         peso(
             sale.total
         );
 
 
-    message +=
+    text +=
         "\nPayment: " +
         peso(
             sale.payment
         );
 
 
-    message +=
+    text +=
         "\nChange: " +
         peso(
             sale.change
@@ -3476,14 +3321,14 @@ function(index) {
 
 
     alert(
-        message
+        text
     );
 
 };
 
 
 /* =====================================================
-   PRINT ONE SALE
+   PRINT SALE
 ===================================================== */
 
 window.printSale =
@@ -3494,28 +3339,11 @@ function(index) {
 
 
     if (!sale) {
-
         return;
-
     }
 
 
-    printReceipt(
-        sale
-    );
-
-};
-
-
-/* =====================================================
-   PRINT RECEIPT
-===================================================== */
-
-function printReceipt(
-    sale
-) {
-
-    const printWindow =
+    const win =
         window.open(
             "",
             "_blank",
@@ -3523,7 +3351,7 @@ function printReceipt(
         );
 
 
-    if (!printWindow) {
+    if (!win) {
 
         alert(
             "Please allow pop-ups for printing."
@@ -3534,14 +3362,13 @@ function printReceipt(
     }
 
 
-    let itemsHtml =
-        "";
+    let items = "";
 
 
     sale.items.forEach(
         item => {
 
-            itemsHtml += `
+            items += `
 
                 <tr>
 
@@ -3575,65 +3402,45 @@ function printReceipt(
     );
 
 
-    printWindow.document.write(`
-
-        <!DOCTYPE html>
+    win.document.write(`
 
         <html>
 
         <head>
 
             <title>
-                Locale Store -
-                ${escapeHtml(
-                    sale.id
-                )}
+                Locale Store Receipt
             </title>
 
             <style>
 
                 body {
-                    font-family: Arial, sans-serif;
+                    font-family: Arial;
                     padding: 20px;
                     max-width: 480px;
                     margin: auto;
                 }
 
-                h1 {
-                    text-align: center;
-                    margin-bottom: 4px;
-                }
-
+                h1,
                 .center {
                     text-align: center;
-                }
-
-                .line {
-                    border-top: 1px dashed #000;
-                    margin: 15px 0;
                 }
 
                 table {
                     width: 100%;
                     border-collapse: collapse;
-                    font-size: 13px;
                 }
 
                 th,
                 td {
-                    padding: 7px 3px;
+                    padding: 6px;
                     border-bottom: 1px solid #ddd;
                     text-align: left;
                 }
 
-                .summary {
-                    margin-top: 15px;
-                    line-height: 1.8;
-                }
-
-                .big {
-                    font-size: 18px;
-                    font-weight: bold;
+                .line {
+                    border-top: 1px dashed #000;
+                    margin: 15px 0;
                 }
 
             </style>
@@ -3652,26 +3459,20 @@ function printReceipt(
 
             <div class="line"></div>
 
-            <div>
+            <p>
                 <strong>Sale ID:</strong>
-                ${escapeHtml(
-                    sale.id
-                )}
-            </div>
+                ${escapeHtml(sale.id)}
+            </p>
 
-            <div>
+            <p>
                 <strong>Date:</strong>
-                ${escapeHtml(
-                    sale.date
-                )}
-            </div>
+                ${escapeHtml(sale.date)}
+            </p>
 
-            <div>
+            <p>
                 <strong>Time:</strong>
-                ${escapeHtml(
-                    sale.time
-                )}
-            </div>
+                ${escapeHtml(sale.time)}
+            </p>
 
             <div class="line"></div>
 
@@ -3680,30 +3481,17 @@ function printReceipt(
                 <thead>
 
                     <tr>
-
-                        <th>
-                            Product
-                        </th>
-
-                        <th>
-                            Qty
-                        </th>
-
-                        <th>
-                            Price
-                        </th>
-
-                        <th>
-                            Total
-                        </th>
-
+                        <th>Product</th>
+                        <th>Qty</th>
+                        <th>Price</th>
+                        <th>Total</th>
                     </tr>
 
                 </thead>
 
                 <tbody>
 
-                    ${itemsHtml}
+                    ${items}
 
                 </tbody>
 
@@ -3711,44 +3499,25 @@ function printReceipt(
 
             <div class="line"></div>
 
-            <div class="summary">
+            <h3>
+                Total:
+                ${peso(sale.total)}
+            </h3>
 
-                <div class="big">
+            <p>
+                Payment:
+                ${peso(sale.payment)}
+            </p>
 
-                    Total:
-                    ${peso(
-                        sale.total
-                    )}
-
-                </div>
-
-                <div>
-
-                    Payment:
-                    ${peso(
-                        sale.payment
-                    )}
-
-                </div>
-
-                <div>
-
-                    Change:
-                    ${peso(
-                        sale.change
-                    )}
-
-                </div>
-
-            </div>
+            <p>
+                Change:
+                ${peso(sale.change)}
+            </p>
 
             <div class="line"></div>
 
             <div class="center">
-
-                Thank you for shopping at
-                Locale Store!
-
+                Thank you for shopping at Locale Store!
             </div>
 
         </body>
@@ -3758,21 +3527,17 @@ function printReceipt(
     `);
 
 
-    printWindow.document.close();
+    win.document.close();
 
-    printWindow.focus();
+    win.focus();
 
 
     setTimeout(
-        function() {
-
-            printWindow.print();
-
-        },
+        () => win.print(),
         500
     );
 
-}
+};
 
 
 /* =====================================================
@@ -3797,14 +3562,14 @@ printHistoryBtn.addEventListener(
         }
 
 
-        const printWindow =
+        const win =
             window.open(
                 "",
                 "_blank"
             );
 
 
-        if (!printWindow) {
+        if (!win) {
 
             alert(
                 "Please allow pop-ups for printing."
@@ -3882,23 +3647,20 @@ printHistoryBtn.addEventListener(
         );
 
 
-        printWindow.document.write(`
-
-            <!DOCTYPE html>
+        win.document.write(`
 
             <html>
 
             <head>
 
                 <title>
-                    Locale Store -
-                    Transaction History
+                    Locale Store History
                 </title>
 
                 <style>
 
                     body {
-                        font-family: Arial, sans-serif;
+                        font-family: Arial;
                         padding: 20px;
                     }
 
@@ -3934,11 +3696,8 @@ printHistoryBtn.addEventListener(
 
                 <p>
                     Printed:
-                    ${new Date().toLocaleString(
-                        "en-PH"
-                    )}
+                    ${new Date().toLocaleString("en-PH")}
                 </p>
-
 
                 <table>
 
@@ -3946,42 +3705,18 @@ printHistoryBtn.addEventListener(
 
                         <tr>
 
-                            <th>
-                                Sale ID
-                            </th>
-
-                            <th>
-                                Date
-                            </th>
-
-                            <th>
-                                Time
-                            </th>
-
-                            <th>
-                                Total
-                            </th>
-
-                            <th>
-                                Cost
-                            </th>
-
-                            <th>
-                                Profit
-                            </th>
-
-                            <th>
-                                Payment
-                            </th>
-
-                            <th>
-                                Change
-                            </th>
+                            <th>Sale ID</th>
+                            <th>Date</th>
+                            <th>Time</th>
+                            <th>Total</th>
+                            <th>Cost</th>
+                            <th>Profit</th>
+                            <th>Payment</th>
+                            <th>Change</th>
 
                         </tr>
 
                     </thead>
-
 
                     <tbody>
 
@@ -3998,14 +3733,13 @@ printHistoryBtn.addEventListener(
         `);
 
 
-        printWindow.document.close();
+        win.document.close();
 
-        printWindow.focus();
+        win.focus();
 
 
         setTimeout(
-            () =>
-                printWindow.print(),
+            () => win.print(),
             500
         );
 
@@ -4023,7 +3757,7 @@ function updateDashboard() {
         products.length;
 
 
-    const low =
+    lowStock.textContent =
         products.filter(
             product =>
                 Number(
@@ -4035,21 +3769,17 @@ function updateDashboard() {
         ).length;
 
 
-    lowStock.textContent =
-        low;
-
-
     const today =
         new Date().toLocaleDateString(
             "en-PH"
         );
 
 
-    let salesAmount =
+    let salesToday =
         0;
 
 
-    let profitAmount =
+    let profitToday =
         0;
 
 
@@ -4061,13 +3791,12 @@ function updateDashboard() {
                 today
             ) {
 
-                salesAmount +=
+                salesToday +=
                     Number(
                         sale.total
                     );
 
-
-                profitAmount +=
+                profitToday +=
                     Number(
                         sale.profit
                     );
@@ -4080,13 +3809,13 @@ function updateDashboard() {
 
     todaySales.textContent =
         peso(
-            salesAmount
+            salesToday
         );
 
 
     todayProfit.textContent =
         peso(
-            profitAmount
+            profitToday
         );
 
 }
@@ -4134,13 +3863,11 @@ async function loadScanner() {
 
 
             script.onload =
-                () =>
-                    resolve(true);
+                () => resolve(true);
 
 
             script.onerror =
-                () =>
-                    resolve(false);
+                () => resolve(false);
 
 
             document.head.appendChild(
@@ -4216,19 +3943,9 @@ async function startScanner() {
 
 
                     return (
-
-                        label.includes(
-                            "back"
-                        ) ||
-
-                        label.includes(
-                            "rear"
-                        ) ||
-
-                        label.includes(
-                            "environment"
-                        )
-
+                        label.includes("back") ||
+                        label.includes("rear") ||
+                        label.includes("environment")
                     );
 
                 }
@@ -4240,11 +3957,8 @@ async function startScanner() {
             cameraId =
                 rear.id;
 
-        }
-
-        else if (
-            cameras.length >
-            1
+        } else if (
+            cameras.length > 1
         ) {
 
             cameraId =
@@ -4260,7 +3974,6 @@ async function startScanner() {
             cameraId,
 
             {
-
                 fps: 10,
 
                 qrbox: {
@@ -4288,16 +4001,14 @@ async function startScanner() {
         );
 
 
-    } catch (error) {
+    } catch(error) {
 
         console.error(
             error
         );
 
 
-        scannerModal.classList.remove(
-            "show"
-        );
+        stopScanner();
 
 
         alert(
@@ -4308,10 +4019,6 @@ async function startScanner() {
 
 }
 
-
-/* =====================================================
-   STOP SCANNER
-===================================================== */
 
 async function stopScanner() {
 
@@ -4326,26 +4033,14 @@ async function stopScanner() {
 
             await scanner.stop();
 
-        } catch (error) {
-
-            console.log(
-                "Scanner already stopped."
-            );
-
-        }
+        } catch(error) {}
 
 
         try {
 
             scanner.clear();
 
-        } catch (error) {
-
-            console.log(
-                "Scanner already cleared."
-            );
-
-        }
+        } catch(error) {}
 
 
         scanner =
@@ -4370,7 +4065,30 @@ function initialize() {
 
     updateDashboard();
 
-    showLogin();
+
+    /*
+       IMPORTANT:
+       Login is checked here.
+       Existing sales/inventory are preserved.
+    */
+
+    const loggedInUser =
+        localStorage.getItem(
+            LOGIN_KEY
+        );
+
+
+    if (loggedInUser) {
+
+        showApp(
+            loggedInUser
+        );
+
+    } else {
+
+        showLogin();
+
+    }
 
 }
 
