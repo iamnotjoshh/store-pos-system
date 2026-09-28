@@ -1,27 +1,28 @@
 <!DOCTYPE html>
-
 <html lang="en">
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
 
-<title>Store POS System</title>
+    <title>Store POS System</title>
 
-<link rel="stylesheet" href="style.css">
-
-
+    <link rel="stylesheet" href="style.css">
 </head>
 
 <body>
 
-<!-- TOP BAR -->
+<!-- =========================
+     TOP BAR
+========================= -->
 <header class="topbar">
+
     <div class="brand">
         <h1>Store POS</h1>
         <p>Point of Sale System</p>
     </div>
 
     <nav class="nav">
+
         <button class="nav-btn active" data-section="dashboard">
             Dashboard
         </button>
@@ -37,22 +38,32 @@
         <button class="nav-btn" data-section="sales">
             Sales
         </button>
+
     </nav>
+
 </header>
 
 
-<!-- MAIN CONTENT -->
+<!-- =========================
+     MAIN CONTENT
+========================= -->
 <main class="container">
 
-    <!-- DASHBOARD -->
+
+    <!-- =========================
+         DASHBOARD
+    ========================= -->
     <section id="dashboard" class="section active">
 
         <div class="section-header">
+
             <div>
                 <h2>Dashboard</h2>
                 <p>Store overview</p>
             </div>
+
         </div>
+
 
         <div class="dashboard-grid">
 
@@ -61,15 +72,18 @@
                 <h3 id="todaySales">₱0.00</h3>
             </div>
 
+
             <div class="dashboard-card">
                 <span class="card-label">Today's Profit</span>
                 <h3 id="todayProfit">₱0.00</h3>
             </div>
 
+
             <div class="dashboard-card">
                 <span class="card-label">Total Products</span>
                 <h3 id="totalProducts">0</h3>
             </div>
+
 
             <div class="dashboard-card">
                 <span class="card-label">Low Stock</span>
@@ -81,17 +95,23 @@
     </section>
 
 
-    <!-- POS -->
+    <!-- =========================
+         POS
+    ========================= -->
     <section id="pos" class="section">
 
         <div class="section-header">
+
             <div>
                 <h2>Point of Sale</h2>
                 <p>Scan or enter a product barcode</p>
             </div>
+
         </div>
 
+
         <div class="pos-layout">
+
 
             <!-- PRODUCT AREA -->
             <div class="product-area">
@@ -105,15 +125,27 @@
                         autocomplete="off"
                     >
 
-                    <button id="scanBtn" class="primary-btn">
+                    <button
+                        id="scanBtn"
+                        class="primary-btn"
+                        type="button"
+                    >
                         Scan Barcode
                     </button>
 
                 </div>
 
-                <div id="productMessage" class="message"></div>
 
-                <div id="productList" class="product-list">
+                <div
+                    id="productMessage"
+                    class="message"
+                ></div>
+
+
+                <div
+                    id="productList"
+                    class="product-list"
+                >
                     <!-- Products will appear here -->
                 </div>
 
@@ -124,32 +156,63 @@
             <div class="cart-area">
 
                 <div class="cart-header">
+
                     <h3>Cart</h3>
-                    <span id="cartCount">0 items</span>
+
+                    <span id="cartCount">
+                        0 items
+                    </span>
+
                 </div>
 
-                <div id="cartItems" class="cart-items">
+
+                <div
+                    id="cartItems"
+                    class="cart-items"
+                >
 
                     <div class="empty-cart">
+
                         <p>Your cart is empty.</p>
-                        <span>Add a product using the barcode.</span>
+
+                        <span>
+                            Add a product using the barcode.
+                        </span>
+
                     </div>
 
                 </div>
+
 
                 <div class="cart-summary">
 
                     <div class="summary-row">
+
                         <span>Subtotal</span>
-                        <strong id="cartSubtotal">₱0.00</strong>
+
+                        <strong id="cartSubtotal">
+                            ₱0.00
+                        </strong>
+
                     </div>
+
 
                     <div class="summary-row total-row">
+
                         <span>Total</span>
-                        <strong id="cartTotal">₱0.00</strong>
+
+                        <strong id="cartTotal">
+                            ₱0.00
+                        </strong>
+
                     </div>
 
-                    <button id="checkoutBtn" class="checkout-btn">
+
+                    <button
+                        id="checkoutBtn"
+                        class="checkout-btn"
+                        type="button"
+                    >
                         Checkout
                     </button>
 
@@ -162,21 +225,27 @@
     </section>
 
 
-    <!-- INVENTORY -->
+    <!-- =========================
+         INVENTORY
+    ========================= -->
     <section id="inventory" class="section">
 
         <div class="section-header">
+
             <div>
                 <h2>Inventory</h2>
                 <p>Manage your store products</p>
             </div>
+
         </div>
+
 
         <div class="table-container">
 
             <table>
 
                 <thead>
+
                     <tr>
                         <th>Barcode</th>
                         <th>Product</th>
@@ -186,7 +255,9 @@
                         <th>Stock</th>
                         <th>Status</th>
                     </tr>
+
                 </thead>
+
 
                 <tbody id="inventoryTable">
                     <!-- Inventory will appear here -->
@@ -199,21 +270,27 @@
     </section>
 
 
-    <!-- SALES -->
+    <!-- =========================
+         SALES
+    ========================= -->
     <section id="sales" class="section">
 
         <div class="section-header">
+
             <div>
                 <h2>Sales</h2>
                 <p>View completed transactions</p>
             </div>
+
         </div>
+
 
         <div class="table-container">
 
             <table>
 
                 <thead>
+
                     <tr>
                         <th>Sale ID</th>
                         <th>Date</th>
@@ -223,7 +300,9 @@
                         <th>Profit</th>
                         <th>Payment</th>
                     </tr>
+
                 </thead>
+
 
                 <tbody id="salesTable">
                     <!-- Sales will appear here -->
@@ -238,18 +317,30 @@
 </main>
 
 
-<!-- BARCODE SCANNER MODAL -->
-<div id="scannerModal" class="modal">
+<!-- =========================
+     BARCODE SCANNER MODAL
+========================= -->
+<div
+    id="scannerModal"
+    class="modal"
+>
 
     <div class="modal-content">
 
         <div class="modal-header">
+
             <h2>Scan Barcode</h2>
 
-            <button id="closeScannerBtn" class="close-btn">
+            <button
+                id="closeScannerBtn"
+                class="close-btn"
+                type="button"
+            >
                 ×
             </button>
+
         </div>
+
 
         <div class="scanner-container">
 
@@ -258,6 +349,7 @@
                 autoplay
                 playsinline
             ></video>
+
 
             <div class="scanner-message">
                 Point your camera at a barcode.
@@ -270,36 +362,100 @@
 </div>
 
 
-<!-- CHECKOUT MODAL -->
-<div id="checkoutModal" class="modal">
+<!-- =========================
+     CHECKOUT MODAL
+========================= -->
+<div
+    id="checkoutModal"
+    class="modal"
+>
 
     <div class="modal-content checkout-modal">
 
+
         <div class="modal-header">
+
             <h2>Checkout</h2>
 
-            <button id="closeCheckoutBtn" class="close-btn">
+            <button
+                id="closeCheckoutBtn"
+                class="close-btn"
+                type="button"
+            >
                 ×
             </button>
+
         </div>
+
 
         <div class="checkout-details">
 
+
             <div class="checkout-total">
-                <span>Total Amount</span>
-                <strong id="checkoutTotal">₱0.00</strong>
+
+                <span>
+                    Total Amount
+                </span>
+
+                <strong id="checkoutTotal">
+                    ₱0.00
+                </strong>
+
             </div>
+
 
             <label for="paymentInput">
                 Payment
             </label>
 
+
             <input
                 type="number"
                 id="paymentInput"
-                placeholder="Enter
-          
-                <script src="app.js"></script>
+                placeholder="Enter payment amount"
+                min="0"
+                step="0.01"
+            >
+
+
+            <div class="change-row">
+
+                <span>
+                    Change
+                </span>
+
+                <strong id="changeAmount">
+                    ₱0.00
+                </strong>
+
+            </div>
+
+
+            <div
+                id="checkoutMessage"
+                class="message"
+            ></div>
+
+
+            <button
+                id="confirmCheckoutBtn"
+                class="checkout-btn"
+                type="button"
+            >
+                Confirm Payment
+            </button>
+
+        </div>
+
+    </div>
+
+</div>
+
+
+<!-- =========================
+     JAVASCRIPT
+========================= -->
+<script src="app.js"></script>
 
 </body>
-</html>    
+</html>
