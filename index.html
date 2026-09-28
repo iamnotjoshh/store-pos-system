@@ -388,12 +388,6 @@ th {
     color: white;
 }
 
-.scanner-box {
-    padding: 10px;
-    background: white;
-    border-radius: 10px;
-}
-
 #reader {
     width: 100%;
     max-width: 450px;
@@ -705,10 +699,12 @@ th {
     <section id="inventory" class="section">
 
         <div class="section-header">
+
             <div>
                 <h2>Inventory</h2>
                 <p>Current store inventory</p>
             </div>
+
         </div>
 
         <div class="table-container">
@@ -759,7 +755,10 @@ th {
 
         </div>
 
-        <div class="history-summary" id="historySummary">
+        <div
+            class="history-summary"
+            id="historySummary"
+        >
             No transactions yet.
         </div>
 
@@ -848,11 +847,13 @@ th {
         <div>
 
             <div class="summary-row">
+
                 <span>Total Amount</span>
 
                 <strong id="checkoutTotal">
                     ₱0.00
                 </strong>
+
             </div>
 
             <div class="checkout-field">
@@ -902,33 +903,15 @@ th {
 
 
 <script>
-/* ==================================================
-   STORE POS SYSTEM
-   ALL-IN-ONE VERSION
-================================================== */
-
-
-/* ==================================================
-   GOOGLE SHEETS
-================================================== */
 
 const GOOGLE_SHEETS_URL =
 "https://script.google.com/macros/s/AKfycbw-8QO1nhx6JMeT9xZXSU86Ss2K4kFpY3DjqyRPaMCOsu9SSNCWl9OMnp0so41N3JXV3w/exec";
 
-
-/* ==================================================
-   LOCAL STORAGE
-================================================== */
-
 const PRODUCTS_KEY = "storePOS_products_v1";
 const SALES_KEY = "storePOS_sales_v1";
 
-
-/* ==================================================
-   DEFAULT PRODUCTS
-================================================== */
-
 const defaultProducts = [
+
     {
         barcode: "480000000001",
         name: "Coca-Cola 1.5L",
@@ -938,6 +921,7 @@ const defaultProducts = [
         stock: 24,
         reorderLevel: 5
     },
+
     {
         barcode: "480000000002",
         name: "Lucky Me Pancit Canton",
@@ -947,6 +931,7 @@ const defaultProducts = [
         stock: 50,
         reorderLevel: 10
     },
+
     {
         barcode: "480000000003",
         name: "Piattos Cheese",
@@ -956,6 +941,7 @@ const defaultProducts = [
         stock: 30,
         reorderLevel: 5
     },
+
     {
         barcode: "480000000004",
         name: "Bear Brand Milk",
@@ -965,6 +951,7 @@ const defaultProducts = [
         stock: 15,
         reorderLevel: 5
     },
+
     {
         barcode: "480000000005",
         name: "Safeguard Soap",
@@ -974,12 +961,8 @@ const defaultProducts = [
         stock: 20,
         reorderLevel: 5
     }
+
 ];
-
-
-/* ==================================================
-   DATA
-================================================== */
 
 let products = loadProducts();
 let sales = loadSales();
@@ -987,25 +970,29 @@ let cart = [];
 let scanner = null;
 
 
-/* ==================================================
-   LOAD PRODUCTS
-================================================== */
-
 function loadProducts() {
 
     try {
 
         const saved =
-            localStorage.getItem(PRODUCTS_KEY);
+            localStorage.getItem(
+                PRODUCTS_KEY
+            );
 
         if (saved) {
 
-            const parsed =
+            const data =
                 JSON.parse(saved);
 
-            if (Array.isArray(parsed) && parsed.length) {
-                return parsed;
+            if (
+                Array.isArray(data) &&
+                data.length > 0
+            ) {
+
+                return data;
+
             }
+
         }
 
     } catch (error) {
@@ -1014,39 +1001,44 @@ function loadProducts() {
 
     }
 
+
     const copy =
         JSON.parse(
-            JSON.stringify(defaultProducts)
+            JSON.stringify(
+                defaultProducts
+            )
         );
+
 
     localStorage.setItem(
         PRODUCTS_KEY,
         JSON.stringify(copy)
     );
 
+
     return copy;
+
 }
 
-
-/* ==================================================
-   LOAD SALES
-================================================== */
 
 function loadSales() {
 
     try {
 
         const saved =
-            localStorage.getItem(SALES_KEY);
+            localStorage.getItem(
+                SALES_KEY
+            );
 
         if (saved) {
 
-            const parsed =
+            const data =
                 JSON.parse(saved);
 
-            if (Array.isArray(parsed)) {
-                return parsed;
+            if (Array.isArray(data)) {
+                return data;
             }
+
         }
 
     } catch (error) {
@@ -1055,13 +1047,11 @@ function loadSales() {
 
     }
 
+
     return [];
+
 }
 
-
-/* ==================================================
-   SAVE
-================================================== */
 
 function saveData() {
 
@@ -1074,104 +1064,155 @@ function saveData() {
         SALES_KEY,
         JSON.stringify(sales)
     );
+
 }
 
 
-/* ==================================================
-   ELEMENTS
-================================================== */
-
 const navButtons =
-    document.querySelectorAll(".nav-btn");
+    document.querySelectorAll(
+        ".nav-btn"
+    );
 
 const sections =
-    document.querySelectorAll(".section");
+    document.querySelectorAll(
+        ".section"
+    );
 
 const barcodeInput =
-    document.getElementById("barcodeInput");
+    document.getElementById(
+        "barcodeInput"
+    );
 
 const searchBtn =
-    document.getElementById("searchBtn");
+    document.getElementById(
+        "searchBtn"
+    );
 
 const cameraBtn =
-    document.getElementById("cameraBtn");
+    document.getElementById(
+        "cameraBtn"
+    );
 
 const productMessage =
-    document.getElementById("productMessage");
+    document.getElementById(
+        "productMessage"
+    );
 
 const productList =
-    document.getElementById("productList");
+    document.getElementById(
+        "productList"
+    );
 
 const cartItems =
-    document.getElementById("cartItems");
+    document.getElementById(
+        "cartItems"
+    );
 
 const cartCount =
-    document.getElementById("cartCount");
+    document.getElementById(
+        "cartCount"
+    );
 
 const cartSubtotal =
-    document.getElementById("cartSubtotal");
+    document.getElementById(
+        "cartSubtotal"
+    );
 
 const cartTotal =
-    document.getElementById("cartTotal");
+    document.getElementById(
+        "cartTotal"
+    );
 
 const checkoutBtn =
-    document.getElementById("checkoutBtn");
+    document.getElementById(
+        "checkoutBtn"
+    );
 
 const inventoryTable =
-    document.getElementById("inventoryTable");
+    document.getElementById(
+        "inventoryTable"
+    );
 
 const historyTable =
-    document.getElementById("historyTable");
+    document.getElementById(
+        "historyTable"
+    );
 
 const historySummary =
-    document.getElementById("historySummary");
+    document.getElementById(
+        "historySummary"
+    );
 
 const todaySales =
-    document.getElementById("todaySales");
+    document.getElementById(
+        "todaySales"
+    );
 
 const todayProfit =
-    document.getElementById("todayProfit");
+    document.getElementById(
+        "todayProfit"
+    );
 
 const totalProducts =
-    document.getElementById("totalProducts");
+    document.getElementById(
+        "totalProducts"
+    );
 
 const lowStock =
-    document.getElementById("lowStock");
+    document.getElementById(
+        "lowStock"
+    );
 
 const scannerModal =
-    document.getElementById("scannerModal");
+    document.getElementById(
+        "scannerModal"
+    );
 
 const closeScannerBtn =
-    document.getElementById("closeScannerBtn");
+    document.getElementById(
+        "closeScannerBtn"
+    );
 
 const checkoutModal =
-    document.getElementById("checkoutModal");
+    document.getElementById(
+        "checkoutModal"
+    );
 
 const closeCheckoutBtn =
-    document.getElementById("closeCheckoutBtn");
+    document.getElementById(
+        "closeCheckoutBtn"
+    );
 
 const checkoutTotal =
-    document.getElementById("checkoutTotal");
+    document.getElementById(
+        "checkoutTotal"
+    );
 
 const paymentInput =
-    document.getElementById("paymentInput");
+    document.getElementById(
+        "paymentInput"
+    );
 
 const changeAmount =
-    document.getElementById("changeAmount");
+    document.getElementById(
+        "changeAmount"
+    );
 
 const checkoutMessage =
-    document.getElementById("checkoutMessage");
+    document.getElementById(
+        "checkoutMessage"
+    );
 
 const confirmCheckoutBtn =
-    document.getElementById("confirmCheckoutBtn");
+    document.getElementById(
+        "confirmCheckoutBtn"
+    );
 
 const printHistoryBtn =
-    document.getElementById("printHistoryBtn");
+    document.getElementById(
+        "printHistoryBtn"
+    );
 
-
-/* ==================================================
-   CURRENCY
-================================================== */
 
 function peso(amount) {
 
@@ -1184,12 +1225,9 @@ function peso(amount) {
     ).format(
         Number(amount) || 0
     );
+
 }
 
-
-/* ==================================================
-   ESCAPE
-================================================== */
 
 function escapeHtml(value) {
 
@@ -1203,53 +1241,69 @@ function escapeHtml(value) {
 }
 
 
-/* ==================================================
-   NAVIGATION
-================================================== */
+/* NAVIGATION */
 
-navButtons.forEach(button => {
+navButtons.forEach(
+    button => {
 
-    button.addEventListener(
-        "click",
-        function() {
+        button.addEventListener(
+            "click",
+            function() {
 
-            const targetId =
-                this.dataset.section;
+                const targetId =
+                    this.dataset.section;
 
-            navButtons.forEach(btn => {
-                btn.classList.remove("active");
-            });
+                navButtons.forEach(
+                    btn =>
+                        btn.classList.remove(
+                            "active"
+                        )
+                );
 
-            sections.forEach(section => {
-                section.classList.remove("active");
-            });
+                sections.forEach(
+                    section =>
+                        section.classList.remove(
+                            "active"
+                        )
+                );
 
-            this.classList.add("active");
+                this.classList.add(
+                    "active"
+                );
 
-            const target =
-                document.getElementById(targetId);
+                const target =
+                    document.getElementById(
+                        targetId
+                    );
 
-            if (target) {
-                target.classList.add("active");
+                if (target) {
+                    target.classList.add(
+                        "active"
+                    );
+                }
+
+                if (
+                    targetId ===
+                    "history"
+                ) {
+                    renderHistory();
+                }
+
+                if (
+                    targetId ===
+                    "inventory"
+                ) {
+                    renderInventory();
+                }
+
             }
+        );
 
-            if (targetId === "history") {
-                renderHistory();
-            }
-
-            if (targetId === "inventory") {
-                renderInventory();
-            }
-
-        }
-    );
-
-});
+    }
+);
 
 
-/* ==================================================
-   SEARCH
-================================================== */
+/* SEARCH */
 
 function searchProduct() {
 
@@ -1257,6 +1311,7 @@ function searchProduct() {
         barcodeInput.value.trim();
 
     productList.innerHTML = "";
+
 
     if (!barcode) {
 
@@ -1267,6 +1322,7 @@ function searchProduct() {
             "message error";
 
         return;
+
     }
 
 
@@ -1287,10 +1343,13 @@ function searchProduct() {
             "message error";
 
         return;
+
     }
 
 
-    if (Number(product.stock) <= 0) {
+    if (
+        Number(product.stock) <= 0
+    ) {
 
         productMessage.textContent =
             "This product is out of stock.";
@@ -1299,6 +1358,7 @@ function searchProduct() {
             "message error";
 
         return;
+
     }
 
 
@@ -1355,10 +1415,6 @@ function searchProduct() {
 }
 
 
-/* ==================================================
-   SEARCH EVENTS
-================================================== */
-
 searchBtn.addEventListener(
     "click",
     searchProduct
@@ -1369,7 +1425,9 @@ barcodeInput.addEventListener(
     "keydown",
     function(event) {
 
-        if (event.key === "Enter") {
+        if (
+            event.key === "Enter"
+        ) {
 
             event.preventDefault();
 
@@ -1381,11 +1439,10 @@ barcodeInput.addEventListener(
 );
 
 
-/* ==================================================
-   ADD TO CART
-================================================== */
+/* CART */
 
-window.addToCart = function(barcode) {
+window.addToCart =
+function(barcode) {
 
     const product =
         products.find(
@@ -1415,11 +1472,9 @@ window.addToCart = function(barcode) {
             Number(product.stock)
         ) {
 
-            productMessage.textContent =
-                "You cannot add more than available stock.";
-
-            productMessage.className =
-                "message error";
+            alert(
+                "No more stock available."
+            );
 
             return;
 
@@ -1431,17 +1486,23 @@ window.addToCart = function(barcode) {
 
         cart.push({
 
-            barcode: product.barcode,
+            barcode:
+                product.barcode,
 
-            name: product.name,
+            name:
+                product.name,
 
-            category: product.category,
+            category:
+                product.category,
 
-            price: Number(product.price),
+            price:
+                Number(product.price),
 
-            cost: Number(product.cost),
+            cost:
+                Number(product.cost),
 
-            quantity: 1
+            quantity:
+                1
 
         });
 
@@ -1450,27 +1511,17 @@ window.addToCart = function(barcode) {
 
     renderCart();
 
-
-    productMessage.textContent =
-        product.name +
-        " added to cart.";
-
-    productMessage.className =
-        "message success";
-
 };
 
-
-/* ==================================================
-   RENDER CART
-================================================== */
 
 function renderCart() {
 
     cartItems.innerHTML = "";
 
 
-    if (cart.length === 0) {
+    if (
+        cart.length === 0
+    ) {
 
         cartItems.innerHTML = `
 
@@ -1485,6 +1536,7 @@ function renderCart() {
             </div>
 
         `;
+
 
         cartCount.textContent =
             "0 items";
@@ -1503,15 +1555,12 @@ function renderCart() {
     }
 
 
-    let total =
-        0;
-
-    let count =
-        0;
+    let total = 0;
+    let count = 0;
 
 
     cart.forEach(
-        function(item, index) {
+        (item,index) => {
 
             const lineTotal =
                 Number(item.price) *
@@ -1525,7 +1574,10 @@ function renderCart() {
 
 
             const element =
-                document.createElement("div");
+                document.createElement(
+                    "div"
+                );
+
 
             element.className =
                 "cart-item";
@@ -1553,7 +1605,6 @@ function renderCart() {
 
                 </div>
 
-
                 <div class="cart-item-bottom">
 
                     <div class="quantity-controls">
@@ -1580,7 +1631,6 @@ function renderCart() {
 
                     </div>
 
-
                     <button
                         type="button"
                         class="remove-btn"
@@ -1605,36 +1655,34 @@ function renderCart() {
 
     cartItems
         .querySelectorAll("button")
-        .forEach(button => {
+        .forEach(
+            button => {
 
-            button.addEventListener(
-                "click",
-                function() {
+                button.addEventListener(
+                    "click",
+                    function() {
 
-                    const index =
-                        Number(
-                            this.dataset.index
+                        updateCart(
+                            Number(
+                                this.dataset.index
+                            ),
+                            this.dataset.action
                         );
 
-                    const action =
-                        this.dataset.action;
+                    }
+                );
 
-                    updateCart(
-                        index,
-                        action
-                    );
-
-                }
-            );
-
-        });
+            }
+        );
 
 
     cartCount.textContent =
         count +
-        (count === 1
-            ? " item"
-            : " items");
+        (
+            count === 1
+                ? " item"
+                : " items"
+        );
 
 
     cartSubtotal.textContent =
@@ -1649,11 +1697,10 @@ function renderCart() {
 }
 
 
-/* ==================================================
-   UPDATE CART
-================================================== */
-
-function updateCart(index, action) {
+function updateCart(
+    index,
+    action
+) {
 
     const item =
         cart[index];
@@ -1676,7 +1723,9 @@ function updateCart(index, action) {
     }
 
 
-    if (action === "plus") {
+    if (
+        action === "plus"
+    ) {
 
         if (
             item.quantity >=
@@ -1696,11 +1745,15 @@ function updateCart(index, action) {
     }
 
 
-    if (action === "minus") {
+    if (
+        action === "minus"
+    ) {
 
         item.quantity--;
 
-        if (item.quantity <= 0) {
+        if (
+            item.quantity <= 0
+        ) {
 
             cart.splice(
                 index,
@@ -1712,7 +1765,9 @@ function updateCart(index, action) {
     }
 
 
-    if (action === "remove") {
+    if (
+        action === "remove"
+    ) {
 
         cart.splice(
             index,
@@ -1727,45 +1782,27 @@ function updateCart(index, action) {
 }
 
 
-/* ==================================================
-   TOTAL
-================================================== */
-
-function calculateTotal() {
-
-    return cart.reduce(
-        (sum, item) =>
-            sum +
-            (
-                Number(item.price) *
-                Number(item.quantity)
-            ),
-        0
-    );
-
-}
-
-
-/* ==================================================
-   OPEN CHECKOUT
-================================================== */
+/* CHECKOUT */
 
 checkoutBtn.addEventListener(
     "click",
     function() {
 
-        if (cart.length === 0) {
+        if (
+            cart.length === 0
+        ) {
             return;
         }
+
 
         const total =
             calculateTotal();
 
+
         checkoutTotal.textContent =
             peso(total);
 
-        paymentInput.value =
-            "";
+        paymentInput.value = "";
 
         changeAmount.textContent =
             peso(0);
@@ -1773,22 +1810,21 @@ checkoutBtn.addEventListener(
         checkoutMessage.textContent =
             "";
 
+
         checkoutModal.classList.add(
             "show"
         );
 
+
         setTimeout(
-            () => paymentInput.focus(),
+            () =>
+                paymentInput.focus(),
             100
         );
 
     }
 );
 
-
-/* ==================================================
-   CLOSE CHECKOUT
-================================================== */
 
 closeCheckoutBtn.addEventListener(
     "click",
@@ -1821,9 +1857,20 @@ checkoutModal.addEventListener(
 );
 
 
-/* ==================================================
-   PAYMENT CHANGE
-================================================== */
+function calculateTotal() {
+
+    return cart.reduce(
+        (sum,item) =>
+            sum +
+            (
+                Number(item.price) *
+                Number(item.quantity)
+            ),
+        0
+    );
+
+}
+
 
 paymentInput.addEventListener(
     "input",
@@ -1840,6 +1887,7 @@ paymentInput.addEventListener(
         const change =
             payment - total;
 
+
         changeAmount.textContent =
             peso(
                 change > 0
@@ -1851,9 +1899,7 @@ paymentInput.addEventListener(
 );
 
 
-/* ==================================================
-   CONFIRM CHECKOUT
-================================================== */
+/* CONFIRM PAYMENT */
 
 confirmCheckoutBtn.addEventListener(
     "click",
@@ -1869,7 +1915,9 @@ confirmCheckoutBtn.addEventListener(
 
 
         if (
-            !Number.isFinite(payment) ||
+            !Number.isFinite(
+                payment
+            ) ||
             payment <= 0
         ) {
 
@@ -1881,7 +1929,9 @@ confirmCheckoutBtn.addEventListener(
         }
 
 
-        if (payment < total) {
+        if (
+            payment < total
+        ) {
 
             checkoutMessage.textContent =
                 "Payment is not enough.";
@@ -1891,15 +1941,19 @@ confirmCheckoutBtn.addEventListener(
         }
 
 
-        /* CHECK STOCK */
-
-        for (const item of cart) {
+        for (
+            const item of cart
+        ) {
 
             const product =
                 products.find(
                     p =>
-                        String(p.barcode) ===
-                        String(item.barcode)
+                        String(
+                            p.barcode
+                        ) ===
+                        String(
+                            item.barcode
+                        )
                 );
 
 
@@ -1920,8 +1974,6 @@ confirmCheckoutBtn.addEventListener(
         }
 
 
-        /* COST */
-
         let totalCost =
             0;
 
@@ -1938,11 +1990,13 @@ confirmCheckoutBtn.addEventListener(
 
 
         const profit =
-            total - totalCost;
+            total -
+            totalCost;
 
 
         const change =
-            payment - total;
+            payment -
+            total;
 
 
         const now =
@@ -2029,7 +2083,7 @@ confirmCheckoutBtn.addEventListener(
         };
 
 
-        /* UPDATE STOCK */
+        /* DEDUCT STOCK */
 
         cart.forEach(
             item => {
@@ -2037,16 +2091,24 @@ confirmCheckoutBtn.addEventListener(
                 const product =
                     products.find(
                         p =>
-                            String(p.barcode) ===
-                            String(item.barcode)
+                            String(
+                                p.barcode
+                            ) ===
+                            String(
+                                item.barcode
+                            )
                     );
 
 
                 if (product) {
 
                     product.stock =
-                        Number(product.stock) -
-                        Number(item.quantity);
+                        Number(
+                            product.stock
+                        ) -
+                        Number(
+                            item.quantity
+                        );
 
                 }
 
@@ -2054,17 +2116,16 @@ confirmCheckoutBtn.addEventListener(
         );
 
 
-        /* SAVE SALE */
+        /* SAVE */
 
         sales.unshift(
             sale
         );
 
-
         saveData();
 
 
-        /* SEND TO GOOGLE SHEETS */
+        /* GOOGLE SHEETS */
 
         sendSaleToGoogleSheets(
             sale
@@ -2076,8 +2137,11 @@ confirmCheckoutBtn.addEventListener(
         cart = [];
 
         renderCart();
+
         renderInventory();
+
         renderHistory();
+
         updateDashboard();
 
 
@@ -2116,11 +2180,7 @@ confirmCheckoutBtn.addEventListener(
         );
 
 
-        /* OPEN RECEIPT */
-
-        printReceipt(
-            sale
-        );
+        /* WALANG AUTO PRINT DITO */
 
 
         barcodeInput.focus();
@@ -2129,11 +2189,11 @@ confirmCheckoutBtn.addEventListener(
 );
 
 
-/* ==================================================
-   GOOGLE SHEETS SAVE
-================================================== */
+/* GOOGLE SHEETS */
 
-function sendSaleToGoogleSheets(sale) {
+function sendSaleToGoogleSheets(
+    sale
+) {
 
     fetch(
         GOOGLE_SHEETS_URL,
@@ -2184,9 +2244,7 @@ function sendSaleToGoogleSheets(sale) {
 }
 
 
-/* ==================================================
-   INVENTORY
-================================================== */
+/* INVENTORY */
 
 function renderInventory() {
 
@@ -2204,7 +2262,9 @@ function renderInventory() {
 
 
             if (
-                Number(product.stock) <= 0
+                Number(
+                    product.stock
+                ) <= 0
             ) {
 
                 status =
@@ -2214,8 +2274,12 @@ function renderInventory() {
                     "status-out";
 
             } else if (
-                Number(product.stock) <=
-                Number(product.reorderLevel)
+                Number(
+                    product.stock
+                ) <=
+                Number(
+                    product.reorderLevel
+                )
             ) {
 
                 status =
@@ -2228,21 +2292,29 @@ function renderInventory() {
 
 
             const row =
-                document.createElement("tr");
+                document.createElement(
+                    "tr"
+                );
 
 
             row.innerHTML = `
 
                 <td>
-                    ${escapeHtml(product.barcode)}
+                    ${escapeHtml(
+                        product.barcode
+                    )}
                 </td>
 
                 <td>
-                    ${escapeHtml(product.name)}
+                    ${escapeHtml(
+                        product.name
+                    )}
                 </td>
 
                 <td>
-                    ${escapeHtml(product.category)}
+                    ${escapeHtml(
+                        product.category
+                    )}
                 </td>
 
                 <td>
@@ -2258,9 +2330,13 @@ function renderInventory() {
                 </td>
 
                 <td>
-                    <span class="status ${statusClass}">
+
+                    <span
+                        class="status ${statusClass}"
+                    >
                         ${status}
                     </span>
+
                 </td>
 
             `;
@@ -2276,16 +2352,16 @@ function renderInventory() {
 }
 
 
-/* ==================================================
-   HISTORY
-================================================== */
+/* HISTORY */
 
 function renderHistory() {
 
     historyTable.innerHTML = "";
 
 
-    if (sales.length === 0) {
+    if (
+        sales.length === 0
+    ) {
 
         historyTable.innerHTML = `
 
@@ -2301,6 +2377,7 @@ function renderHistory() {
             </tr>
 
         `;
+
 
         historySummary.textContent =
             "No transactions yet.";
@@ -2320,10 +2397,12 @@ function renderHistory() {
 
 
     sales.forEach(
-        (sale, index) => {
+        (sale,index) => {
 
             const row =
-                document.createElement("tr");
+                document.createElement(
+                    "tr"
+                );
 
 
             row.innerHTML = `
@@ -2393,11 +2472,8 @@ function renderHistory() {
 }
 
 
-/* ==================================================
-   VIEW SALE
-================================================== */
-
-window.viewSale = function(index) {
+window.viewSale =
+function(index) {
 
     const sale =
         sales[index];
@@ -2410,15 +2486,18 @@ window.viewSale = function(index) {
     let message =
         "TRANSACTION\n\n";
 
+
     message +=
         "Sale ID: " +
         sale.id +
         "\n";
 
+
     message +=
         "Date: " +
         sale.date +
         "\n";
+
 
     message +=
         "Time: " +
@@ -2445,27 +2524,34 @@ window.viewSale = function(index) {
 
     message +=
         "\nTotal: " +
-        peso(sale.total);
+        peso(
+            sale.total
+        );
+
 
     message +=
         "\nPayment: " +
-        peso(sale.payment);
+        peso(
+            sale.payment
+        );
+
 
     message +=
         "\nChange: " +
-        peso(sale.change);
+        peso(
+            sale.change
+        );
 
 
-    alert(message);
+    alert(
+        message
+    );
 
 };
 
 
-/* ==================================================
-   PRINT ONE SALE
-================================================== */
-
-window.printSale = function(index) {
+window.printSale =
+function(index) {
 
     const sale =
         sales[index];
@@ -2474,6 +2560,7 @@ window.printSale = function(index) {
         return;
     }
 
+
     printReceipt(
         sale
     );
@@ -2481,11 +2568,11 @@ window.printSale = function(index) {
 };
 
 
-/* ==================================================
-   PRINT RECEIPT
-================================================== */
+/* PRINT ONE RECEIPT */
 
-function printReceipt(sale) {
+function printReceipt(
+    sale
+) {
 
     const printWindow =
         window.open(
@@ -2517,7 +2604,9 @@ function printReceipt(sale) {
                 <tr>
 
                     <td>
-                        ${escapeHtml(item.name)}
+                        ${escapeHtml(
+                            item.name
+                        )}
                     </td>
 
                     <td>
@@ -2525,11 +2614,15 @@ function printReceipt(sale) {
                     </td>
 
                     <td>
-                        ${peso(item.price)}
+                        ${peso(
+                            item.price
+                        )}
                     </td>
 
                     <td>
-                        ${peso(item.lineTotal)}
+                        ${peso(
+                            item.lineTotal
+                        )}
                     </td>
 
                 </tr>
@@ -2549,7 +2642,9 @@ function printReceipt(sale) {
         <head>
 
             <title>
-                ${escapeHtml(sale.id)}
+                ${escapeHtml(
+                    sale.id
+                )}
             </title>
 
             <style>
@@ -2581,7 +2676,8 @@ function printReceipt(sale) {
                     font-size: 13px;
                 }
 
-                th, td {
+                th,
+                td {
                     padding: 7px 3px;
                     border-bottom: 1px solid #ddd;
                     text-align: left;
@@ -2603,7 +2699,9 @@ function printReceipt(sale) {
 
         <body>
 
-            <h1>STORE POS</h1>
+            <h1>
+                STORE POS
+            </h1>
 
             <div class="center">
                 Point of Sale Receipt
@@ -2613,17 +2711,23 @@ function printReceipt(sale) {
 
             <div>
                 <strong>Sale ID:</strong>
-                ${escapeHtml(sale.id)}
+                ${escapeHtml(
+                    sale.id
+                )}
             </div>
 
             <div>
                 <strong>Date:</strong>
-                ${escapeHtml(sale.date)}
+                ${escapeHtml(
+                    sale.date
+                )}
             </div>
 
             <div>
                 <strong>Time:</strong>
-                ${escapeHtml(sale.time)}
+                ${escapeHtml(
+                    sale.time
+                )}
             </div>
 
             <div class="line"></div>
@@ -2700,15 +2804,15 @@ function printReceipt(sale) {
 }
 
 
-/* ==================================================
-   PRINT ALL HISTORY
-================================================== */
+/* PRINT ALL HISTORY */
 
 printHistoryBtn.addEventListener(
     "click",
     function() {
 
-        if (sales.length === 0) {
+        if (
+            sales.length === 0
+        ) {
 
             alert(
                 "No transaction history to print."
@@ -2748,35 +2852,51 @@ printHistoryBtn.addEventListener(
                     <tr>
 
                         <td>
-                            ${escapeHtml(sale.id)}
+                            ${escapeHtml(
+                                sale.id
+                            )}
                         </td>
 
                         <td>
-                            ${escapeHtml(sale.date)}
+                            ${escapeHtml(
+                                sale.date
+                            )}
                         </td>
 
                         <td>
-                            ${escapeHtml(sale.time)}
+                            ${escapeHtml(
+                                sale.time
+                            )}
                         </td>
 
                         <td>
-                            ${peso(sale.total)}
+                            ${peso(
+                                sale.total
+                            )}
                         </td>
 
                         <td>
-                            ${peso(sale.cost)}
+                            ${peso(
+                                sale.cost
+                            )}
                         </td>
 
                         <td>
-                            ${peso(sale.profit)}
+                            ${peso(
+                                sale.profit
+                            )}
                         </td>
 
                         <td>
-                            ${peso(sale.payment)}
+                            ${peso(
+                                sale.payment
+                            )}
                         </td>
 
                         <td>
-                            ${peso(sale.change)}
+                            ${peso(
+                                sale.change
+                            )}
                         </td>
 
                     </tr>
@@ -2815,7 +2935,8 @@ printHistoryBtn.addEventListener(
                         border-collapse: collapse;
                     }
 
-                    th, td {
+                    th,
+                    td {
                         border: 1px solid #000;
                         padding: 8px;
                     }
@@ -2836,7 +2957,9 @@ printHistoryBtn.addEventListener(
 
                 <p>
                     Printed:
-                    ${new Date().toLocaleString("en-PH")}
+                    ${new Date().toLocaleString(
+                        "en-PH"
+                    )}
                 </p>
 
                 <table>
@@ -2857,7 +2980,9 @@ printHistoryBtn.addEventListener(
                     </thead>
 
                     <tbody>
+
                         ${rows}
+
                     </tbody>
 
                 </table>
@@ -2875,7 +3000,8 @@ printHistoryBtn.addEventListener(
 
 
         setTimeout(
-            () => printWindow.print(),
+            () =>
+                printWindow.print(),
             500
         );
 
@@ -2883,9 +3009,7 @@ printHistoryBtn.addEventListener(
 );
 
 
-/* ==================================================
-   DASHBOARD
-================================================== */
+/* DASHBOARD */
 
 function updateDashboard() {
 
@@ -2896,8 +3020,12 @@ function updateDashboard() {
     const low =
         products.filter(
             product =>
-                Number(product.stock) <=
-                Number(product.reorderLevel)
+                Number(
+                    product.stock
+                ) <=
+                Number(
+                    product.reorderLevel
+                )
         ).length;
 
 
@@ -2927,10 +3055,14 @@ function updateDashboard() {
             ) {
 
                 salesAmount +=
-                    Number(sale.total);
+                    Number(
+                        sale.total
+                    );
 
                 profitAmount +=
-                    Number(sale.profit);
+                    Number(
+                        sale.profit
+                    );
 
             }
 
@@ -2939,17 +3071,19 @@ function updateDashboard() {
 
 
     todaySales.textContent =
-        peso(salesAmount);
+        peso(
+            salesAmount
+        );
 
     todayProfit.textContent =
-        peso(profitAmount);
+        peso(
+            profitAmount
+        );
 
 }
 
 
-/* ==================================================
-   CAMERA SCANNER
-================================================== */
+/* CAMERA */
 
 cameraBtn.addEventListener(
     "click",
@@ -3062,6 +3196,7 @@ async function startScanner() {
                             ""
                         ).toLowerCase();
 
+
                     return (
                         label.includes("back") ||
                         label.includes("rear") ||
@@ -3135,10 +3270,6 @@ async function startScanner() {
 }
 
 
-/* ==================================================
-   STOP CAMERA
-================================================== */
-
 async function stopScanner() {
 
     scannerModal.classList.remove(
@@ -3181,9 +3312,7 @@ async function stopScanner() {
 }
 
 
-/* ==================================================
-   INITIALIZE
-================================================== */
+/* INITIALIZE */
 
 function initialize() {
 
